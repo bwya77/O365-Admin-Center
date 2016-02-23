@@ -555,8 +555,7 @@ $denyConflictMeetingsForAllResourceMailboxesToolStripMenuItem_Click = {
 ###JUNK ITEMS###
 $menustrip1_ItemClicked=[System.Windows.Forms.ToolStripItemClickedEventHandler]{
 #Event Argument: $_ = [System.Windows.Forms.ToolStripItemClickedEventArgs]
-	#TODO: Place custom script here
-	
+#Left Blank	
 }
 
 $TextboxResults_TextChanged = {
