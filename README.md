@@ -19,4 +19,10 @@ The o365 Admin Center is a GUI application that administrators can use to perfor
 ####Mailbox Permissions Commands
 ![alt tag](https://github.com/bwya77/o365_Admin_Center/blob/master/o365%20Admin%20Center%20Screenshots/mailbox_permissions.png)
 
+####Enter a custom command in the text field
+![alt tag](https://github.com/bwya77/o365_Admin_Center/blob/master/o365%20Admin%20Center%20Screenshots/Enter_CustomCommand.png)
+![alt tag](https://github.com/bwya77/o365_Admin_Center/blob/master/o365%20Admin%20Center%20Screenshots/Custom_Output.png)
+
+
+
 Version 2.0 of PowerShell is needed
