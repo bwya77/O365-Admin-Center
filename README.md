@@ -1,5 +1,9 @@
 # o365_Admin_Center
 
+Algorithm       Hash
+---------       ----
+SHA256          6A5361408E1A57EC87ABAD70D1B0F73359E940B9304301D98825DDEAD212D04A
+
 The o365 Admin Center is a GUI application that administrators can use to perform some of the most common o365 tasks. The output (error or success) is sent to the textbox which also acts as a input for custom commands. You can also save the output to a file. You just need the .exe to run the application and it does not need to be installed. The code is written in PowerShell.
 
 ####o365 GUI
