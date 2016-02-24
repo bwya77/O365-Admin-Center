@@ -1,4 +1,8 @@
-﻿
+  #============================================================================================#
+  # Office 365 Administration Center                                                           #
+  # Original work by: Brad Wyatt                                                               #
+  # v0.1   --  Febuary, 2016 Original release                                                  #
+  #============================================================================================#
 $FormO365AdministrationCenter_Load = {
 	#Sets the text for the button
 	$ButtonConnectTo365.Text = "Connect to Office 365"
