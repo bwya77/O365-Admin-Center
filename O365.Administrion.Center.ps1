@@ -1,8 +1,24 @@
-  #============================================================================================#
-  # Office 365 Administration Center                                                           #
-  # Original work by: Brad Wyatt                                                               #
-  # v0.1   --  Febuary, 2016 Original release                                                  #
-  #============================================================================================#
+<#
+
+.SYNOPSIS
+This is the source code for o365 Adminsitration Center
+
+.DESCRIPTION
+The o365 Admin Center is a GUI application that administrators can use to perform some of the most common o365 tasks. The output (error or success) is sent to the textbox which also acts as a input for custom commands. You can also save the output to a file. 
+
+.PARAMETER
+N/A
+
+.EXAMPLE
+N/A
+
+.NOTES
+This is built with a GUI and not a stand alone script.
+
+.LINK
+www.bwya77.com
+
+#>
 $FormO365AdministrationCenter_Load = {
 	#Sets the text for the button
 	$ButtonConnectTo365.Text = "Connect to Office 365"
