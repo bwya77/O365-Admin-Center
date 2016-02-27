@@ -618,6 +618,49 @@ $restoreDeletedUserToolStripMenuItem_Click = {
 	
 }
 
+###MAILBOX PERMISSIONS MENU ITEMS###
+
+$enableAutomaticBookingForAllResourceMailboxToolStripMenuItem1_Click = {
+	#untested code
+	try
+	{
+		$TextboxResults.Text = Get-MailBox | Where { $_.ResourceType -eq "Room" } | Set-CalendarProcessing -AutomateProcessing:AutoAccept | Format-List  | Out-String
+	}
+	catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+	
+}
+
+$allowConflictMeetingsToolStripMenuItem_Click = {
+	#untested code
+	$ConflictMeetingAllow = Read-Host "Enter the Room Name of the Resource Calendar you want to allow conflicts"
+	try
+	{
+		$TextboxResults.Text = Set-CalendarProcessing $ConflictMeetingAllow -AllowConflicts $True | Format-List | Out-String
+	}
+	catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+	
+}
+
+$disToolStripMenuItem_Click = {
+	#untested code
+	$ConflictMeetingDeny = Read-Host "Enter the Room Name of the Resource Calendar you want to disallow conflicts"
+	try
+	{
+		$TextboxResults.Text = Set-CalendarProcessing $ConflictMeetingDeny -AllowConflicts $False | Format-List | Out-String
+	}
+	catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+	
+}
+
 
 ###JUNK ITEMS###
 $menustrip1_ItemClicked=[System.Windows.Forms.ToolStripItemClickedEventHandler]{
@@ -629,4 +672,7 @@ $menustrip1_ItemClicked=[System.Windows.Forms.ToolStripItemClickedEventHandler]{
 $TextboxResults_TextChanged = {
 	#Left Blank
 }
+
+
+
 
