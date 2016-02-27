@@ -1,18 +1,14 @@
 <#
-
 .SYNOPSIS
 This is the source code for o365 Adminsitration Center
-
 .DESCRIPTION
 The o365 Admin Center is a GUI application that administrators can use to perform some of the most common o365 tasks. The output (error or success) is sent to the textbox which also acts as a input for custom commands. You can also save the output to a file. 
-
 .NOTES
 This is built with a GUI and not a stand alone script.
-
 .LINK
 www.bwya77.com
-
 #>
+
 $FormO365AdministrationCenter_Load = {
 	#Sets the text for the button
 	$ButtonConnectTo365.Text = "Connect to Office 365"
@@ -565,11 +561,69 @@ $denyConflictMeetingsForAllResourceMailboxesToolStripMenuItem_Click = {
 }
 
 
+###MAILBOX PERMISSIONS MENU ITEMS###
+
+$displayAllDeletedUsersToolStripMenuItem_Click = {
+	try
+	{
+		$TextboxResults.Text = Get-MsolUser -ReturnDeletedUsers | Format-List UserPrincipalName, ObjectID | Out-String
+	}
+	catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+	
+}
+
+$deleteAllUsersInRecycleBinToolStripMenuItem_Click = {
+	try
+	{
+		$TextboxResults.Text = Get-MsolUser -ReturnDeletedUsers | Remove-MsolUser -RemoveFromRecycleBin –Force | Format-List | Out-String
+	}
+	catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+	
+}
+
+$deleteSpecificUsersInRecycleBinToolStripMenuItem_Click = {
+	$DeletedUserRecycleBin = Read-Host "Please enter the User Principal Name of the user you want to permanently delete"
+	try
+	{
+		$TextboxResults.Text = Remove-MsolUser -UserPrincipalName $DeletedUserRecycleBin -RemoveFromRecycleBin -Force
+		$TextboxResults.Text = Get-MsolUser -ReturnDeletedUsers | Format-List UserPrincipalName, ObjectID | Out-String
+	}
+	catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+	
+}
+
+$restoreDeletedUserToolStripMenuItem_Click = {
+	#Untested but known working command, not sure of the output so next line is listing the deleted items 
+	$RestoredUserFromRecycleBin = Read-Host "Enter the User Principal Name of the user you want to restore"
+	$NewRestoredUserPrincipalName = Read-Host "Enter the new User Principal Name of restored user"
+	try
+	{
+		$TextboxResults.Text = Restore-MsolUser –UserPrincipalName $RestoredUserFromRecycleBin -AutoReconcileProxyConflicts -NewUserPrincipalName $NewRestoredUserPrincipalName
+		$TextboxResults.Text = Get-MsolUser -ReturnDeletedUsers | Format-List UserPrincipalName, ObjectID | Out-String
+	}
+	catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+	
+	
+}
+
 
 ###JUNK ITEMS###
 $menustrip1_ItemClicked=[System.Windows.Forms.ToolStripItemClickedEventHandler]{
 #Event Argument: $_ = [System.Windows.Forms.ToolStripItemClickedEventArgs]
-#Left Blank	
+	#TODO: Place custom script here
+	
 }
 
 $TextboxResults_TextChanged = {
