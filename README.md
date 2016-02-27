@@ -1,6 +1,6 @@
 # o365_Admin_Center
 
-ver 0.0.2
+v0.0.2
 
 Please note some screenshots below may not be up to date. I will try to keep the main one (o365 GUI) up to date
 
