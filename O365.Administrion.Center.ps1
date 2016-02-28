@@ -248,7 +248,7 @@ $getClutterInfoForAUserToolStripMenuItem_Click = {
 }
 
 
-#DISTRIBUTION GROUP MENU ITEMS###
+###DISTRIBUTION GROUP MENU ITEMS###
 
 $displayDistributionGroupsToolStripMenuItem_Click={
 	try
@@ -290,7 +290,6 @@ $deleteADistributionGroupToolStripMenuItem_Click = {
 }
 
 $allowDistributionGroupToReceiveExternalEmailToolStripMenuItem_Click = {
-	#untested code
 	$AllowExternalEmail = Read-Host "Enter the name of the Distribtuion Group you want to allow external email to"
 	try
 	{
@@ -655,7 +654,7 @@ $revokeSendAsPermissionsForAMailboxToolStripMenuItem_Click={
 }
 
 
-### RESOURCE MAILBOX###
+###RESOURCE MAILBOX###
 
 $convertAMailboxToARoomMailboxToolStripMenuItem_Click = {
 	$MailboxtoRoom = Read-Host "What user would you like to convert to a Room Mailbox? Please enter the full email address"
@@ -742,12 +741,26 @@ $allowConflictMeetingsToolStripMenuItem_Click = {
 $getListOfRoomMailboxesToolStripMenuItem_Click = {
 	try
 	{
-		$TextboxResults.Text = $TextboxResults.Text = Get-MailBox | Where { $_.ResourceType -eq "Room" } | Format-List Identity, PrimarySmtpAddress, EmailAddresses, UserPrincipalName | Out-String
+		$TextboxResults.Text = Get-MailBox | Where { $_.ResourceType -eq "Room" } | Format-List Identity, PrimarySmtpAddress, EmailAddresses, UserPrincipalName | Out-String
 	}
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
 	}
+}
+
+$displayRoomMailBoxCalendarProcessingToolStripMenuItem_Click = {
+	#TODO: Place custom script here
+	$RoomMailboxCalProcessing = Read-Host "Enter the Calendar Name you want to view calendar processing information for"
+	try
+	{
+		$TextboxResults.Text = Get-Mailbox $RoomMailboxCalProcessing | Get-CalendarProcessing | Format-List | Out-String
+	}
+	catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+	
 }
 
 
@@ -805,7 +818,7 @@ $restoreDeletedUserToolStripMenuItem_Click = {
 }
 
 
-###SPAM###
+###JUNK EMAIL CONFIGURATION###
 
 $checkSafeAndBlockedSendersForAUserToolStripMenuItem_Click = {
 	$CheckSpamUser = Read-Host "Enter the UPN of the user you want to check blocked and allowed senders for"
@@ -824,7 +837,9 @@ $blacklistDomainForAllToolStripMenuItem_Click = {
 	$BlacklistDomain = Read-Host "Enter the domain you want to blacklist for all users"
 	try
 	{
-		$TextboxResults.Text = Get-Mailbox | Set-MailboxJunkEmailConfiguration -BlockedSendersAndDomains $BlacklistDomain | Format-List | Out-String
+		Get-Mailbox | Set-MailboxJunkEmailConfiguration -BlockedSendersAndDomains $BlacklistDomain
+		$TextboxResults.Text = Get-Mailbox | Get-MailboxJunkEmailConfiguration | Format-List Identity, BlockedSendersAndDomains, Enabled | Out-String
+		
 	}
 	catch
 	{
@@ -837,7 +852,8 @@ $whitelistDomainForAllToolStripMenuItem_Click = {
 	$AllowedDomain = Read-Host "Enter the domain you want to whitelist for all users"
 	try
 	{
-		$TextboxResults.Text = Get-Mailbox | Set-MailboxJunkEmailConfiguration -TrustedSendersAndDomains $AllowedDomain | Format-List | Out-String
+		Get-Mailbox | Set-MailboxJunkEmailConfiguration -TrustedSendersAndDomains $AllowedDomain
+		$TextboxResults.Text = Get-Mailbox | Get-MailboxJunkEmailConfiguration | Format-List Identity, TrustedSendersAndDomains, TrustedRecipientsAndDomains, Enabled | Out-String
 	}
 	catch
 	{
@@ -875,6 +891,103 @@ $blacklistDomainForASingleUserToolStripMenuItem_Click = {
 	
 }
 
+$blacklistASpecificEmailAddressForAllToolStripMenuItem_Click = {
+	$BlockSpecificEmailForAll = Read-Host "Enter the email address you want to blacklist for all"
+	try
+	{
+		Get-Mailbox | Set-MailboxJunkEmailConfiguration -BlockedSendersAndDomains $BlockSpecificEmailForAll
+		$TextboxResults.Text = Get-Mailbox | Get-MailboxJunkEmailConfiguration | Format-List Identity, BlockedSendersAndDomains, Enabled | Out-String
+	}
+	catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+	
+}
+
+$whitelistASpecificEmailAddressForAllToolStripMenuItem_Click = {
+	$AllowSpecificEmailForAll = Read-Host "Enter the email address you want to whitelist for all"
+	try
+	{
+		Get-Mailbox | Set-MailboxJunkEmailConfiguration -TrustedSendersAndDomains $AllowSpecificEmailForAll
+		$TextboxResults.Text = Get-Mailbox | Get-MailboxJunkEmailConfiguration | Format-List Identity, TrustedSendersAndDomains, TrustedRecipientsAndDomains, Enabled | Out-String
+	}
+	catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+	
+}
+
+$whitelistASpecificEmailAddressForASingleUserToolStripMenuItem_Click = {
+	$ModifyWhitelistforaUser = Read-Host "Enter the user you want to modify the whitelist for"
+	$AllowSpecificEmailForOne = Read-Host "Enter the email address you want to whitelist for a single user"
+	try
+	{
+		Set-MailboxJunkEmailConfiguration -Identity $ModifyWhitelistforaUser -TrustedSendersAndDomains $AllowSpecificEmailForOne
+		$TextboxResults.Text = Get-MailboxJunkEmailConfiguration -Identity $ModifyWhitelistforaUser | Format-List Identity, TrustedSendersAndDomains, TrustedRecipientsAndDomains, Enabled | Out-String
+	}
+	catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+	
+}
+
+$blacklistASpecificEmailAddressForASingleUserToolStripMenuItem_Click = {
+	#TODO: Place custom script here
+	$ModifyblacklistforaUser = Read-Host "Enter the user you want to modify the blacklist for"
+	$DenySpecificEmailForOne = Read-Host "Enter the email address you want to whitelist for a single user"
+	try
+	{
+		Set-MailboxJunkEmailConfiguration -Identity $ModifyblacklistforaUser -BlockedSendersAndDomains $DenySpecificEmailForOne
+		$TextboxResults.Text = Get-MailboxJunkEmailConfiguration -Identity $ModifyblacklistforaUser | Format-List Identity, BlockedSendersAndDomains, Enabled | Out-String
+	}
+	catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+}
+
+###QUARENTINE###
+
+$viewQuarantineBetweenDatesToolStripMenuItem_Click = {
+	$StartDateQuarentine = Read-Host "Enter the beginning date. (Format MM/DD/YYYY)"
+	$EndDateQuarentine = Read-Host "Enter the end date. (Format MM/DD/YYYY)"
+	try
+	{
+		$TextboxResults.Text = Get-QuarantineMessage -StartReceivedDate $StartDateQuarentine -EndReceivedDate $EndDateQuarentine | Format-List ReceivedTime, SenderAddress, RecipientAddress, Subject, Size, Type, Expires, QuarantinedUser, ReleasedUser, Direction | Out-String
+	}
+	catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+}
+
+$viewQuarantineFromASpecificUserToolStripMenuItem_Click = {
+	$QuarentineFromUser = Read-Host "Enter the email address you want to see quarentine from"
+	try
+	{
+		$TextboxResults.Text = Get-QuarantineMessage -SenderAddress $QuarentineFromUser | Format-List ReceivedTime, SenderAddress, RecipientAddress, Subject, Size, Type, Expires, QuarantinedUser, ReleasedUser, Direction | Out-String
+	}
+	catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+}
+
+$viewQuarantineForASpecificUserToolStripMenuItem_Click = {
+	$QuarentineInfoForUser = Read-Host "Enter the UPN of the user you want to view quarantine for"
+	try
+	{
+		$TextboxResults.Text = Get-QuarantineMessage -RecipientAddress $QuarentineInfoForUser | Format-List ReceivedTime, SenderAddress, Subject, Size, Type, Expires, QuarantinedUser, ReleasedUser, Direction | Out-String
+	}
+	catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+}
+
 
 ###JUNK ITEMS###
 $menustrip1_ItemClicked=[System.Windows.Forms.ToolStripItemClickedEventHandler]{
@@ -891,3 +1004,5 @@ $allowedDomainsToolStripMenuItem_Click={
 	#TODO: Place custom script here
 	
 }
+
+
