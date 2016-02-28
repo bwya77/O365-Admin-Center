@@ -237,6 +237,75 @@ $displayDistributionGroupsToolStripMenuItem_Click={
 	
 }
 
+$createADistributionGroupToolStripMenuItem_Click = {
+	#untested code
+	$NewDistroGroup = Read-Host "What is the name of the new distribution group?"
+	try
+	{
+		$TextboxResults.Text = New-DistributionGroup -Name $NewDistroGroup | Format-List | Out-String
+	}
+	catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+	
+}
+
+$deleteADistributionGroupToolStripMenuItem_Click = {
+	#untested code
+	$DeleteDistroGroup = Read-Host "Enter the name of the Distribtuion group you want deleted."
+	try
+	{
+		$TextboxResults.Text = Remove-DistributionGroup $DeleteDistroGroup | Format-List | Out-String
+	}
+	catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+	
+}
+
+$allowDistributionGroupToReceiveExternalEmailToolStripMenuItem_Click = {
+	#untested code
+	$AllowExternalEmail = Read-Host "Enter the name of the Distribtuion Group you want to allow external email to"
+	try
+	{
+		$TextboxResults.Text = Set-DistributionGroup $AllowExternalEmail -RequireSenderAuthenticationEnabled $False | Format-List | Out-String
+	}
+	catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+	
+}
+
+$hideDistributionGroupFromGALToolStripMenuItem_Click = {
+	#untested code
+	$GroupHideGAL = Read-Host "Enter the name of the Distribtuion Group you want to allow external email to"
+	try
+	{
+		$TextboxResults.Text = Set-DistributionGroup $GroupHideGAL -HiddenFromAddressListsEnabled $True | Format-List | Out-String
+	}
+	catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+	
+}
+
+$displayDistributionGroupMembersToolStripMenuItem_Click = {
+
+	$ListDistributionGroupMembers = Read-Host "Enter the name of the Distribution Group you want to list members of"
+	try
+	{
+		$TextboxResults.Text = Get-DistributionGroupMember $ListDistributionGroupMembers | Format-List Name | Out-String
+	}
+	catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+	
+}
 
 ###USERS GENERAL MENU ITEMS###
 
@@ -591,7 +660,7 @@ $deleteSpecificUsersInRecycleBinToolStripMenuItem_Click = {
 	$DeletedUserRecycleBin = Read-Host "Please enter the User Principal Name of the user you want to permanently delete"
 	try
 	{
-		$TextboxResults.Text = Remove-MsolUser -UserPrincipalName $DeletedUserRecycleBin -RemoveFromRecycleBin -Force
+		Remove-MsolUser -UserPrincipalName $DeletedUserRecycleBin -RemoveFromRecycleBin -Force
 		$TextboxResults.Text = Get-MsolUser -ReturnDeletedUsers | Format-List UserPrincipalName, ObjectID | Out-String
 	}
 	catch
@@ -602,12 +671,11 @@ $deleteSpecificUsersInRecycleBinToolStripMenuItem_Click = {
 }
 
 $restoreDeletedUserToolStripMenuItem_Click = {
-	#Untested but known working command, not sure of the output so next line is listing the deleted items 
 	$RestoredUserFromRecycleBin = Read-Host "Enter the User Principal Name of the user you want to restore"
 	$NewRestoredUserPrincipalName = Read-Host "Enter the new User Principal Name of restored user"
 	try
 	{
-		$TextboxResults.Text = Restore-MsolUser –UserPrincipalName $RestoredUserFromRecycleBin -AutoReconcileProxyConflicts -NewUserPrincipalName $NewRestoredUserPrincipalName
+		Restore-MsolUser –UserPrincipalName $RestoredUserFromRecycleBin -AutoReconcileProxyConflicts -NewUserPrincipalName $NewRestoredUserPrincipalName
 		$TextboxResults.Text = Get-MsolUser -ReturnDeletedUsers | Format-List UserPrincipalName, ObjectID | Out-String
 	}
 	catch
@@ -617,6 +685,7 @@ $restoreDeletedUserToolStripMenuItem_Click = {
 	
 	
 }
+
 
 ###MAILBOX PERMISSIONS MENU ITEMS###
 
@@ -672,7 +741,4 @@ $menustrip1_ItemClicked=[System.Windows.Forms.ToolStripItemClickedEventHandler]{
 $TextboxResults_TextChanged = {
 	#Left Blank
 }
-
-
-
 
