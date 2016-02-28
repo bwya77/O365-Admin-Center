@@ -115,6 +115,31 @@ $getLicensedUsersToolStripMenuItem_Click={
 	
 }
 
+$displayAllUsersWithoutALicenseToolStripMenuItem_Click = {
+	Try
+	{
+		$TextboxResults.text = Get-MsolUser | Where-Object { $_.isLicensed -like "False" } | Format-List UserPrincipalName | Out-String
+	}
+	Catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+	
+}
+
+$removeAllUnlicensedUsersToolStripMenuItem_Click = {
+	Try
+	{
+		Get-MsolUser -all | Where-Object { $_.isLicensed -ne "true" } | Remove-MsolUser -Force
+		$TextboxResults.text = Get-MsolUser | Where-Object { $_.isLicensed -like "False" } | Format-List UserPrincipalName | Out-String
+	}
+	Catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+	
+}
+
 
 ###CALENDAR MENU ITEMS###
 
@@ -238,7 +263,6 @@ $displayDistributionGroupsToolStripMenuItem_Click={
 }
 
 $createADistributionGroupToolStripMenuItem_Click = {
-	#untested code
 	$NewDistroGroup = Read-Host "What is the name of the new distribution group?"
 	try
 	{
@@ -252,11 +276,11 @@ $createADistributionGroupToolStripMenuItem_Click = {
 }
 
 $deleteADistributionGroupToolStripMenuItem_Click = {
-	#untested code
 	$DeleteDistroGroup = Read-Host "Enter the name of the Distribtuion group you want deleted."
 	try
 	{
-		$TextboxResults.Text = Remove-DistributionGroup $DeleteDistroGroup | Format-List | Out-String
+		Remove-DistributionGroup $DeleteDistroGroup
+		$TextboxResults.text = Get-DistributionGroup | Format-List DisplayName | Out-String
 	}
 	catch
 	{
@@ -270,7 +294,8 @@ $allowDistributionGroupToReceiveExternalEmailToolStripMenuItem_Click = {
 	$AllowExternalEmail = Read-Host "Enter the name of the Distribtuion Group you want to allow external email to"
 	try
 	{
-		$TextboxResults.Text = Set-DistributionGroup $AllowExternalEmail -RequireSenderAuthenticationEnabled $False | Format-List | Out-String
+		Set-DistributionGroup $AllowExternalEmail -RequireSenderAuthenticationEnabled $False 
+		$TextboxResults.text = Get-DistributionGroup $AllowExternalEmail | Format-List Name, RequireSenderAuthenticationEnabled | Out-String
 	}
 	catch
 	{
@@ -280,11 +305,11 @@ $allowDistributionGroupToReceiveExternalEmailToolStripMenuItem_Click = {
 }
 
 $hideDistributionGroupFromGALToolStripMenuItem_Click = {
-	#untested code
 	$GroupHideGAL = Read-Host "Enter the name of the Distribtuion Group you want to allow external email to"
 	try
 	{
-		$TextboxResults.Text = Set-DistributionGroup $GroupHideGAL -HiddenFromAddressListsEnabled $True | Format-List | Out-String
+		Set-DistributionGroup $GroupHideGAL -HiddenFromAddressListsEnabled $True
+		$TextboxResults.text = Get-DistributionGroup $GroupHideGAL | Format-List Name, HiddenFromAddressListsEnabled | Out-String
 	}
 	catch
 	{
@@ -294,7 +319,6 @@ $hideDistributionGroupFromGALToolStripMenuItem_Click = {
 }
 
 $displayDistributionGroupMembersToolStripMenuItem_Click = {
-
 	$ListDistributionGroupMembers = Read-Host "Enter the name of the Distribution Group you want to list members of"
 	try
 	{
@@ -306,6 +330,7 @@ $displayDistributionGroupMembersToolStripMenuItem_Click = {
 	}
 	
 }
+
 
 ###USERS GENERAL MENU ITEMS###
 
@@ -339,6 +364,50 @@ $creatOutOfOfficeAutoReplyForAUserToolStripMenuItem_Click = {
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
 	}
+}
+
+$changeUsersLoginNameToolStripMenuItem_Click = {
+	$UserChangeUPN = Read-Host "What user would you like to change their login name for? Enter their UPN"
+	$NewUserUPN = Read-Host "What would you like the new username to be?"
+	Try
+	{
+		Set-MsolUserPrincipalname -UserPrincipalName $UserChangeUPN -NewUserPrincipalName $NewUserUPN
+		$TextboxResults.text = Get-MSOLUser -UserPrincipalName $NewUserUPN | Format-List UserPrincipalName | Out-String
+	}
+	Catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+	
+}
+
+$deleteAUserToolStripMenuItem_Click = {
+	$DeleteUser = Read-Host "Enter the UPN of the user you want to delete"
+	Try
+	{
+		$TextboxResults.text = Remove-MsolUser –UserPrincipalName $DeleteUser | Format-List UserPrincipalName | Out-String
+	}
+	Catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+	
+}
+
+$createANewUserToolStripMenuItem_Click = {
+	$Firstname = Read-Host "Enter the First Name for the new user"
+	$LastName = Read-Host "Enter the Last Name for the new user"
+	$DisplayName = Read-Host "Enter the Display Name for the new user"
+	$NewUser = Read-Host "Enter the UPN for the new user"
+	Try
+	{
+		$TextboxResults.text = New-MsolUser -UserPrincipalName $NewUser -FirstName $Firstname -LastName $LastName -DisplayName $DisplayName | Format-List | Out-String
+	}
+	Catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+	
 }
 
 
@@ -410,13 +479,12 @@ $disableStrongPasswordsForAllToolStripMenuItem_Click = {
 	
 }
 
-#untested
 $resetPasswordForAUserToolStripMenuItem_Click = {
-	$ResetPasswordUser = Write-Host "What user would you like to reset the password for?"
-	$NewPassword = Write-Host "What would you like the new password to be?"
+	$ResetPasswordUser = Read-Host "What user would you like to reset the password for?"
+	$NewPassword = Read-Host "What would you like the new password to be?"
 	try
 	{
-		$TextboxResults.text = Set-MsolUserPassword –UserPrincipalName $ResetPasswordUser –NewPassword $NewPassword -ForceChangePassword $False
+		Set-MsolUserPassword –UserPrincipalName $ResetPasswordUser –NewPassword $NewPassword -ForceChangePassword $False
 	}
 	Catch
 	{
@@ -425,11 +493,11 @@ $resetPasswordForAUserToolStripMenuItem_Click = {
 	
 }
 
-#untested
 $setPasswordToNeverExpireForAllToolStripMenuItem_Click = {
 	try
 	{
-		$TextboxResults.text = Get-MsolUser | Set-MsolUser –PasswordNeverExpires $True
+		Get-MsolUser | Set-MsolUser –PasswordNeverExpires $True
+		$TextboxResults.text = Get-MSOLUser | Format-List UserPrincipalName, PasswordNeverExpires | Out-String
 	}
 	Catch
 	{
@@ -438,11 +506,11 @@ $setPasswordToNeverExpireForAllToolStripMenuItem_Click = {
 	
 }
 
-#untested
 $setPasswordToExpireForAllToolStripMenuItem_Click = {
 	try
 	{
-		$TextboxResults.text = Get-MsolUser | Set-MsolUser –PasswordNeverExpires $False
+		Get-MsolUser | Set-MsolUser –PasswordNeverExpires $False | Format-List | Out-String
+		$TextboxResults.text = Get-MSOLUser | Format-List UserPrincipalName, PasswordNeverExpires | Out-String
 	}
 	Catch
 	{
@@ -451,12 +519,11 @@ $setPasswordToExpireForAllToolStripMenuItem_Click = {
 	
 }
 
-#untested
 $resetPasswordForAllToolStripMenuItem_Click = {
-	$SetPasswordforAll = Write-Host "What password would you like to set for all users?"
+	$SetPasswordforAll = Read-Host "What password would you like to set for all users?"
 	try
 	{
-	Get-MsolUser | %{ Set-MsolUserPassword -userPrincipalName $_.UserPrincipalName –NewPassword $SetPasswordforAll -ForceChangePassword $False }
+		Get-MsolUser | %{ Set-MsolUserPassword -userPrincipalName $_.UserPrincipalName –NewPassword $SetPasswordforAll -ForceChangePassword $False }
 	}
 	Catch
 	{
@@ -464,12 +531,12 @@ $resetPasswordForAllToolStripMenuItem_Click = {
 	}
 }
 
-#untested
 $setATempPasswordForAllToolStripMenuItem_Click = {
-	$SetTempPasswordforAll = Write-Host "What password would you like to set for all users?"
+	$SetTempPasswordforAll = Read-Host "What password would you like to set for all users?"
 	try
 	{
-		Get-MsolUser | Set-MsolUserPassword –NewPassword $SetTempPasswordforAll -ForceChangePassword $False
+		Get-MsolUser | Set-MsolUserPassword –NewPassword $SetTempPasswordforAll -ForceChangePassword $True
+		$TextboxResults.Text = "Temporary password has been set to $SetTempPasswordforAll Please note that users will be prompted to change it upon first logon"
 	}
 	Catch
 	{
@@ -591,11 +658,11 @@ $revokeSendAsPermissionsForAMailboxToolStripMenuItem_Click={
 ### RESOURCE MAILBOX###
 
 $convertAMailboxToARoomMailboxToolStripMenuItem_Click = {
-	$TextboxResults.Text = "Description: Convert a regular mailbox to a Room Mailbox"
 	$MailboxtoRoom = Read-Host "What user would you like to convert to a Room Mailbox? Please enter the full email address"
 	Try
 	{
-		$TextboxResults.Text = Set-Mailbox $MailboxtoRoom -Type Room | Format-List | Out-String
+		Set-Mailbox $MailboxtoRoom -Type Room
+		$TextboxResults.Text = Get-MailBox $MailboxtoRoom | Format-List Name, ResourceType, PrimarySmtpAddress, EmailAddresses, UserPrincipalName, IsMailboxEnabled | Out-String
 	}
 	Catch
 	{
@@ -604,29 +671,83 @@ $convertAMailboxToARoomMailboxToolStripMenuItem_Click = {
 	
 }
 
-$enableAutomaticBookingForAllResourceMailboxToolStripMenuItem_Click = {
-	$TextboxResults.Text = "Description: Enable automatic booking for all room mailboxes. This will make it so the room mailbox will auto accept calendar invitations"
+$enableAutomaticBookingForAllResourceMailboxToolStripMenuItem1_Click = {
 	Try
 	{
-		$TextboxResults.Text = Get-MailBox | Where { $_.ResourceType -eq "Room" } | Set-CalendarProcessing -AutomateProcessing:AutoAccept | Format-List | Out-String
+		Get-MailBox | Where { $_.ResourceType -eq "Room" } | Set-CalendarProcessing -AutomateProcessing:AutoAccept
+		$TextboxResults.Text = Get-MailBox | Where { $_.ResourceType -eq "Room" } | Get-CalendarProcessing | Format-List Identity, AutomateProcessing | Out-String
 	}
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
 	}
+	
 }
 
 $denyConflictMeetingsForAllResourceMailboxesToolStripMenuItem_Click = {
-	$TextboxResults.Text = "Description: Deny conflict meetings when using the option of automatic booking"
 	Try
 	{
-		Get-MailBox | Where { $_.ResourceType -eq "Room" } | Set-CalendarProcessing -AllowConflicts $False | Format-List | Out-String
+		Get-MailBox | Where { $_.ResourceType -eq "Room" } | Set-CalendarProcessing -AllowConflicts $False
+		$TextboxResults.Text = Get-MailBox | Where { $_.ResourceType -eq "Room" } | Get-CalendarProcessing | Format-List Identity, AllowConflicts | Out-String
 	}
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
 	}
 	
+}
+
+$createANewRoomMailboxToolStripMenuItem_Click = {
+	$TextboxResults.Text = "Description: Create a new Room mailbox"
+	$NewRoomMailbox = Read-Host "Enter the name of the new room mailbox"
+	Try
+	{
+		$TextboxResults.Text = New-Mailbox -Name $NewRoomMailbox -Room | Format-List | Out-String
+	}
+	Catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+	
+}
+
+$disallowconflictmeetingsToolStripMenuItem_Click = {
+	$ConflictMeetingDeny = Read-Host "Enter the Room Name of the Resource Calendar you want to disallow conflicts"
+	try
+	{
+		Set-CalendarProcessing $ConflictMeetingDeny -AllowConflicts $False
+		$TextboxResults.Text = Get-CalendarProcessing -identity $ConflictMeetingDeny | Format-List Identity, AllowConflicts | Out-String
+	}
+	catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+	
+}
+
+$allowConflictMeetingsToolStripMenuItem_Click = {
+	$ConflictMeetingAllow = Read-Host "Enter the Room Name of the Resource Calendar you want to allow conflicts"
+	try
+	{
+		Set-CalendarProcessing $ConflictMeetingAllow -AllowConflicts $True
+		$TextboxResults.Text = Get-CalendarProcessing -identity $ConflictMeetingAllow | Format-List Identity, AllowConflicts | Out-String
+	}
+	catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+	
+}
+
+$getListOfRoomMailboxesToolStripMenuItem_Click = {
+	try
+	{
+		$TextboxResults.Text = $TextboxResults.Text = Get-MailBox | Where { $_.ResourceType -eq "Room" } | Format-List Identity, PrimarySmtpAddress, EmailAddresses, UserPrincipalName | Out-String
+	}
+	catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
 }
 
 
@@ -672,28 +793,25 @@ $deleteSpecificUsersInRecycleBinToolStripMenuItem_Click = {
 
 $restoreDeletedUserToolStripMenuItem_Click = {
 	$RestoredUserFromRecycleBin = Read-Host "Enter the User Principal Name of the user you want to restore"
-	$NewRestoredUserPrincipalName = Read-Host "Enter the new User Principal Name of restored user"
 	try
 	{
-		Restore-MsolUser –UserPrincipalName $RestoredUserFromRecycleBin -AutoReconcileProxyConflicts -NewUserPrincipalName $NewRestoredUserPrincipalName
+		Restore-MsolUser –UserPrincipalName $RestoredUserFromRecycleBin -AutoReconcileProxyConflicts
 		$TextboxResults.Text = Get-MsolUser -ReturnDeletedUsers | Format-List UserPrincipalName, ObjectID | Out-String
 	}
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
 	}
-	
-	
 }
 
 
-###MAILBOX PERMISSIONS MENU ITEMS###
+###SPAM###
 
-$enableAutomaticBookingForAllResourceMailboxToolStripMenuItem1_Click = {
-	#untested code
+$checkSafeAndBlockedSendersForAUserToolStripMenuItem_Click = {
+	$CheckSpamUser = Read-Host "Enter the UPN of the user you want to check blocked and allowed senders for"
 	try
 	{
-		$TextboxResults.Text = Get-MailBox | Where { $_.ResourceType -eq "Room" } | Set-CalendarProcessing -AutomateProcessing:AutoAccept | Format-List  | Out-String
+		$TextboxResults.Text = Get-MailboxJunkEmailConfiguration -Identity $CheckSpamUser | Format-List Identity, TrustedListsOnly, ContactsTrusted, TrustedSendersAndDomains, BlockedSendersAndDomains, TrustedRecipientsAndDomains, IsValid | Out-String
 	}
 	catch
 	{
@@ -702,12 +820,11 @@ $enableAutomaticBookingForAllResourceMailboxToolStripMenuItem1_Click = {
 	
 }
 
-$allowConflictMeetingsToolStripMenuItem_Click = {
-	#untested code
-	$ConflictMeetingAllow = Read-Host "Enter the Room Name of the Resource Calendar you want to allow conflicts"
+$blacklistDomainForAllToolStripMenuItem_Click = {
+	$BlacklistDomain = Read-Host "Enter the domain you want to blacklist for all users"
 	try
 	{
-		$TextboxResults.Text = Set-CalendarProcessing $ConflictMeetingAllow -AllowConflicts $True | Format-List | Out-String
+		$TextboxResults.Text = Get-Mailbox | Set-MailboxJunkEmailConfiguration -BlockedSendersAndDomains $BlacklistDomain | Format-List | Out-String
 	}
 	catch
 	{
@@ -716,12 +833,40 @@ $allowConflictMeetingsToolStripMenuItem_Click = {
 	
 }
 
-$disToolStripMenuItem_Click = {
-	#untested code
-	$ConflictMeetingDeny = Read-Host "Enter the Room Name of the Resource Calendar you want to disallow conflicts"
+$whitelistDomainForAllToolStripMenuItem_Click = {
+	$AllowedDomain = Read-Host "Enter the domain you want to whitelist for all users"
 	try
 	{
-		$TextboxResults.Text = Set-CalendarProcessing $ConflictMeetingDeny -AllowConflicts $False | Format-List | Out-String
+		$TextboxResults.Text = Get-Mailbox | Set-MailboxJunkEmailConfiguration -TrustedSendersAndDomains $AllowedDomain | Format-List | Out-String
+	}
+	catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+	
+}
+
+$whitelistDomainForASingleUserToolStripMenuItem_Click = {
+	$Alloweddomainuser = Read-Host "Enter the UPN of the user you want to modify junk email for"
+	$AllowedDomain2 = Read-Host "Enter the domain you want to whitelist"
+	try
+	{
+		Set-MailboxJunkEmailConfiguration -Identity $Alloweddomainuser -TrustedSendersAndDomains $AllowedDomain2
+		$TextboxResults.Text = Get-MailboxJunkEmailConfiguration -Identity $Alloweddomainuser | Format-List Identity, TrustedSendersAndDomains, TrustedRecipientsAndDomains | Out-String
+	}
+	catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	} 
+}
+
+$blacklistDomainForASingleUserToolStripMenuItem_Click = {
+	$Blockeddomainuser = Read-Host "Enter the UPN of the user you want to modify junk email for"
+	$BlockedDomain2 = Read-Host "Enter the domain you want to blacklist"
+	try
+	{
+		Set-MailboxJunkEmailConfiguration -Identity $Blockeddomainuser -BlockedSendersAndDomains $BlockedDomain2
+		$TextboxResults.Text = Get-MailboxJunkEmailConfiguration -Identity $Blockeddomainuser | Format-List Identity, BlockedSendersAndDomains | Out-String
 	}
 	catch
 	{
@@ -742,3 +887,7 @@ $TextboxResults_TextChanged = {
 	#Left Blank
 }
 
+$allowedDomainsToolStripMenuItem_Click={
+	#TODO: Place custom script here
+	
+}
