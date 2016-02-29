@@ -1226,7 +1226,7 @@ $enableAccessToPowerShellForAUserToolStripMenuItem_Click = {
 
 ###HELP###
 $aboutToolStripMenuItem_Click = {
-	$TextboxResults.Text = "                                                                       o365 Administration Center v0.0.6 
+	$TextboxResults.Text = "                 o365 Administration Center v0.0.6 
 	
 	HOW TO USE
 To start, click the Connect to Office 365 button. This will connect you to Exchange Online using Remote PowerShell. Once you are connected the button will grey out and the form title will change to -CONNECTED TO O365-
@@ -1255,6 +1255,7 @@ $allowedDomainsToolStripMenuItem_Click={
 	#TODO: Place custom script here
 	
 }
+
 
 
 
