@@ -1,6 +1,9 @@
 # O365 Administration Center
 
 v0.0.6
+exe MD5 F8FFF957C15DC5B237E9BE5272100FE8
+msi MD5 ABCD924607668FD5F98D2DCCAB4B8917
+
 
 The O365 Admin Center is a GUI application that administrators can use to perform some of the most common O365 tasks. The output (error or success) is sent to the textbox which also acts as a input for custom commands. You can also save the output to a file. 
 
