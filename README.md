@@ -1,4 +1,4 @@
-# o365_Admin_Center
+# O365 Administration Center
 
 v0.0.6
 
