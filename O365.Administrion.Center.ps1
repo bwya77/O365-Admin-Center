@@ -1262,7 +1262,7 @@ Windows Server 2008 R2 SP1*
 
 You need to install the Microsoft.NET Framework 4.5 or later and then either the Windows Management Framework 3.0 or the Windows Management Framework 4.0. 
 
-Windows PowerShell needs to be configured to run scripts, and by default, it isn't. To enable Windows PowerShell to run signed scripts, run the following command in an elevated Windows PowerShell window (a Windows PowerShell window you open by selecting Run as administrator):
+Windows PowerShell needs to be configured to run scripts, and by default, it isn't. To enable Windows PowerShell to run scripts, run the following command in an elevated Windows PowerShell window (a Windows PowerShell window you open by selecting Run as administrator):
 Set-ExecutionPolicy RemoteSigned"
 	
 }
@@ -1286,3 +1286,4 @@ $allowedDomainsToolStripMenuItem_Click={
 	#TODO: Place custom script here
 	
 }
+
