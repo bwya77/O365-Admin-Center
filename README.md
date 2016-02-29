@@ -2,10 +2,25 @@
 
 v0.0.7
 
-
+####Description
 The O365 Admin Center is a GUI application that administrators can use to perform some of the most common O365 tasks. The output (error or success) is sent to the textbox which also acts as a input for custom commands. You can also save the output to a file. You can end you PSSession properly by pressing the Exit button which will run the following command: Get-PSSession | Remove-PSSession
 
 Included is the .exe if you just want to run it, or the .msi if you want to install it.
+
+####Prerequisites
+
+You can use the following versions of Windows:
+Windows 10
+Windows 8 or Windows 8.1
+Windows Server 2012 or Windows Server 2012 R2
+Windows 7 Service Pack 1 (SP1)*
+Windows Server 2008 R2 SP1*
+
+You need to install the Microsoft.NET Framework 4.5 or later and then either the Windows Management Framework 3.0 or the Windows Management Framework 4.0.
+
+Windows PowerShell needs to be configured to run scripts, and by default, it isn't.
+To enable Windows PowerShell to run signed scripts, run the following command in an elevated Windows PowerShell window (a Windows PowerShell window you open by selecting Run as administrator):
+Set-ExecutionPolicy RemoteSigned
 
 ####O365 GUI
 ![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/O365_GUI2.png)
