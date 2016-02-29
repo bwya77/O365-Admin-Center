@@ -334,8 +334,14 @@ $displayDistributionGroupMembersToolStripMenuItem_Click = {
 ###USERS GENERAL MENU ITEMS###
 
 $getListOfUsersToolStripMenuItem_Click={
-	$TextboxResults.text = Get-MSOLUser | Format-List UserPrincipalName | Out-String
-	
+	try
+	{
+		$TextboxResults.text = Get-MSOLUser | Format-List UserPrincipalName | Out-String
+	}
+	Catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
 }
 
 $getDetailedInfoForAUserToolStripMenuItem_Click = {
@@ -407,6 +413,32 @@ $createANewUserToolStripMenuItem_Click = {
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
 	}
 	
+}
+
+$disableUserAccountToolStripMenuItem_Click = {
+	$BlockUser = Read-Host "Enter the UPN of the user you want to disable"
+	Try
+	{
+		Set-MsolUser -UserPrincipalName $BlockUser -blockcredential $True
+		$TextboxResults.text = Get-MsolUser -UserPrincipalName $BlockUser | Format-List DisplayName, BlockCredential | Out-String
+	}
+	Catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+}
+
+$enableAccountToolStripMenuItem_Click = {
+	$EnableUser = Read-Host "Enter the UPN of the user you want to enable"
+	Try
+	{
+		Set-MsolUser -UserPrincipalName $EnableUser -blockcredential $False
+		$TextboxResults.text = Get-MsolUser -UserPrincipalName $EnableUser | Format-List DisplayName, BlockCredential | Out-String
+	}
+	Catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
 }
 
 
@@ -988,21 +1020,242 @@ $viewQuarantineForASpecificUserToolStripMenuItem_Click = {
 	}
 }
 
+###ADMIN###
+
+$disableAccessToOWAForASingleUserToolStripMenuItem_Click = {
+	$DisableOWAforUser = Read-Host "Enter the UPN of the user you want to disable OWA access for"
+	try
+	{
+		Set-CASMailbox $DisableOWAforUser -OWAEnabled $False
+		$TextboxResults.Text = Get-CASMailbox $DisableOWAforUser | Format-List DisplayName, OWAEnabled | Out-String
+	}
+	catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+}
+
+$enableOWAAccessForASingleUserToolStripMenuItem_Click = {
+	$EnableOWAforUser = Read-Host "Enter the UPN of the user you want to enable OWA access for"
+	try
+	{
+		Set-CASMailbox $EnableOWAforUser -OWAEnabled $True
+		$TextboxResults.Text = Get-CASMailbox $EnableOWAforUser | Format-List DisplayName, OWAEnabled | Out-String
+	}
+	catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+	
+}
+
+$disableOWAAccessForAllToolStripMenuItem_Click = {
+	try
+	{
+		Get-Mailbox | Set-CASMailbox -OWAEnabled $False
+		$TextboxResults.Text = Get-Mailbox | Get-CASMailbox | Format-List DisplayName, OWAEnabled | Out-String
+	}
+	catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+}
+
+$enableOWAAccessForAllToolStripMenuItem_Click = {
+	try
+	{
+		Get-Mailbox | Set-CASMailbox -OWAEnabled $True
+		$TextboxResults.Text = Get-Mailbox | Get-CASMailbox | Format-List DisplayName, OWAEnabled | Out-String
+	}
+	catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+}
+
+$getOWAAccessForAllToolStripMenuItem_Click = {
+	try
+	{
+		$TextboxResults.Text = Get-Mailbox | Get-CASMailbox | Format-List DisplayName, OWAEnabled, OwaMailboxPolicy, OWAforDevicesEnabled | Out-String
+	}
+	catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+}
+
+$getOWAInfoForASingleUserToolStripMenuItem_Click = {
+	$OWAAccessUser = Read-Host "Enter the UPN for the User you want to view OWA info for"
+	try
+	{
+		$TextboxResults.Text = Get-CASMailbox -identity $OWAAccessUser | Format-List DisplayName, OWAEnabled, OwaMailboxPolicy, OWAforDevicesEnabled | Out-String
+	}
+	catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+}
+
+	#ActiveSync
+
+$getActiveSyncDevicesForAUserToolStripMenuItem_Click = {
+	$ActiveSyncDevicesUser = Read-Host "Enter the UPN of the user you wish to see ActiveSync Devices for"
+	try
+	{
+		$TextboxResults.Text = Get-MobileDeviceStatistics -Mailbox $ActiveSyncDevicesUser | Format-List DeviceFriendlyName, DeviceModel, DeviceOS, DeviceMobileOperator, DeviceType, Status, FirstSyncTime, LastPolicyUpdateTime, LastSyncAttemptTime, LastSuccessSync, LastPingHeartbeat, DeviceAccessState, IsValid  | Out-String
+	}
+	catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+}
+
+$disableActiveSyncForAUserToolStripMenuItem_Click = {
+	$DisableActiveSyncForUser = Read-Host "Enter the UPN of the user you wish to disable ActiveSync for"
+	try
+	{
+		Set-CASMailbox $DisableActiveSyncForUser -ActiveSyncEnabled $False 
+		$TextboxResults.Text = Get-CASMailbox -Identity $DisableActiveSyncForUser | Format-List DisplayName, ActiveSyncEnabled | Out-String
+	}
+	catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+}
+
+$enableActiveSyncForAUserToolStripMenuItem_Click = {
+	$EnableActiveSyncForUser = Read-Host "Enter the UPN of the user you wish to enable ActiveSync for"
+	try
+	{
+		Set-CASMailbox $EnableActiveSyncForUser -ActiveSyncEnabled $True
+		$TextboxResults.Text = Get-CASMailbox -Identity $EnableActiveSyncForUser | Format-List DisplayName, ActiveSyncEnabled | Out-String
+	}
+	catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+}
+
+$viewActiveSyncInfoForAUserToolStripMenuItem_Click = {
+	$ActiveSyncInfoForUser = Read-Host "Enter the UPN for the user you want to view ActiveSync info for"
+	try
+	{
+		$TextboxResults.Text = Get-CASMailbox -Identity $ActiveSyncInfoForUser | Format-List DisplayName, ActiveSyncEnabled, ActiveSyncAllowedDeviceIDs, ActiveSyncBlockedDeviceIDs, ActiveSyncMailboxPolicy, ActiveSyncMailboxPolicyIsDefaulted, ActiveSyncDebugLogging, HasActiveSyncDevicePartnership | Out-String
+	}
+	catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+}
+
+$disableActiveSyncForAllToolStripMenuItem_Click = {
+	try
+	{
+		Get-Mailbox | Set-CASMailbox -ActiveSyncEnabled $False
+		$TextboxResults.Text = Get-Mailbox | Get-CASMailbox  | Format-List DisplayName, ActiveSyncEnabled | Out-String
+	}
+	catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+}
+
+$getActiveSyncInfoForAllToolStripMenuItem_Click = {
+	try
+	{
+		$TextboxResults.Text = Get-Mailbox | Get-CASMailbox | Format-List DisplayName, ActiveSyncEnabled | Out-String
+	}
+	catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		
+	}
+}
+
+$enableActiveSyncForAllToolStripMenuItem_Click = {
+	try
+	{
+		Get-Mailbox | Set-CASMailbox -ActiveSyncEnabled $True
+		$TextboxResults.Text = Get-Mailbox | Get-CASMailbox | Format-List DisplayName, ActiveSyncEnabled | Out-String
+	}
+	catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+}
+
+	#PowerShell
+
+$disableAccessToPowerShellForAUserToolStripMenuItem_Click = {
+	$DisablePowerShellforUser = Read-Host "Enter the UPN of the user you want to disable PowerShell access for"
+	try
+	{
+		Set-User $DisablePowerShellforUser -RemotePowerShellEnabled $False
+		$TextboxResults.Text = Get-User $DisablePowerShellforUser | Format-List DisplayName, RemotePowerShellEnabled | Out-String
+	}
+	catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+}
+
+$displayPowerShellRemotingStatusForAUserToolStripMenuItem_Click = {
+	$PowerShellRemotingStatusUser = Read-Host "Enter the UPN of the user you want to view PowerShell Remoting for"
+	try
+	{
+		$TextboxResults.Text = Get-User $PowerShellRemotingStatusUser | Format-List DisplayName, RemotePowerShellEnabled | Out-String
+	}
+	catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+}
+
+$enableAccessToPowerShellForAUserToolStripMenuItem_Click = {
+	$EnablePowerShellforUser = Read-Host "Enter the UPN of the user you want to enable PowerShell access for"
+	try
+	{
+		Set-User $EnablePowerShellforUser -RemotePowerShellEnabled $True
+		$TextboxResults.Text = Get-User $EnablePowerShellforUser | Format-List DisplayName, RemotePowerShellEnabled | Out-String
+	}
+	catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+}
+
+###HELP###
+$aboutToolStripMenuItem_Click = {
+	$TextboxResults.Text = "                                                                       o365 Administration Center v0.0.6 
+	
+	HOW TO USE
+To start, click the Connect to Office 365 button. This will connect you to Exchange Online using Remote PowerShell. Once you are connected the button will grey out and the form title will change to -CONNECTED TO O365-
+
+The TextBox will display all output for each command. If nothing appears and there was no error then the result was null. The Textbox also serves as input, passing your own commands to PowerShell with the result populating in the same Textbox. To run your own command simply clear the Textbox and enter in your command and press the Run Command button or press Enter on your keyboard.
+
+You can also export the results to a file using the Export to File button. The Textbox also allows copy and paste. The Exit button will properly end the Remote PowerShell session"
+	
+}
+
 
 ###JUNK ITEMS###
+
+$TextboxResults_TextChanged={
+	#TODO: Place custom script here
+	
+}
+
 $menustrip1_ItemClicked=[System.Windows.Forms.ToolStripItemClickedEventHandler]{
 #Event Argument: $_ = [System.Windows.Forms.ToolStripItemClickedEventArgs]
 	#TODO: Place custom script here
 	
 }
 
-$TextboxResults_TextChanged = {
-	#Left Blank
-}
-
 $allowedDomainsToolStripMenuItem_Click={
 	#TODO: Place custom script here
 	
 }
+
+
 
 
