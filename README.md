@@ -9,6 +9,7 @@ The O365 Admin Center is a GUI application that administrators can use to perfor
 
 ####Login to O365
 You are prompted for O365 credentials. It will then load all Exchange Online cmdlets. When you sucessfully connect the form title will change and the Connect to Office 365 button will be grayed out.
+
 ![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Enter_Creds.png)
 ![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Connected_Office.png)
 
