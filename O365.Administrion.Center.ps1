@@ -511,7 +511,7 @@ $disableStrongPasswordsForAllToolStripMenuItem_Click = {
 }
 
 $resetPasswordForAUserToolStripMenuItem_Click = {
-	$ResetPasswordUser = Read-Host "What user would you like to reset the password for?"
+	$ResetPasswordUser = Read-Host "Who user would you like to reset the password for?"
 	$NewPassword = Read-Host "What would you like the new password to be?"
 	try
 	{
@@ -575,6 +575,21 @@ $setATempPasswordForAllToolStripMenuItem_Click = {
 	}
 	
 }
+
+
+$resetPasswordForAUserAndSetToChangeAtLogonToolStripMenuItem_Click = {
+	$ResetPasswordUser2 = Read-Host "Who user would you like to reset the password for?"
+	$NewPassword2 = Read-Host "What would you like the new password to be?"
+	try
+	{
+		Set-MsolUserPassword –UserPrincipalName $ResetPasswordUser2 –NewPassword $NewPassword2 -ForceChangePassword $True
+	}
+	Catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+}
+
 
 
 ###MAILBOX PERMISSIONS MENU ITEMS###
@@ -1255,7 +1270,4 @@ $allowedDomainsToolStripMenuItem_Click={
 	#TODO: Place custom script here
 	
 }
-
-
-
 
