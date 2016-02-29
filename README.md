@@ -1,10 +1,6 @@
 # O365 Administration Center
 
-v0.0.6
-
-exe MD5 CD6309A75E425889BFFB8C3663033318
-
-msi MD5 68ACE91544BBFBD257E1656A02831D00
+v0.0.7
 
 
 The O365 Admin Center is a GUI application that administrators can use to perform some of the most common O365 tasks. The output (error or success) is sent to the textbox which also acts as a input for custom commands. You can also save the output to a file. You can end you PSSession properly by pressing the Exit button which will run the following command: Get-PSSession | Remove-PSSession
@@ -12,7 +8,7 @@ The O365 Admin Center is a GUI application that administrators can use to perfor
 Included is the .exe if you just want to run it, or the .msi if you want to install it.
 
 ####O365 GUI
-![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/O365_GUI.png)
+![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/O365_GUI2.png)
 
 ####Login to O365
 You are prompted for O365 credentials. It will then load all Exchange Online cmdlets. When you sucessfully connect the form title will change and the Connect to Office 365 button will be grayed out.
