@@ -13,20 +13,49 @@ You are prompted for O365 credentials. It will then load all Exchange Online cmd
 ![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Connected_Office.png)
 
 ####Examples
-#######Display Licensed Users
+######Display Licensed Users
 ![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Display_Licensed_Users.png)
 ![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Display_Licensed_Users_Results.png)
 
-#######Get List of Users
+######Get List of Users
 ![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Get_List_Of_Users.png)
 ![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Get_List_Of_Users_Results.png)
 
 ####UI Elements
-#######Admin
+######Admin
 ![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Root_Admin.png)
 ![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Admin_ActiveSync.png)
 ![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Admin_OWA.png)
 ![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Admin_PowerShell.png)
 
+######Groups
+![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Root_Groups.png)
+![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Groups_Distro.png)
 
+######Junk Email
+![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Root_Junk.png)
+![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Junk_Blacklist.png)
+![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Junk_Whitelist.png)
+
+######Quarantine
+![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Root_Quarantine.png)
+
+######Resource Mailbox
+![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Root_Resource.png)
+![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Resource_Booking.png)
+![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Resource_Room.png)
+
+######Users
+![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Root_Users.png)
+![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Users_Calendar.png)
+![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Users_Clutter.png)
+![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Users_Licenses.png)
+![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Users_Mailbox_Permissions.png)
+![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Users_Passwords.png)
+![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Users_Quota.png)
+![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Users_Recycle_Bin.png)
+
+######Help
+![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Root_Help.png)
+![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Help_About_Results.png)
 
