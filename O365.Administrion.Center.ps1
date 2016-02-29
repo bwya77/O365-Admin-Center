@@ -54,7 +54,7 @@ $ButtonConnectTo365_Click = {
 	}
 	catch
 	{
-		[System.Windows.Forms.MessageBox]::Show("You are not connected to O365, Please verify the correct username, password and that the PowerShell Execution policy is set to Unrestricted", "Error")
+		[System.Windows.Forms.MessageBox]::Show("You are not connected to O365, Please verify the correct username, password and that the PowerShell Execution policy is set to Unrestricted. Also make sure you have Microsoft Online Services Sign-In Assistant for IT Professionals installed. Check Help>Prerequisites for more info", "Error")
 	}
 	
 }
@@ -1261,6 +1261,10 @@ Windows 7 Service Pack 1 (SP1)*
 Windows Server 2008 R2 SP1*
 
 You need to install the Microsoft.NET Framework 4.5 or later and then either the Windows Management Framework 3.0 or the Windows Management Framework 4.0. 
+
+MS-Online module needs to be installed. Install the MSOnline Services Sign In Assistant: https://www.microsoft.com/en-us/download/details.aspx?id=41950 
+
+The Microsoft Online Services Sign-In Assistant provides end user sign-in capabilities to Microsoft Online Services, such as Office 365.
 
 Windows PowerShell needs to be configured to run scripts, and by default, it isn't. To enable Windows PowerShell to run scripts, run the following command in an elevated Windows PowerShell window (a Windows PowerShell window you open by selecting Run as administrator):
 Set-ExecutionPolicy RemoteSigned"
