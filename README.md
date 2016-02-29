@@ -24,6 +24,10 @@ You can use the following versions of Windows:
 
 You need to install the Microsoft.NET Framework 4.5 or later and then either the Windows Management Framework 3.0 or the Windows Management Framework 4.0.
 
+MS-Online module needs to be installed. Install the MSOnline Services Sign In Assistant: https://www.microsoft.com/en-us/download/details.aspx?id=41950 
+
+The Microsoft Online Services Sign-In Assistant provides end user sign-in capabilities to Microsoft Online Services, such as Office 365.
+
 Windows PowerShell needs to be configured to run scripts, and by default, it isn't.
 To enable Windows PowerShell to run signed scripts, run the following command in an elevated Windows PowerShell window (a Windows PowerShell window you open by selecting Run as administrator):
 Set-ExecutionPolicy Unrestricted
