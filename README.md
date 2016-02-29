@@ -15,11 +15,11 @@ You are prompted for O365 credentials. It will then load all Exchange Online cmd
 ####Examples
 ######Display Licensed Users
 ![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Display_Licensed_Users.png)
-![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Display_Licensed_Users_Results.png)
+![alt tag]()
 
 ######Get List of Users
 ![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Get_List_Of_Users.png)
-![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Get_List_Of_Users_Results.png)
+![alt tag]()
 
 ######Get List of Users
 ![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Get_Detailed_User_Info.png)
