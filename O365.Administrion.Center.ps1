@@ -1253,16 +1253,15 @@ You can also export the results to a file using the Export to File button. The T
 
 $prerequisitesToolStripMenuItem_Click = {
 	$TextboxResults.Text = "
-You can use the following versions of Windows:
-Windows 10
-Windows 8 or Windows 8.1
-Windows Server 2012 or Windows Server 2012 R2
-Windows 7 Service Pack 1 (SP1)*
-Windows Server 2008 R2 SP1*
+Windows Versions:
+Windows 7 Service Pack 1 (SP1) or higher
+Windows Server 2008 R2 SP1 or higher
 
-You need to install the Microsoft.NET Framework 4.5 or later and then either the Windows Management Framework 3.0 or the Windows Management Framework 4.0. 
+You need to install the Microsoft.NET Framework 4.5 or later and then Windows Management Framework 3.0 or later. 
 
 MS-Online module needs to be installed. Install the MSOnline Services Sign In Assistant: https://www.microsoft.com/en-us/download/details.aspx?id=41950 
+
+Azure Active Directory Module for Windows PowerShell needs to be installed: http://go.microsoft.com/fwlink/p/?linkid=236297
 
 The Microsoft Online Services Sign-In Assistant provides end user sign-in capabilities to Microsoft Online Services, such as Office 365.
 
@@ -1270,7 +1269,6 @@ Windows PowerShell needs to be configured to run scripts, and by default, it isn
 Set-ExecutionPolicy RemoteSigned"
 	
 }
-
 
 
 ###JUNK ITEMS###
