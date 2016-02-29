@@ -15,13 +15,13 @@ You are prompted for O365 credentials. It will then load all Exchange Online cmd
 ####Examples
 ######Display Licensed Users
 ![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Display_Licensed_Users.png)
-![alt tag]()
+![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Display_Licensed_Users_Results.png)
 
 ######Get List of Users
 ![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Get_List_Of_Users.png)
-![alt tag]()
+![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Get_List_Of_Users_Results.png)
 
-######Get List of Users
+######Get Detailed Info for a User
 ![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Get_Detailed_User_Info.png)
 ![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Get_Detailed_User_Info_Prompt.png)
 ![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Get_Detailed_User_Info_Results.png)
@@ -63,4 +63,9 @@ You are prompted for O365 credentials. It will then load all Exchange Online cmd
 ######Help
 ![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Root_Help.png)
 ![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Help_About_Results.png)
+
+####Custom Commands
+You can enter your own command simply by typing it into the textbox. It will pass it through to PowerShell and display the results
+![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Custom_Command.png)
+![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Custom_Command_Result.png)
 
