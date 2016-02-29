@@ -43,7 +43,7 @@ $ButtonConnectTo365_Click = {
 		Connect-MsolService -Credential $o365creds
 		
 		#CONNECT TO EXCHANGE ONLINE
-		$exchangeSession = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri "https://outlook.office365.com/powershell-liveid/" -Credential $o365creds -Authentication Basic -AllowRedirection
+		$exchangeSession = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri https://outlook.office365.com/powershell-liveid/ -Credential $o365creds -Authentication Basic -AllowRedirection
 		Import-PSSession $exchangeSession -DisableNameChecking
 		#Disable Button
 		$ButtonConnectTo365.Enabled = $false
@@ -575,7 +575,6 @@ $setATempPasswordForAllToolStripMenuItem_Click = {
 	}
 	
 }
-
 
 $resetPasswordForAUserAndSetToChangeAtLogonToolStripMenuItem_Click = {
 	$ResetPasswordUser2 = Read-Host "Who user would you like to reset the password for?"
