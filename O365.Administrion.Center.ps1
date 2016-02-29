@@ -239,7 +239,7 @@ $getClutterInfoForAUserToolStripMenuItem_Click = {
 	$GetCluterInfoUser = Read-Host "What user would you like to view Clutter information about?"
 	Try
 	{
-		$TextboxResults.Text = Get-Clutter -Identity $GetCluterInfoUser | Format-List IsEnabled | Out-String
+		$TextboxResults.Text = Get-Clutter -Identity $GetCluterInfoUser | Format-List MailboxIdentity, IsEnabled | Out-String
 	}
 	Catch
 	{
@@ -1255,7 +1255,6 @@ $allowedDomainsToolStripMenuItem_Click={
 	#TODO: Place custom script here
 	
 }
-
 
 
 
