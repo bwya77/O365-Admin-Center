@@ -4,7 +4,7 @@ v0.0.6
 
 The O365 Admin Center is a GUI application that administrators can use to perform some of the most common O365 tasks. The output (error or success) is sent to the textbox which also acts as a input for custom commands. You can also save the output to a file. 
 
-Included is the .exe if you just want to run it, or the MSI if you want to install it locally
+Included is the .exe if you just want to run it, or the .msi if you want to install it locally
 
 ####O365 GUI
 ![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/O365_GUI.png)
