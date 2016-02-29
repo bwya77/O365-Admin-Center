@@ -64,7 +64,7 @@ You are prompted for O365 credentials. It will then load all Exchange Online cmd
 ![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Users_Clutter.png)
 ![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Users_Licenses.png)
 ![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Users_Mailbox_Permissions.png)
-![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Users_Passwords.png)
+![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Users_Passwords2.png)
 ![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Users_Quota.png)
 ![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Users_Recycle_Bin.png)
 
