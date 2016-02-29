@@ -10,11 +10,11 @@ Included is the .exe if you just want to run it, or the .msi if you want to inst
 ####Prerequisites
 
 You can use the following versions of Windows:
-Windows 10
-Windows 8 or Windows 8.1
-Windows Server 2012 or Windows Server 2012 R2
-Windows 7 Service Pack 1 (SP1)*
-Windows Server 2008 R2 SP1*
+-Windows 10
+-Windows 8 or Windows 8.1
+-Windows Server 2012 or Windows Server 2012 R2
+-Windows 7 Service Pack 1 (SP1)*
+-Windows Server 2008 R2 SP1*
 
 You need to install the Microsoft.NET Framework 4.5 or later and then either the Windows Management Framework 3.0 or the Windows Management Framework 4.0.
 
