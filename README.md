@@ -26,7 +26,7 @@ You need to install the Microsoft.NET Framework 4.5 or later and then either the
 
 Windows PowerShell needs to be configured to run scripts, and by default, it isn't.
 To enable Windows PowerShell to run signed scripts, run the following command in an elevated Windows PowerShell window (a Windows PowerShell window you open by selecting Run as administrator):
-Set-ExecutionPolicy RemoteSigned
+Set-ExecutionPolicy Unrestricted
 
 ####O365 GUI
 ![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/O365_GUI2.png)
