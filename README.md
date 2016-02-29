@@ -2,14 +2,12 @@
 
 v0.0.6
 
-Please note some screenshots below may not be up to date. I will try to keep the main one (o365 GUI) up to date
-
 The o365 Admin Center is a GUI application that administrators can use to perform some of the most common o365 tasks. The output (error or success) is sent to the textbox which also acts as a input for custom commands. You can also save the output to a file. You just need the .exe to run the application and it does not need to be installed. The code is written in PowerShell.
 
 ####o365 GUI
-![alt tag](https://github.com/bwya77/o365_Admin_Center/blob/master/o365%20Admin%20Center%20Screenshots/O365_GUI2.png)
+![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/O365_GUI.png)
 
-####Login to o365
+#######Login to o365
 ![alt tag](https://github.com/bwya77/o365_Admin_Center/blob/master/o365%20Admin%20Center%20Screenshots/O365_Creds.png)
 
 ####Get Quota Information for a User
