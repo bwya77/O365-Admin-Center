@@ -1266,7 +1266,7 @@ Azure Active Directory Module for Windows PowerShell needs to be installed: http
 The Microsoft Online Services Sign-In Assistant provides end user sign-in capabilities to Microsoft Online Services, such as Office 365.
 
 Windows PowerShell needs to be configured to run scripts, and by default, it isn't. To enable Windows PowerShell to run scripts, run the following command in an elevated Windows PowerShell window (a Windows PowerShell window you open by selecting Run as administrator):
-Set-ExecutionPolicy RemoteSigned"
+Set-ExecutionPolicy Unrestricted"
 	
 }
 
