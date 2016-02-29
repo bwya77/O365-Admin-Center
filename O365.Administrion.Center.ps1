@@ -54,7 +54,7 @@ $ButtonConnectTo365_Click = {
 	}
 	catch
 	{
-		[System.Windows.Forms.MessageBox]::Show("Error: You are not connected to O365, Please verify the correct username and password and that the PowerShell Execution policy is set to Unrestricted", "Error")
+		[System.Windows.Forms.MessageBox]::Show("You are not connected to O365, Please verify the correct username, password and that the PowerShell Execution policy is set to Unrestricted", "Error")
 	}
 	
 }
@@ -1240,7 +1240,7 @@ $enableAccessToPowerShellForAUserToolStripMenuItem_Click = {
 
 ###HELP###
 $aboutToolStripMenuItem_Click = {
-	$TextboxResults.Text = "                 o365 Administration Center v0.0.6 
+	$TextboxResults.Text = "                 o365 Administration Center v0.0.8 
 	
 	HOW TO USE
 To start, click the Connect to Office 365 button. This will connect you to Exchange Online using Remote PowerShell. Once you are connected the button will grey out and the form title will change to -CONNECTED TO O365-
@@ -1286,4 +1286,3 @@ $allowedDomainsToolStripMenuItem_Click={
 	#TODO: Place custom script here
 	
 }
-
