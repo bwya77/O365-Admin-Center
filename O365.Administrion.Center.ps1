@@ -510,7 +510,7 @@ $disableStrongPasswordsForAllToolStripMenuItem_Click = {
 	
 }
 
-$resetPasswordForAUserToolStripMenuItem_Click = {
+$resetPasswordForAUserToolStripMenuItem1_Click = {
 	$ResetPasswordUser = Read-Host "Who user would you like to reset the password for?"
 	$NewPassword = Read-Host "What would you like the new password to be?"
 	try
@@ -525,7 +525,7 @@ $resetPasswordForAUserToolStripMenuItem_Click = {
 	
 }
 
-$setPasswordToNeverExpireForAllToolStripMenuItem_Click = {
+$setPasswordToNeverExpireForAllToolStripMenuItem1_Click = {
 	try
 	{
 		Get-MsolUser | Set-MsolUser –PasswordNeverExpires $True
@@ -537,8 +537,8 @@ $setPasswordToNeverExpireForAllToolStripMenuItem_Click = {
 	}
 	
 }
-
-$setPasswordToExpireForAllToolStripMenuItem_Click = {
+	
+$setPasswordToExpireForAllToolStripMenuItem1_Click = {
 	try
 	{
 		Get-MsolUser | Set-MsolUser –PasswordNeverExpires $False
@@ -564,7 +564,7 @@ $resetPasswordForAllToolStripMenuItem_Click = {
 	}
 }
 
-$TemporaryPasswordForAllToolStripMenuItem_Click = {
+$setATemporaryPasswordForAllToolStripMenuItem_Click = {
 	$SetTempPasswordforAll = Read-Host "What password would you like to set for all users?"
 	try
 	{
@@ -578,7 +578,7 @@ $TemporaryPasswordForAllToolStripMenuItem_Click = {
 	
 }
 
-$TemporaryPasswordForAUserAndSetToChangeAtLogonToolStripMenuItem_Click = {
+$TemporaryPasswordForAUserToolStripMenuItem_Click = {
 	$ResetPasswordUser2 = Read-Host "Who user would you like to reset the password for?"
 	$NewPassword2 = Read-Host "What would you like the new password to be?"
 	try
@@ -592,7 +592,7 @@ $TemporaryPasswordForAUserAndSetToChangeAtLogonToolStripMenuItem_Click = {
 	}
 }
 
-$getAUsersLastPasswordChangeTimestampToolStripMenuItem_Click = {
+$getPasswordResetDateForAUserToolStripMenuItem_Click = {
 	$GetPasswordInfoUser = Read-Host "Enter the UPN of the user you want to view the password last changed date for"
 	try
 	{
@@ -604,8 +604,7 @@ $getAUsersLastPasswordChangeTimestampToolStripMenuItem_Click = {
 	}
 }
 
-$getAllUsersLastPasswordChangeTimestampToolStripMenuItem_Click = {
-	#TODO: Place custom script here
+$getPasswordLastResetDateForAllToolStripMenuItem_Click = {
 	try
 	{
 		$TextboxResults.Text = Get-MsolUser | Format-List UserPrincipalName, lastpasswordchangetimestamp | Out-String
@@ -616,7 +615,54 @@ $getAllUsersLastPasswordChangeTimestampToolStripMenuItem_Click = {
 	}
 }
 
+$setPasswordToExpireForAUserToolStripMenuItem_Click = {
+	$PasswordtoExpireforUser = Read-Host "Enter the UPN of the user you want the password to expire for"
+	try
+	{
+		Set-MsolUser -UserPrincipalName $PasswordtoExpireforUser –PasswordNeverExpires $False
+		$TextboxResults.text = Get-MSOLUser -UserPrincipalName $PasswordtoExpireforUser | Format-List UserPrincipalName, PasswordNeverExpires | Out-String
+	}
+	Catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+}
 
+$setPasswordToNeverExpireForAUserToolStripMenuItem_Click = {
+	$PasswordtoNeverExpireforUser = Read-Host "Enter the UPN of the user you want the password to expire for"
+	try
+	{
+		Set-MsolUser -UserPrincipalName $PasswordtoNeverExpireforUser –PasswordNeverExpires $True
+		$TextboxResults.text = Get-MSOLUser -UserPrincipalName $PasswordtoNeverExpireforUser | Format-List UserPrincipalName, PasswordNeverExpires | Out-String
+	}
+	Catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+}
+
+
+$getUsersWhosPasswordNeverExpiresToolStripMenuItem_Click = {
+	try
+	{
+		$TextboxResults.text = Get-MsolUser | Where-Object { $_.PasswordNeverExpires -eq $True } | Format-List UserPrincipalName, PasswordNeverExpires | Out-String
+	}
+	Catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+}
+
+$getUsersWhosPasswordWillExpireToolStripMenuItem_Click = {
+	try
+	{
+		$TextboxResults.text = Get-MsolUser | Where-Object { $_.PasswordNeverExpires -eq $False } | Format-List UserPrincipalName, PasswordNeverExpires | Out-String
+	}
+	Catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+}
 
 
 ###MAILBOX PERMISSIONS MENU ITEMS###
@@ -1317,4 +1363,7 @@ $allowedDomainsToolStripMenuItem_Click={
 	#TODO: Place custom script here
 	
 }
+
+
+
 
