@@ -516,6 +516,7 @@ $resetPasswordForAUserToolStripMenuItem_Click = {
 	try
 	{
 		Set-MsolUserPassword –UserPrincipalName $ResetPasswordUser –NewPassword $NewPassword -ForceChangePassword $False
+		$TextboxResults.Text = "The password for $ResetPasswordUser has been set to $NewPassword"
 	}
 	Catch
 	{
@@ -540,7 +541,7 @@ $setPasswordToNeverExpireForAllToolStripMenuItem_Click = {
 $setPasswordToExpireForAllToolStripMenuItem_Click = {
 	try
 	{
-		Get-MsolUser | Set-MsolUser –PasswordNeverExpires $False | Format-List | Out-String
+		Get-MsolUser | Set-MsolUser –PasswordNeverExpires $False
 		$TextboxResults.text = Get-MSOLUser | Format-List UserPrincipalName, PasswordNeverExpires | Out-String
 	}
 	Catch
@@ -555,6 +556,7 @@ $resetPasswordForAllToolStripMenuItem_Click = {
 	try
 	{
 		Get-MsolUser | %{ Set-MsolUserPassword -userPrincipalName $_.UserPrincipalName –NewPassword $SetPasswordforAll -ForceChangePassword $False }
+		$TextboxResults.Text = "Password for all users has been set to $SetPasswordforAll"
 	}
 	Catch
 	{
@@ -562,12 +564,12 @@ $resetPasswordForAllToolStripMenuItem_Click = {
 	}
 }
 
-$setATempPasswordForAllToolStripMenuItem_Click = {
+$TemporaryPasswordForAllToolStripMenuItem_Click = {
 	$SetTempPasswordforAll = Read-Host "What password would you like to set for all users?"
 	try
 	{
 		Get-MsolUser | Set-MsolUserPassword –NewPassword $SetTempPasswordforAll -ForceChangePassword $True
-		$TextboxResults.Text = "Temporary password has been set to $SetTempPasswordforAll Please note that users will be prompted to change it upon first logon"
+		$TextboxResults.Text = "Temporary password has been set to $SetTempPasswordforAll Please note that users will be prompted to change it upon logon"
 	}
 	Catch
 	{
@@ -576,18 +578,44 @@ $setATempPasswordForAllToolStripMenuItem_Click = {
 	
 }
 
-$resetPasswordForAUserAndSetToChangeAtLogonToolStripMenuItem_Click = {
+$TemporaryPasswordForAUserAndSetToChangeAtLogonToolStripMenuItem_Click = {
 	$ResetPasswordUser2 = Read-Host "Who user would you like to reset the password for?"
 	$NewPassword2 = Read-Host "What would you like the new password to be?"
 	try
 	{
 		Set-MsolUserPassword –UserPrincipalName $ResetPasswordUser2 –NewPassword $NewPassword2 -ForceChangePassword $True
+		$TextboxResults.Text = "Temporary password has been set to $NewPassword2 Please note that $ResetPasswordUser2 will be prompted to change it upon logon"
 	}
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
 	}
 }
+
+$getAUsersLastPasswordChangeTimestampToolStripMenuItem_Click = {
+	$GetPasswordInfoUser = Read-Host "Enter the UPN of the user you want to view the password last changed date for"
+	try
+	{
+		$TextboxResults.Text = Get-MsolUser -userprincipalname $GetPasswordInfoUser | Format-List UserPrincipalName, lastpasswordchangetimestamp | Out-String
+	}
+	Catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+}
+
+$getAllUsersLastPasswordChangeTimestampToolStripMenuItem_Click = {
+	#TODO: Place custom script here
+	try
+	{
+		$TextboxResults.Text = Get-MsolUser | Format-List UserPrincipalName, lastpasswordchangetimestamp | Out-String
+	}
+	Catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+}
+
 
 
 
@@ -995,6 +1023,7 @@ $blacklistASpecificEmailAddressForASingleUserToolStripMenuItem_Click = {
 	}
 }
 
+
 ###QUARENTINE###
 
 $viewQuarantineBetweenDatesToolStripMenuItem_Click = {
@@ -1240,7 +1269,7 @@ $enableAccessToPowerShellForAUserToolStripMenuItem_Click = {
 
 ###HELP###
 $aboutToolStripMenuItem_Click = {
-	$TextboxResults.Text = "                 o365 Administration Center v0.0.8 
+	$TextboxResults.Text = "                 o365 Administration Center v0.0.9 
 	
 	HOW TO USE
 To start, click the Connect to Office 365 button. This will connect you to Exchange Online using Remote PowerShell. Once you are connected the button will grey out and the form title will change to -CONNECTED TO O365-
