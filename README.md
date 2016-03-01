@@ -1,6 +1,6 @@
 # O365 Administration Center
 
-v1.0.0
+v1.0.1
 
 ####Description
 The O365 Admin Center is a GUI application that administrators can use to perform some of the most common O365 tasks. The output (error or success) is sent to the textbox which also acts as a input for custom commands. You can also save the output to a file. You can end you PSSession properly by pressing the Exit button which will run the following command: Get-PSSession | Remove-PSSession
@@ -57,7 +57,7 @@ You are prompted for O365 credentials. It will then load all Exchange Online cmd
 
 ######Groups
 ![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Root_Groups_.png)
-![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Group_DistributionGroups_.png)
+![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Group_DistributionGroups_2.png)
 
 ######Junk Email
 ![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Root_JunkEmail_.png)
