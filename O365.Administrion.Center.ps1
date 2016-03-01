@@ -43,6 +43,7 @@ $ButtonConnectTo365_Click = {
 		Connect-MsolService -Credential $o365creds
 		
 		#CONNECT TO EXCHANGE ONLINE
+		$TextboxResults.Text = "Creating implicit remoting module..."
 		$exchangeSession = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri https://outlook.office365.com/powershell-liveid/ -Credential $o365creds -Authentication Basic -AllowRedirection
 		Import-PSSession $exchangeSession
 		#Disable Button
@@ -51,6 +52,7 @@ $ButtonConnectTo365_Click = {
 		$ButtonConnectTo365.Text = "Connected to O365"
 		#Sets custom form text
 		$FormO365AdministrationCenter.Text = "-Connected to O365-"
+		$TextboxResults.Text = ""
 	}
 	catch
 	{
@@ -321,7 +323,7 @@ $displayDistributionGroupMembersToolStripMenuItem_Click = {
 	$ListDistributionGroupMembers = Read-Host "Enter the name of the Distribution Group you want to list members of"
 	try
 	{
-		$TextboxResults.Text = Get-DistributionGroupMember $ListDistributionGroupMembers | Format-List Name | Out-String
+		$TextboxResults.Text = Get-DistributionGroupMember $ListDistributionGroupMembers | Format-List DisplayName | Out-String
 	}
 	catch
 	{
@@ -329,6 +331,35 @@ $displayDistributionGroupMembersToolStripMenuItem_Click = {
 	}
 	
 }
+
+$addAUserToADistributionGroupToolStripMenuItem_Click = {
+	$DistroGroupAdd = Read-Host "Enter the name of the Distribution Group"
+	$DistroGroupAddUser = Read-Host "Enter the UPN of the user you wish to add to $DistroGroupAdd"
+	try
+	{
+		Add-DistributionGroupMember -Identity $DistroGroupAdd -Member $DistroGroupAddUser 
+		$TextboxResults.Text = Get-DistributionGroupMember $DistroGroupAdd | Format-List DisplayName | Out-String
+	}
+	catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+}
+
+$addAllUsersToADistributionGroupToolStripMenuItem_Click = {
+	$users = Get-Mailbox | Select -ExpandProperty Alias
+	$AddAllUsersToSingleDistro = Read-Host "Enter the name of the Distribution Group you want to add all users to"
+	try
+	{
+		Foreach ($user in $users) { Add-DistributionGroupMember -Identity $AddAllUsersToSingleDistro -Member $user }
+		$TextboxResults.Text = Get-DistributionGroupMember $AddAllUsersToSingleDistro | Format-List DisplayName | Out-String
+	}
+	catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+}
+
 
 
 ###USERS GENERAL MENU ITEMS###
@@ -1327,7 +1358,7 @@ $enableAccessToPowerShellForAUserToolStripMenuItem_Click = {
 
 ###HELP###
 $aboutToolStripMenuItem_Click = {
-	$TextboxResults.Text = "                 o365 Administration Center v1.0.0 
+	$TextboxResults.Text = "                 o365 Administration Center v1.0.1 
 	
 	HOW TO USE
 To start, click the Connect to Office 365 button. This will connect you to Exchange Online using Remote PowerShell. Once you are connected the button will grey out and the form title will change to -CONNECTED TO O365-
@@ -1372,7 +1403,6 @@ $menustrip1_ItemClicked=[System.Windows.Forms.ToolStripItemClickedEventHandler]{
 $allowedDomainsToolStripMenuItem_Click={
 	
 }
-
 
 
 
