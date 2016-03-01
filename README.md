@@ -40,7 +40,8 @@ You are prompted for O365 credentials. It will then load all Exchange Online cmd
 ![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Example_GetLicensedUsers_Output_.png)
 
 ######Get List of Users
-
+![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Example_GetUsers_.png)
+![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Example_GetUsers_Output_.png)
 
 ######Get Detailed Info for a User
 ![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Example_GetDetailsUserInfo_.png)
