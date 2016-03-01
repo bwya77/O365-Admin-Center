@@ -937,6 +937,19 @@ $restoreDeletedUserToolStripMenuItem_Click = {
 	}
 }
 
+$restoreAllDeletedUsersToolStripMenuItem_Click = {
+	try
+	{
+		Get-MsolUser -ReturnDeletedUsers | Restore-MsolUser 
+		$TextboxResults.Text = "Users that were deletes have now been restored"
+	}
+	catch
+	{
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+	
+}
+
 
 ###JUNK EMAIL CONFIGURATION###
 
@@ -1055,7 +1068,6 @@ $whitelistASpecificEmailAddressForASingleUserToolStripMenuItem_Click = {
 }
 
 $blacklistASpecificEmailAddressForASingleUserToolStripMenuItem_Click = {
-	#TODO: Place custom script here
 	$ModifyblacklistforaUser = Read-Host "Enter the user you want to modify the blacklist for"
 	$DenySpecificEmailForOne = Read-Host "Enter the email address you want to whitelist for a single user"
 	try
@@ -1315,7 +1327,7 @@ $enableAccessToPowerShellForAUserToolStripMenuItem_Click = {
 
 ###HELP###
 $aboutToolStripMenuItem_Click = {
-	$TextboxResults.Text = "                 o365 Administration Center v0.0.9 
+	$TextboxResults.Text = "                 o365 Administration Center v1.0.0 
 	
 	HOW TO USE
 To start, click the Connect to Office 365 button. This will connect you to Exchange Online using Remote PowerShell. Once you are connected the button will grey out and the form title will change to -CONNECTED TO O365-
@@ -1349,18 +1361,15 @@ Set-ExecutionPolicy Unrestricted"
 ###JUNK ITEMS###
 
 $TextboxResults_TextChanged={
-	#TODO: Place custom script here
 	
 }
 
 $menustrip1_ItemClicked=[System.Windows.Forms.ToolStripItemClickedEventHandler]{
 #Event Argument: $_ = [System.Windows.Forms.ToolStripItemClickedEventArgs]
-	#TODO: Place custom script here
 	
 }
 
 $allowedDomainsToolStripMenuItem_Click={
-	#TODO: Place custom script here
 	
 }
 
