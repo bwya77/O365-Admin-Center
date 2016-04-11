@@ -41,19 +41,25 @@ You are prompted for O365 credentials. It will then load all Exchange Online cmd
 ######Get Mailbox Size Report
 ![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/MailBox_Size_Start.png)
 ![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Mailbox_Size_Report.png)
-![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Mailbox_Size_Report_Results.png)
+
 Results are sorted with the biggest mailboxes at the top and the smallest on at the bottom
+![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Mailbox_Size_Report_Results.png)
+
 
 ######Connect to Tenant
-![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Tenant_List.png)
+
 The default domain for each tenant will be populated in the combobox. If you do not have a partner account or have no tenants the combobox will remain empty
+![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Tenant_List.png)
 ![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Connecting_To_Partner.png)
-![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Connected_To_Partner.png)
+
 Once you are connected, the Application Title will change to let you know what client you are managing. The Combobox will be unavailable and the "Connect to Partner" button will also be unavailable at this time.
+![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Connected_To_Partner.png)
 
 ######Disconnect from Tenant
-![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Disconnecting_Partner.png)
+
 To disconnect to partner and go back to managing you partner account press the "Disconnect from Partner"
+![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Disconnecting_Partner.png)
+
 
 ####Custom Commands
 You can enter your own command simply by typing it into the textbox. It will pass it through to PowerShell and display the results
