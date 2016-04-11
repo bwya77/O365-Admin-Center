@@ -74,3 +74,5 @@ You can enter your own command simply by typing it into the textbox. It will pas
 ![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Custom_Command.png)
 ![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Custom_Command_Results.png)
 
+
+You can also download the files (here)[http://bwya77.com/wp-content/uploads/2016/04/O365-Administration-Center.zip]
