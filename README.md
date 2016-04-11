@@ -82,4 +82,6 @@ You can enter your own command simply by typing it into the textbox. It will pas
 ![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Custom_Command_Results.png)
 
 
-You can also download the files [here] (http://bwya77.com/wp-content/uploads/2016/04/O365-Administration-Center.zip)
+[.exe download] (https://github.com/bwya77/O365-Administration-Center/blob/master/O365%20Administration%20Center.exe?raw=true)
+
+[.msi download] (https://github.com/bwya77/O365-Administration-Center/blob/master/O365%20Administration%20Center.msi?raw=true)
