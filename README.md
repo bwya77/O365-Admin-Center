@@ -1,5 +1,5 @@
 # O365 Administration Center
-
+![alt tag](http://www.gnu.org/graphics/license-logos.html)
 v2.0.0
 
 ####Checksums:
