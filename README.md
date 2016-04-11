@@ -26,13 +26,16 @@ The Microsoft Online Services Sign-In Assistant provides end user sign-in capabi
 
 Windows PowerShell needs to be configured to run scripts, and by default, it isn't. To enable Windows PowerShell to run scripts, run the following command in an elevated Windows PowerShell window (a Windows PowerShell window you open by selecting Run as administrator):
 Set-ExecutionPolicy Unrestricted"
+___
 
 ####O365 GUI
 ![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Main_GUI.png)
+___
 
 ####Login to O365
 You are prompted for O365 credentials. It will then load all Exchange Online cmdlets.
 ![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Log_In.png)
+___
 
 ####Examples
 ######Get License Info
@@ -46,6 +49,7 @@ You are prompted for O365 credentials. It will then load all Exchange Online cmd
 Results are sorted with the biggest mailboxes at the top and the smallest on at the bottom
 ![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Mailbox_Size_Report_Results.png)
 
+___
 
 ######Connect to Tenant
 
@@ -55,11 +59,13 @@ The default domain for each tenant will be populated in the combobox. If you do 
 
 Once you are connected, the Application Title will change to let you know what client you are managing. The Combobox will be unavailable and the "Connect to Partner" button will also be unavailable at this time.
 ![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Connected_To_Partner.png)
+___
 
 ######Disconnect from Tenant
 
 To disconnect to partner and go back to managing you partner account press the "Disconnect from Partner"
 ![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Disconnecting_Partner.png)
+___
 
 
 ####Custom Commands
