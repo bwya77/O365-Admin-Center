@@ -1,5 +1,5 @@
 # O365 Administration Center
-![alt tag](https://creativecommons.org/images/deed/cc-logo.jpg)
+![alt tag](http://mirrors.creativecommons.org/presskit/icons/cc.png)
 
 v2.0.0
 
