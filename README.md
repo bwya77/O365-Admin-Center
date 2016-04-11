@@ -2,6 +2,11 @@
 
 v2.0.0
 
+Checksums:
+.exe = MD5: 7562c5c2a1299eb9485b9a4741185ce5
+.msi = MD5: e0cd22973d9aeac2faba39a14774c583
+___
+
 ####Description
 O365 Administration Center is an application written in PowerShell that lets administrators easily and quickly manage their Office 365 environment. It allows partner accounts to connect to all of their tenants and run the same commands and then disconnect back to their partner account where they can then connect to another tenant. The results are shown in the textbox that also accepts custom commands. The commands can be typed in, and by pressing the enter key or the "Run Command" button the command is passed through to PowerShell and the results are displayed back on the same textbox. Results can also be exported to a file easily by using the "Export to File" button which uses the Out-File cmdlet. You can end you PSSession properly by pressing the "Exit" button which will run the following command: Get-PSSession | Remove-PSSession to saftely remove your session.
 
