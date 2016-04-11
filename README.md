@@ -2,8 +2,10 @@
 
 v2.0.0
 
-Checksums:
+####Checksums:
+
 .exe = MD5: 7562c5c2a1299eb9485b9a4741185ce5
+
 .msi = MD5: e0cd22973d9aeac2faba39a14774c583
 ___
 
