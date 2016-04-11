@@ -1,9 +1,9 @@
 # O365 Administration Center
 
-v1.0.1
+v2.0.0
 
 ####Description
-The O365 Admin Center is a GUI application that administrators can use to perform some of the most common O365 tasks. The output (error or success) is sent to the textbox which also acts as a input for custom commands. You can also save the output to a file. You can end you PSSession properly by pressing the Exit button which will run the following command: Get-PSSession | Remove-PSSession
+O365 Administration Center is an application written in PowerShell that lets administrators easily and quickly manage their Office 365 environment. It allows partner accounts to connect to all of their tenants and run the same commands and then disconnect back to their partner account where they can then connect to another tenant. The results are shown in the textbox that also accepts custom commands. The commands can be typed in, and by pressing the enter key or the "Run Command" button the command is passed through to PowerShell and the results are displayed back on the same textbox. Results can also be exported to a file easily by using the "Export to File" button which uses the Out-File cmdlet. You can end you PSSession properly by pressing the "Exit" button which will run the following command: Get-PSSession | Remove-PSSession to saftely remove your session.
 
 Included is the .exe if you just want to run it, or the .msi if you want to install it.
 
@@ -27,68 +27,37 @@ Windows PowerShell needs to be configured to run scripts, and by default, it isn
 Set-ExecutionPolicy Unrestricted"
 
 ####O365 GUI
-![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/O365_GUI2.png)
+![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Main_GUI.png)
 
 ####Login to O365
-You are prompted for O365 credentials. It will then load all Exchange Online cmdlets. When you sucessfully connect the form title will change and the Connect to Office 365 button will be grayed out.
-
-![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/GUI_Logon.png)
+You are prompted for O365 credentials. It will then load all Exchange Online cmdlets.
+![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Log_In.png)
 
 ####Examples
-######Display Licensed Users
-![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Example_GetLicensedUsers_.png)
-![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Example_GetLicensedUsers_Output_.png)
+######Get License Info
+![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Get-Lic_info2.png)
+![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Licenses_InUse.png)
 
-######Get List of Users
-![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Example_GetUsers_.png)
-![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Example_GetUsers_Output_.png)
+######Get Mailbox Size Report
+![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/MailBox_Size_Start.png)
+![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Mailbox_Size_Report.png)
+![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Mailbox_Size_Report_Results.png)
+Results are sorted with the biggest mailboxes at the top and the smallest on at the bottom
 
-######Get Detailed Info for a User
-![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Example_GetDetailsUserInfo_.png)
-![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Example_GetDetailsUserInfo_Prompt_.png)
-![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Example_GetDetailsUserInfo_Output_.png)
+######Connect to Tenant
+![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Tenant_List.png)
+The default domain for each tenant will be populated in the combobox. If you do not have a partner account or have no tenants the combobox will remain empty
+![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Connecting_To_Partner.png)
+![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Connected_To_Partner.png)
+Once you are connected, the Application Title will change to let you know what client you are managing. The Combobox will be unavailable and the "Connect to Partner" button will also be unavailable at this time.
 
-####UI Elements
-######Admin
-![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Root_Admin_.png)
-![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Admin_ActiveSync_.png)
-![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Admin_OWA_.png)
-![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Admin_PowerShellAccess_.png)
-
-######Groups
-![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Root_Groups_.png)
-![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Group_DistributionGroups_2.png)
-
-######Junk Email
-![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Root_JunkEmail_.png)
-![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/JunkEmail_Blacklist_.png)
-![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/JunkEmail_Whitelist_.png)
-
-######Quarantine
-![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Root_Quarantine_.png)
-
-######Resource Mailbox
-![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Root_ResourceMailbox_.png)
-![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/ResourceMailbox_BookingOptions_.png)
-![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/ResourceMailbox_RoomMailbox2_.png)
-
-######Users
-![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Root_Users_.png)
-![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Users_CalendarPermissions_.png)
-![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Users_Clutter.png)
-![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Users_Licenses_.png)
-![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Users_MailboxPermissions_.png)
-![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Users_Passwords_.png)
-![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Users_Quota_.png)
-![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Users_RecycleBin.png)
-
-######Help
-![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Root_Help_.png)
-![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Help_About_Output.png)
+######Disconnect from Tenant
+![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Disconnecting_Partner.png)
+To disconnect to partner and go back to managing you partner account press the "Disconnect from Partner"
 
 ####Custom Commands
 You can enter your own command simply by typing it into the textbox. It will pass it through to PowerShell and display the results
 
-![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/CustomCommand_Input.png)
-![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/CustomCommand_Output.png)
+![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Custom_Command.png)
+![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Custom_Command_Results.png)
 
