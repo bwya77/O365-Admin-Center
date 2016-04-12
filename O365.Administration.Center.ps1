@@ -127,6 +127,8 @@ $FormO365AdministrationCenter_Load = {
 	#Disables word wrap on the text box
 	$TextboxResults.WordWrap = $false
 	
+	
+	
 }
 
 	#Buttons
@@ -276,6 +278,7 @@ $createOutOfOfficeAutoReplyForAUserToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -283,16 +286,17 @@ $getListOfUsersToolStripMenuItem_Click = {
 	If (Get-PSSession -name mainaccount -ErrorAction SilentlyContinue)
 		{
 		$TextboxResults.Text = "Getting list of users..."
-		$TextboxResults.text = Get-MSOLUser | Format-List UserPrincipalName | Out-String
+		$TextboxResults.text = Get-MSOLUser | Format-Table DisplayName, UserPrincipalName | Out-String
 		}
 	ElseIf (Get-PSSession -name partneraccount -ErrorAction SilentlyContinue )
 		{
 		$TextboxResults.Text = "Getting list of users..."
-		$TextboxResults.text = Get-MSOLUser -TenantId $PartnerComboBox.SelectedItem.TenantID | Format-List UserPrincipalName | Out-String
+		$TextboxResults.text = Get-MSOLUser -TenantId $PartnerComboBox.SelectedItem.TenantID | Format-Table DisplayName, UserPrincipalName | Out-String
 		}
 	Else
 		{
 		[System.Windows.Forms.MessageBox]::Show("Could not get a list of users", "Error")
+		$TextboxResults.Text = ""
 		}
 }
 
@@ -310,7 +314,8 @@ $getDetailedInfoForAUserToolStripMenuItem_Click = {
 		}
 		Else
 		{
-			[System.Windows.Forms.MessageBox]::Show("Could not get detailed info for $DetailedInfoUser", "Error")
+		[System.Windows.Forms.MessageBox]::Show("Could not get detailed info for $DetailedInfoUser", "Error")
+		$TextboxResults.Text = ""
 		}
 }
 
@@ -331,7 +336,8 @@ $changeUsersLoginNameToolStripMenuItem_Click = {
 		}
 		Else
 		{
-			[System.Windows.Forms.MessageBox]::Show("Could not change the login name for $UserChangeUPN", "Error")
+		[System.Windows.Forms.MessageBox]::Show("Could not change the login name for $UserChangeUPN", "Error")
+		$TextboxResults.Text = ""
 		}
 }
 
@@ -351,7 +357,8 @@ $deleteAUserToolStripMenuItem_Click = {
 		}
 		Else
 		{
-			[System.Windows.Forms.MessageBox]::Show("Could not delete $DeleteUser", "Error")
+		[System.Windows.Forms.MessageBox]::Show("Could not delete $DeleteUser", "Error")
+		$TextboxResults.Text = ""
 		}	
 }
 
@@ -374,7 +381,8 @@ $createANewUserToolStripMenuItem_Click = {
 		}
 		Else
 		{
-			[System.Windows.Forms.MessageBox]::Show("Could not create the new user $newuser", "Error")
+		[System.Windows.Forms.MessageBox]::Show("Could not create the new user $newuser", "Error")
+		$TextboxResults.Text = ""
 		}
 }
 
@@ -396,7 +404,8 @@ $disableUserAccountToolStripMenuItem_Click = {
 		}
 		Else
 		{
-			[System.Windows.Forms.MessageBox]::Show("Could not disable $BlockUser", "Error")
+		[System.Windows.Forms.MessageBox]::Show("Could not disable $BlockUser", "Error")
+		$TextboxResults.Text = ""
 		}
 }
 
@@ -418,7 +427,8 @@ $enableAccountToolStripMenuItem_Click = {
 		}
 		Else
 		{
-			[System.Windows.Forms.MessageBox]::Show("Could enable $EnableUser", "Error")
+		[System.Windows.Forms.MessageBox]::Show("Could enable $EnableUser", "Error")
+		$TextboxResults.Text = ""
 		}
 }
 
@@ -434,6 +444,7 @@ $getUserQuotaToolStripMenuItem_Click={
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -447,6 +458,7 @@ $getAllUsersQuotaToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -464,6 +476,7 @@ $setUserMailboxQuotaToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -481,10 +494,10 @@ $setMailboxQuotaForAllToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
-
 
 	#Licenses
 
@@ -504,6 +517,7 @@ $getLicensedUsersToolStripMenuItem_Click={
 	Else
 	{
 		[System.Windows.Forms.MessageBox]::Show("Could not get license information", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -523,6 +537,7 @@ $displayAllUsersWithoutALicenseToolStripMenuItem_Click = {
 	Else
 	{
 		[System.Windows.Forms.MessageBox]::Show("Could not display users without a license", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -545,6 +560,7 @@ $removeAllUnlicensedUsersToolStripMenuItem_Click = {
 	Else
 	{
 		[System.Windows.Forms.MessageBox]::Show("Could not remove all unlicensed users", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -553,17 +569,28 @@ $displayAllLicenseInfoToolStripMenuItem_Click = {
 	If (Get-PSSession -name mainaccount -ErrorAction SilentlyContinue)
 	{
 		$TextboxResults.Text = "Getting all license information..."
-		$TextboxResults.text = Get-MsolAccountSku | Format-Table | Out-String
+		$TextboxResults.text = Get-MsolAccountSku | Select-Object -Property AccountSkuId, ActiveUnits, WarningUnits, ConsumedUnits, @{
+			Name = 'Unused'
+			Expression = {
+				$_.ActiveUnits - $_.ConsumedUnits
+			}
+		} | Format-Table | Out-String
 	}
     #What to do if connected to partner account
 	ElseIf (Get-PSSession -name partneraccount -ErrorAction SilentlyContinue)
 	{
 		$TextboxResults.Text = "Getting all license information..."
-		$TextboxResults.text = Get-MsolAccountSku -TenantId $PartnerComboBox.SelectedItem.TenantID | Format-Table | Out-String
+		$TextboxResults.text = Get-MsolAccountSku -TenantId $PartnerComboBox.SelectedItem.TenantID | Select-Object -Property AccountSkuId, ActiveUnits, WarningUnits, ConsumedUnits, @{
+			Name = 'Unused'
+			Expression = {
+				$_.ActiveUnits - $_.ConsumedUnits
+			}
+		} | Format-Table | Out-String
 	}
 	Else
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -595,6 +622,7 @@ $addALicenseToAUserToolStripMenuItem_Click = {
 	Else
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -622,6 +650,7 @@ $removeLicenseFromAUserToolStripMenuItem_Click = {
 	Else
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -652,6 +681,7 @@ LimitedDetails"
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -666,6 +696,7 @@ $viewUsersCalendarPermissionsToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -691,7 +722,8 @@ $level2 = Read-Host "Access Level?"
 	}
 	catch
 	{
-		#[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 $TextboxResults.Text = ""
 }
@@ -706,7 +738,8 @@ $removeAUserFromAllCalendarsToolStripMenuItem_Click = {
 	}
 	catch
 	{
-		#[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -722,6 +755,7 @@ $removeAUserFromSomesonsCalendarToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -736,6 +770,7 @@ $disableClutterForAllToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -748,6 +783,7 @@ $enableClutterForAllToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -761,6 +797,7 @@ $enableClutterForAUserToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -774,6 +811,7 @@ $disableClutterForAUserToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -787,6 +825,7 @@ $getClutterInfoForAUserToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -808,6 +847,7 @@ $displayAllDeletedUsersToolStripMenuItem_Click = {
 	Else
 	{
 		[System.Windows.Forms.MessageBox]::Show("Could not display users without a license", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -827,6 +867,7 @@ $deleteAllUsersInRecycleBinToolStripMenuItem_Click = {
 	Else
 	{
 		[System.Windows.Forms.MessageBox]::Show("Could not display users without a license", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -850,6 +891,7 @@ $deleteSpecificUsersInRecycleBinToolStripMenuItem_Click = {
 	Else
 	{
 		[System.Windows.Forms.MessageBox]::Show("Could not display users without a license", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -872,6 +914,7 @@ $restoreDeletedUserToolStripMenuItem_Click = {
 	Else
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -893,6 +936,7 @@ $restoreAllDeletedUsersToolStripMenuItem_Click = {
 	Else
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -909,6 +953,7 @@ $getQuarantineBetweenDatesToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -922,6 +967,7 @@ $getQuarantineFromASpecificUserToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -935,6 +981,7 @@ $getQuarantineToASpecificUserToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -961,6 +1008,7 @@ $enableStrongPasswordForAUserToolStripMenuItem_Click = {
 	Else
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -980,6 +1028,7 @@ $getAllUsersStrongPasswordPolicyInfoToolStripMenuItem_Click = {
 	Else
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -1003,6 +1052,7 @@ $disableStrongPasswordsForAUserToolStripMenuItem_Click = {
 	Else
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -1024,6 +1074,7 @@ $enableStrongPasswordsForAllToolStripMenuItem_Click = {
 	Else
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -1045,6 +1096,7 @@ $disableStrongPasswordsForAllToolStripMenuItem_Click = {
 	Else
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -1068,6 +1120,7 @@ $resetPasswordForAUserToolStripMenuItem1_Click = {
 	Else
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -1089,6 +1142,7 @@ $setPasswordToNeverExpireForAllToolStripMenuItem1_Click = {
 	Else
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -1110,6 +1164,7 @@ $setPasswordToExpireForAllToolStripMenuItem1_Click = {
 	Else
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -1133,6 +1188,7 @@ $resetPasswordForAllToolStripMenuItem_Click = {
 	Else
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -1155,6 +1211,7 @@ $setATemporaryPasswordForAllToolStripMenuItem_Click = {
 	Else
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -1178,6 +1235,7 @@ $TemporaryPasswordForAUserToolStripMenuItem_Click = {
 	Else
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -1198,6 +1256,7 @@ $getPasswordResetDateForAUserToolStripMenuItem_Click = {
 	Else
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -1217,6 +1276,7 @@ $getPasswordLastResetDateForAllToolStripMenuItem_Click = {
 	Else
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -1239,6 +1299,7 @@ $setPasswordToExpireForAUserToolStripMenuItem_Click = {
 	Else
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -1261,6 +1322,7 @@ $setPasswordToNeverExpireForAUserToolStripMenuItem_Click = {
 	Else
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -1280,6 +1342,7 @@ $getUsersWhosPasswordNeverExpiresToolStripMenuItem_Click = {
 	Else
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -1299,6 +1362,7 @@ $getUsersWhosPasswordWillExpireToolStripMenuItem_Click = {
 	Else
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -1319,6 +1383,7 @@ $getPasswordLastResetDateForAUserToolStripMenuItem_Click = {
 	Else
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -1339,6 +1404,7 @@ $getUsersNextPasswordResetDateToolStripMenuItem_Click = {
 	Else
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -1356,6 +1422,7 @@ $addFullPermissionsToAMailboxToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -1370,6 +1437,7 @@ $addSendAsPermissionToAMailboxToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -1386,6 +1454,7 @@ $assignSendOnBehalfPermissionsForAMailboxToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -1399,6 +1468,7 @@ $displayMailboxPermissionsForAUserToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -1412,6 +1482,7 @@ $displaySendAsPermissionForAMailboxToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -1426,6 +1497,7 @@ $displaySendOnBehalfPermissionsForMailboxToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -1442,6 +1514,7 @@ $removeFullAccessPermissionsForAMailboxToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -1456,6 +1529,7 @@ $revokeSendAsPermissionsForAMailboxToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -1469,6 +1543,7 @@ $viewAllMailboxesAUserHasFullAccessToToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -1482,6 +1557,7 @@ $viewAllMailboxesAUserHasSendAsPermissionsToToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -1495,6 +1571,7 @@ $viewAllMailboxesAUserHasSendOnBehaldPermissionsToToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -1509,6 +1586,7 @@ $removeAllPermissionsToAMailboxToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -1523,6 +1601,7 @@ $getAllUsersForwardinToInternalRecipientToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -1539,6 +1618,7 @@ $forwardToInternalRecipientAndDontSaveLocalCopyToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -1556,6 +1636,7 @@ $forwardToExternalAddressAndSaveLocalCopyToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -1572,6 +1653,7 @@ $forwardToExternalAddressAndDontSaveLocalCopyToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -1586,6 +1668,7 @@ $getForwardingInfoForAUserToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -1601,6 +1684,7 @@ $removeExternalForwadingForAUserToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -1615,6 +1699,7 @@ $removeAllForwardingForAUserToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -1630,6 +1715,7 @@ $removeInternalForwardingForUserToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -1645,18 +1731,20 @@ $forwardToInternalRecipientAndSaveLocalCopyToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
 $getAllUsersForwardingToExternalRecipientToolStripMenuItem_Click = {
 	Try
 	{
-		$TextboxResults.Text = "Getting all users forwarding to internal users..."
+		$TextboxResults.Text = "Getting all users forwarding to external users..."
 		$TextboxResults.Text = Get-Mailbox | Where-Object { $_.ForwardingSmtpAddress -ne $Null -and $_.RecipientType -eq "UserMailbox" } | Format-List Name, ForwardingSmtpAddress, DeliverToMailboxAndForward | Out-String
 	}
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 	
@@ -1672,6 +1760,7 @@ $removeAllForwardingForAllUsersToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -1685,6 +1774,7 @@ $removeExternalForwardingForAllUsersToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -1699,6 +1789,7 @@ $removeInternalForwardingForAllUsersToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -1714,6 +1805,7 @@ $forwardAllUsersEmailToExternalRecipientAndSaveALocalCopyToolStripMenuItem_Click
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -1729,6 +1821,7 @@ $forwardAllUsersEmailToExternalRecipientAndDontSaveALocalCopyToolStripMenuItem_C
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -1744,6 +1837,7 @@ $forwardAllUsersEmailToInternalRecipientAndSaveLocalCopyToolStripMenuItem_Click 
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -1759,6 +1853,7 @@ $forwardAllUsersEmailToInternalRecipientAndDontSaveLocalCopyToolStripMenuItem_Cl
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -1778,6 +1873,7 @@ $displayDistributionGroupsToolStripMenuItem_Click={
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -1792,6 +1888,7 @@ $createADistributionGroupToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -1808,6 +1905,7 @@ $deleteADistributionGroupToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -1823,6 +1921,7 @@ $allowDistributionGroupToReceiveExternalEmailToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -1838,6 +1937,7 @@ $hideDistributionGroupFromGALToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -1852,6 +1952,7 @@ $displayDistributionGroupMembersToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -1869,6 +1970,7 @@ $addAUserToADistributionGroupToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -1884,6 +1986,7 @@ $removeAUserADistributionGroupToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -1898,7 +2001,8 @@ $addAllUsersToADistributionGroupToolStripMenuItem_Click = {
 		}
 		catch
 		{
-			[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 		}
 }
 
@@ -1912,6 +2016,7 @@ $getDetailedInfoForDistributionGroupToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -1926,6 +2031,7 @@ $allowAllDistributionGroupsToReceiveExternalEmailToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -1940,6 +2046,7 @@ $denyDistributionGroupFromReceivingExternalEmailToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -1954,6 +2061,7 @@ $denyAllDistributionGroupsFromReceivingExternalEmailToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -1968,6 +2076,7 @@ $getExternalEmailStatusForADistributionGroupToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -1980,6 +2089,7 @@ $getExternalEmailStatusForAllDistributionGroupsToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -1995,6 +2105,7 @@ $getListOfUnifiedGroupsToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -2008,6 +2119,7 @@ $listMembersOfAGroupToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -2022,6 +2134,7 @@ $removeAGroupToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -2042,6 +2155,7 @@ Subscribers"
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -2057,6 +2171,7 @@ $createANewGroupToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -2070,6 +2185,7 @@ $listOwnersOfAGroupToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -2084,6 +2200,7 @@ $listSubscribersOfAGroupToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -2101,6 +2218,7 @@ $addAnOwnerToAGroupToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -2116,6 +2234,7 @@ $addASubscriberToAGroupToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -2139,6 +2258,7 @@ $createARegularSecurityGroupToolStripMenuItem_Click = {
 	Else
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -2159,6 +2279,7 @@ $getAllRegularSecurityGroupsToolStripMenuItem_Click = {
 	Else
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -2172,6 +2293,7 @@ $getAllMailEnabledSecurityGroupsToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -2187,6 +2309,7 @@ $createAMailEnabledSecurityGroupToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -2204,6 +2327,7 @@ $addAUserToAMailEnabledSecurityGroupToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -2218,6 +2342,7 @@ $allowSecurityGroupToRecieveExternalMailToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -2231,6 +2356,7 @@ $getDetailedInfoForMailEnabledSecurityGroupToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -2247,6 +2373,7 @@ $removeMailENabledSecurityGroupToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -2262,6 +2389,7 @@ $denySecurityGroupFromRecievingExternalEmailToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -2283,6 +2411,7 @@ $allowConflictMeetingsToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -2297,6 +2426,7 @@ $denyConflictMeetingsForAllResourceMailboxesToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -2310,6 +2440,7 @@ $allowConflicMeetingsForAllResourceMailboxesToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -2324,6 +2455,7 @@ $disallowconflictmeetingsToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -2337,7 +2469,8 @@ $enableAutomaticBookingForAllResourceMailboxToolStripMenuItem1_Click = {
 		}
 		Catch
 		{
-			[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 		}
 	
 }
@@ -2352,6 +2485,7 @@ $GetRoomMailBoxCalendarProcessingToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -2369,6 +2503,7 @@ $convertAMailboxToARoomMailboxToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -2383,6 +2518,7 @@ $createANewRoomMailboxToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -2396,6 +2532,7 @@ $getListOfRoomMailboxesToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -2411,6 +2548,7 @@ $removeARoomMailboxToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -2433,6 +2571,7 @@ $blacklistDomainForAllToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -2449,6 +2588,7 @@ $blacklistDomainForASingleUserToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -2464,6 +2604,7 @@ $blacklistASpecificEmailAddressForAllToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -2480,6 +2621,7 @@ $blacklistASpecificEmailAddressForASingleUserToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -2495,6 +2637,7 @@ $checkSafeAndBlockedSendersForAUserToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -2511,6 +2654,7 @@ $whitelistDomainForAllToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -2527,6 +2671,7 @@ $whitelistDomainForASingleUserToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	} 
 }
 
@@ -2541,6 +2686,7 @@ $whitelistASpecificEmailAddressForAllToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -2557,6 +2703,7 @@ $whitelistASpecificEmailAddressForASingleUserToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -2577,6 +2724,7 @@ $disableAccessToOWAForASingleUserToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -2591,6 +2739,7 @@ $enableOWAAccessForASingleUserToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -2605,6 +2754,7 @@ $disableOWAAccessForAllToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -2618,6 +2768,7 @@ $enableOWAAccessForAllToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -2630,6 +2781,7 @@ $getOWAAccessForAllToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -2643,6 +2795,7 @@ $getOWAInfoForASingleUserToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -2658,6 +2811,7 @@ $getActiveSyncDevicesForAUserToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -2672,6 +2826,7 @@ $disableActiveSyncForAUserToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -2686,6 +2841,7 @@ $enableActiveSyncForAUserToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -2699,6 +2855,7 @@ $viewActiveSyncInfoForAUserToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -2712,6 +2869,7 @@ $disableActiveSyncForAllToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -2724,6 +2882,7 @@ $getActiveSyncInfoForAllToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 		
 	}
 }
@@ -2738,6 +2897,7 @@ $enableActiveSyncForAllToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -2754,6 +2914,7 @@ $disableAccessToPowerShellForAUserToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -2767,6 +2928,7 @@ $displayPowerShellRemotingStatusForAUserToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -2781,6 +2943,7 @@ $enableAccessToPowerShellForAUserToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -2799,6 +2962,7 @@ $GetAllRecentToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -2812,6 +2976,7 @@ $fromACertainSenderToolStripMenuItem1_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -2825,6 +2990,7 @@ $toACertainRecipientToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -2837,6 +3003,7 @@ $getFailedMessagesToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -2851,6 +3018,7 @@ $GetMessagesBetweenDatesToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -2872,6 +3040,7 @@ $getTechnicalNotificationEmailToolStripMenuItem_Click = {
 	Else
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -2891,6 +3060,7 @@ $lastDirSyncTimeToolStripMenuItem_Click = {
 	Else
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -2910,6 +3080,7 @@ $getLastPasswordSyncTimeToolStripMenuItem_Click = {
 	Else
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -2929,6 +3100,7 @@ $getAllCompanyInfoToolStripMenuItem_Click = {
 	Else
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -2943,6 +3115,7 @@ $getSharingPolicyToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -2957,6 +3130,7 @@ $disableASharingPolicyToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -2971,6 +3145,7 @@ $enableASharingPolicyToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -2996,6 +3171,7 @@ EXAMPLE: mail.contoso.com: CalendarSharingFreeBusyDetail, ContactsSharing "
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -3009,6 +3185,7 @@ $getInfoForASingleSharingPolicyToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -3024,6 +3201,7 @@ $enableCustomizationToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -3035,7 +3213,8 @@ $getCustomizationStatusToolStripMenuItem_Click = {
 	}
 	catch
 	{
-	[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -3048,6 +3227,7 @@ $getOrganizationCustomizationToolStripMenuItem_Click = {
 	catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -3060,6 +3240,7 @@ $getSharepointSiteToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -3086,6 +3267,7 @@ $getAllMailboxSizesToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -3100,6 +3282,7 @@ $getMailMalwareReportToolStripMenuItem1_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -3113,6 +3296,7 @@ $getMailMalwareReportFromSenderToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -3127,6 +3311,7 @@ $getMailMalwareReportBetweenDatesToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -3140,6 +3325,7 @@ $getMailMalwareReportToARecipientToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -3152,6 +3338,7 @@ $getMailMalwareReporforInboundToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -3164,6 +3351,7 @@ $getMailMalwareReportForOutboundToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -3178,6 +3366,7 @@ $getRecentMailTrafficReportToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -3190,6 +3379,7 @@ $getInboundMailTrafficReportToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -3202,6 +3392,7 @@ $getOutboundMailTrafficReportToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -3216,6 +3407,7 @@ $getMailTrafficReportBetweenDatesToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -3234,6 +3426,7 @@ $createASharedMailboxToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -3246,6 +3439,7 @@ $getAllSharedMailboxesToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -3260,6 +3454,7 @@ $convertRegularMailboxToSharedToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -3274,6 +3469,7 @@ $convertSharedMailboxToRegularToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -3287,6 +3483,7 @@ $getDetailedInfoForASharedMailboxToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -3304,6 +3501,7 @@ $addFullAccessPermissionsToASharedMailboxToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -3319,6 +3517,7 @@ $getSharedMailboxPermissionsToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -3334,6 +3533,7 @@ $getSharedMailboxFullAccessPermissionsToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -3349,6 +3549,7 @@ $addSendAsAccessToASharedMailboxToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -3371,6 +3572,7 @@ $createANewMailContactToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -3383,6 +3585,7 @@ $getAllContactsToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -3396,6 +3599,7 @@ $getDetailedInfoForAContactToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -3409,6 +3613,7 @@ $removeAContactToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -3425,6 +3630,7 @@ $hideContactFromGALToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 }
 
@@ -3439,6 +3645,7 @@ $unhideContactFromGALToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -3452,6 +3659,7 @@ $getGALStatusForAllUsersToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -3465,6 +3673,7 @@ $getContactsHiddenFromGALToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -3478,6 +3687,7 @@ $getContactsNotHiddenFromGALToolStripMenuItem_Click = {
 	Catch
 	{
 		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+		$TextboxResults.Text = ""
 	}
 	
 }
@@ -3489,7 +3699,7 @@ $getContactsNotHiddenFromGALToolStripMenuItem_Click = {
 	#About
 
 $aboutToolStripMenuItem_Click = {
-	$TextboxResults.Text = "                 o365 Administration Center v2.0.0 
+	$TextboxResults.Text = "                 o365 Administration Center v2.0.1 
 	
 	HOW TO USE
 To start, click the Connect to Office 365 button. This will connect you 
