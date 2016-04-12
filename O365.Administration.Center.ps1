@@ -287,12 +287,12 @@ $getListOfUsersToolStripMenuItem_Click = {
 	If (Get-PSSession -name mainaccount -ErrorAction SilentlyContinue)
 	{
 		$TextboxResults.Text = "Getting list of users..."
-		$TextboxResults.text = Get-MSOLUser | Select-Object DisplayName, UserPrincipalName | Format-Table -AutoSize | Out-String
+		$TextboxResults.text = Get-MSOLUser | Select-Object DisplayName, UserPrincipalName | Format-Table -AutoSize | Out-String -Width 1024
 		}
 	ElseIf (Get-PSSession -name partneraccount -ErrorAction SilentlyContinue )
 		{
 		$TextboxResults.Text = "Getting list of users..."
-		$TextboxResults.text = Get-MSOLUser -TenantId $PartnerComboBox.SelectedItem.TenantID | Select-Object DisplayName, UserPrincipalName  | Format-Table -AutoSize | Out-String
+		$TextboxResults.text = Get-MSOLUser -TenantId $PartnerComboBox.SelectedItem.TenantID | Select-Object DisplayName, UserPrincipalName  | Format-Table -AutoSize | Out-String -Width 1024
 		}
 	Else
 		{
@@ -575,7 +575,7 @@ $displayAllLicenseInfoToolStripMenuItem_Click = {
 			Expression = {
 				$_.ActiveUnits - $_.ConsumedUnits
 			}
-		} | Format-Table -AutoSize | Out-String
+		} | Format-Table -AutoSize | Out-String -Width 1024
 	}
     #What to do if connected to partner account
 	ElseIf (Get-PSSession -name partneraccount -ErrorAction SilentlyContinue)
@@ -586,7 +586,7 @@ $displayAllLicenseInfoToolStripMenuItem_Click = {
 			Expression = {
 				$_.ActiveUnits - $_.ConsumedUnits
 			}
-		} | Format-Table -AutoSize | Out-String
+		} | Format-Table -AutoSize | Out-String -Width 1024
 	}
 	Else
 	{
@@ -601,7 +601,7 @@ $addALicenseToAUserToolStripMenuItem_Click = {
 	{
 		$LicenseUserAdd = Read-Host "Enter the User Principal Name of the User you want to license"
 		$LicenseUserAddLocation = Read-Host "Enter the 2 digit location code for the user. Example: US"
-		$TextboxResults.text = Get-MsolAccountSku | Format-Table -AutoSize | Out-String
+		$TextboxResults.text = Get-MsolAccountSku | Format-Table -AutoSize | Out-String -Width 1024
 		$LicenseType = Read-Host "Enter the AccountSku of the License you want to assign to this user"
 		$TextboxResults.Text = "Adding $LicenseType license to $LicenseUserAdd..."
 		Set-MsolUser -UserPrincipalName $LicenseUserAdd –UsageLocation $LicenseUserAddLocation
@@ -613,7 +613,7 @@ $addALicenseToAUserToolStripMenuItem_Click = {
 	{
 		$LicenseUserAdd = Read-Host "Enter the User Principal Name of the User you want to license"
 		$LicenseUserAddLocation = Read-Host "Enter the 2 digit location code for the user. Example: US"
-		$TextboxResults.text = Get-MsolAccountSku -TenantId $PartnerComboBox.SelectedItem.TenantID | Format-Table -AutoSize | Out-String
+		$TextboxResults.text = Get-MsolAccountSku -TenantId $PartnerComboBox.SelectedItem.TenantID | Format-Table -AutoSize | Out-String -Width 1024
 		$LicenseType = Read-Host "Enter the AccountSku of the License you want to assign to this user"
 		$TextboxResults.Text = "Adding $LicenseType license to $LicenseUserAdd..."
 		Set-MsolUser -TenantId $PartnerComboBox.SelectedItem.TenantID -UserPrincipalName $LicenseUserAdd –UsageLocation $LicenseUserAddLocation
@@ -2101,7 +2101,7 @@ $getListOfUnifiedGroupsToolStripMenuItem_Click = {
 	try
 	{
 		$TextboxResults.Text = "Getting list of all unified groups..."
-		$TextboxResults.Text = Get-UnifiedGroup | Format-Table -AutoSize | Out-String
+		$TextboxResults.Text = Get-UnifiedGroup | Format-Table -AutoSize | Out-String -Width 1024
 	}
 	Catch
 	{
@@ -2130,7 +2130,7 @@ $removeAGroupToolStripMenuItem_Click = {
 	{
 		$TextboxResults.Text = "Removing the $RemoveUnifiedGroup group..."
 		Remove-UnifiedGroup $RemoveUnifiedGroup
-		$TextboxResults.Text = Get-UnifiedGroup | Format-Table -AutoSize | Out-String
+		$TextboxResults.Text = Get-UnifiedGroup | Format-Table -AutoSize | Out-String -Width 1024
 	}
 	Catch
 	{
@@ -2167,7 +2167,7 @@ $createANewGroupToolStripMenuItem_Click = {
 	{
 		$TextboxResults.Text = "Creating a the $NewUnifiedGroupName group..."
 		New-UnifiedGroup –DisplayName $NewUnifiedGroupName -AccessType $NewUnifiedGroupAccessType
-		$TextboxResults.Text = Get-UnifiedGroup $NewUnifiedGroupName | Format-Table -AutoSize | Out-String
+		$TextboxResults.Text = Get-UnifiedGroup $NewUnifiedGroupName | Format-Table -AutoSize | Out-String -Width 1024
 	}
 	Catch
 	{
@@ -2543,7 +2543,7 @@ $removeARoomMailboxToolStripMenuItem_Click = {
 	{
 		$TextboxResults.Text = "Removing the $RemoveRoomMailbox Room Mailbox..."
 		Remove-Mailbox $RemoveRoomMailbox
-		$TextboxResults.Text = Get-MailBox | Where-Object { $_.ResourceType -eq "Room" } | Format-Table -AutoSize | Out-String
+		$TextboxResults.Text = Get-MailBox | Where-Object { $_.ResourceType -eq "Room" } | Format-Table -AutoSize | Out-String -Width 1024
 		
 	}
 	Catch
@@ -3263,7 +3263,7 @@ $getAllMailboxSizesToolStripMenuItem_Click = {
 			}
 		}, `
 		
-		ItemCount | Sort-Object "TotalItemSize (MB)" -Descending | Format-Table -AutoSize | Out-String
+		ItemCount | Sort-Object "TotalItemSize (MB)" -Descending | Format-Table -AutoSize | Out-String -Width 1024
 	}
 	Catch
 	{
@@ -3362,7 +3362,7 @@ $getRecentMailTrafficReportToolStripMenuItem_Click = {
 	Try
 	{
 		$TextboxResults.Text = "Generating recent mail traffic report..."
-		$TextboxResults.Text = Get-MailTrafficReport | Format-Table -AutoSize | Out-String
+		$TextboxResults.Text = Get-MailTrafficReport | Format-Table -AutoSize | Out-String -Width 1024
 	}
 	Catch
 	{
@@ -3375,7 +3375,7 @@ $getInboundMailTrafficReportToolStripMenuItem_Click = {
 	Try
 	{
 		$TextboxResults.Text = "Generating inbound traffic report..."
-		$TextboxResults.Text = Get-MailTrafficReport -Direction Inbound | Format-Table -AutoSize | Out-String
+		$TextboxResults.Text = Get-MailTrafficReport -Direction Inbound | Format-Table -AutoSize | Out-String -Width 1024
 	}
 	Catch
 	{
@@ -3388,7 +3388,7 @@ $getOutboundMailTrafficReportToolStripMenuItem_Click = {
 	Try
 	{
 		$TextboxResults.Text = "Generating outbound mail traffic report..."
-		$TextboxResults.Text = Get-MailTrafficReport -Direction Outbound | Format-Table -AutoSize | Out-String
+		$TextboxResults.Text = Get-MailTrafficReport -Direction Outbound | Format-Table -AutoSize | Out-String -Width 1024
 	}
 	Catch
 	{
@@ -3403,7 +3403,7 @@ $getMailTrafficReportBetweenDatesToolStripMenuItem_Click = {
 	Try
 	{
 		$TextboxResults.Text = "Generating mail traffic report between $MailTrafficStart and $MailTrafficEnd..."
-		$TextboxResults.Text = Get-MailTrafficReport -StartDate $MailTrafficStart -EndDate $MailTrafficEnd | Format-Table -AutoSize | Out-String
+		$TextboxResults.Text = Get-MailTrafficReport -StartDate $MailTrafficStart -EndDate $MailTrafficEnd | Format-Table -AutoSize | Out-String -Width 1024
 	}
 	Catch
 	{
@@ -3422,7 +3422,7 @@ $createASharedMailboxToolStripMenuItem_Click = {
 	{
 		$TextboxResults.Text = "Creating new shared mailbox $NewSharedMailbox"
 		New-Mailbox -Name $NewSharedMailbox –Shared
-		$TextboxResults.Text = Get-Mailbox -RecipientTypeDetails SharedMailbox | Format-Table -AutoSize | Out-String
+		$TextboxResults.Text = Get-Mailbox -RecipientTypeDetails SharedMailbox | Format-Table -AutoSize | Out-String -Width 1024
 	}
 	Catch
 	{
@@ -3435,7 +3435,7 @@ $getAllSharedMailboxesToolStripMenuItem_Click = {
 	Try
 	{
 		$TextboxResults.Text = "Getting list of shared mailboxes..."
-		$TextboxResults.Text = Get-Mailbox -RecipientTypeDetails SharedMailbox | Format-Table -AutoSize | Out-String
+		$TextboxResults.Text = Get-Mailbox -RecipientTypeDetails SharedMailbox | Format-Table -AutoSize | Out-String -Width 1024
 	}
 	Catch
 	{
