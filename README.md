@@ -1,13 +1,8 @@
 # O365 Administration Center
 ![alt tag](http://www.gnu.org/graphics/gplv3-88x31.png)
 
-v2.0.0
+v2.0.1
 
-####Checksums:
-
-.exe = MD5: 7562c5c2a1299eb9485b9a4741185ce5
-
-.msi = MD5: e0cd22973d9aeac2faba39a14774c583
 ___
 
 ####Description
