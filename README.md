@@ -45,7 +45,7 @@ ___
 ####Examples
 ######Get License Info
 ![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Get-Lic_info2.png)
-![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Licenses_InUse.png)
+![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Licenses_InUse2.png)
 
 ######Get Mailbox Size Report
 ![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/MailBox_Size_Start.png)
