@@ -30,7 +30,7 @@ The Microsoft Online Services Sign-In Assistant provides end user sign-in capabi
 Windows PowerShell needs to be configured to run scripts, and by default, it isn't. To enable Windows PowerShell to run scripts, run the following command in an elevated Windows PowerShell window (a Windows PowerShell window you open by selecting Run as administrator):
 Set-ExecutionPolicy Unrestricted"
 
-PowerShell Ver3 or higher
+PowerShell v3 or higher
 ___
 
 ####O365 GUI
