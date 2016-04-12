@@ -1,5 +1,5 @@
 # O365 Administration Center
-![alt tag](http://mirrors.creativecommons.org/presskit/icons/cc.png)
+![alt tag](http://www.gnu.org/graphics/gplv3-88x31.png)
 
 v2.0.0
 
