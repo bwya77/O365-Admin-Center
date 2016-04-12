@@ -287,12 +287,12 @@ $getListOfUsersToolStripMenuItem_Click = {
 	If (Get-PSSession -name mainaccount -ErrorAction SilentlyContinue)
 	{
 		$TextboxResults.Text = "Getting list of users..."
-		$TextboxResults.text = Get-MSOLUser | Select-Object DisplayName, UserPrincipalName | Format-Table -AutoSize | Out-String -Width 1024
+		$TextboxResults.text = Get-MSOLUser | Select-Object DisplayName, UserPrincipalName | Sort-Object "DisplayName"  | Format-Table -AutoSize | Out-String -Width 1024
 		}
 	ElseIf (Get-PSSession -name partneraccount -ErrorAction SilentlyContinue )
 		{
 		$TextboxResults.Text = "Getting list of users..."
-		$TextboxResults.text = Get-MSOLUser -TenantId $PartnerComboBox.SelectedItem.TenantID | Select-Object DisplayName, UserPrincipalName  | Format-Table -AutoSize | Out-String -Width 1024
+		$TextboxResults.text = Get-MSOLUser -TenantId $PartnerComboBox.SelectedItem.TenantID | Select-Object DisplayName, UserPrincipalName  | Sort-Object "DisplayName" |  Format-Table -AutoSize | Out-String -Width 1024
 		}
 	Else
 		{
