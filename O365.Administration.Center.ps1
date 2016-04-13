@@ -130,9 +130,25 @@ $FormO365AdministrationCenter_Load = {
 	#Enables vertical and horizontal scrollbars
 	$TextboxResults.ScrollBars = 'Both'
 	
+	#Add minimize form
+	$FormO365AdministrationCenter.MinimizeBox = $True
+	
+	#Allow maximize form
+	$FormO365AdministrationCenter.MaximizeBox = $True
+	
+	#Place objects on the bottom
+	$ButtonExportToFile.Anchor = 'Bottom'
+	$ButtonConnectTo365.Anchor = 'Bottom'
+	$Partner_Groupbox.Anchor = 'Bottom'
+	$ButtonExit.Anchor = 'Bottom'
+	$ButtonRunCustomCommand.Anchor = 'Bottom'
+	
+	#Make form sizable
+	$FormO365AdministrationCenter.FormBorderStyle = 'Sizable'
+
 }
 
-	#Buttons
+#Buttons
 
 $ButtonExit_Click= {
 		#Disconnects O365 Session
@@ -259,6 +275,7 @@ $ButtonRunCustomCommand_Click = {
 				[System.Windows.Forms.MessageBox]::Show("$_", "Error")
 			}
 }
+
 
 
 
@@ -1433,7 +1450,7 @@ $addSendAsPermissionToAMailboxToolStripMenuItem_Click = {
 	try
 	{
 		$TextboxResults.Text = "Assigning Send-As access to $mailboxUserAccess for the account $SendAsAccess..."
-		$TextboxResults.text = Add-RecipientPermission $SendAsAccess -Trustee $mailboxUserAccess -AccessRights SendAs -Confirm:$False | Format-List | Out-String
+		$TextboxResults.text = Add-RecipientPermission $SendAsAccess -Trustee $mailboxUserAccess -AccessRights SendAs | Format-List | Out-String
 	}
 	Catch
 	{
@@ -1509,7 +1526,7 @@ $removeFullAccessPermissionsForAMailboxToolStripMenuItem_Click = {
 	try
 	{
 		$TextboxResults.Text = "Removing Full Access Permissions for $RemoveFullAccessRightsUser on account $UserRemoveFullAccessRights..."
-		Remove-MailboxPermission  $UserRemoveFullAccessRights -User $RemoveFullAccessRightsUser -AccessRights FullAccess -Confirm:$False -ea 1
+		Remove-MailboxPermission  $UserRemoveFullAccessRights -User $RemoveFullAccessRightsUser -AccessRights FullAccess -ea 1
 		$TextboxResults.text = Get-MailboxPermission $UserRemoveFullAccessRights | Where-Object { ($_.IsInherited -eq $False) -and -not ($_.User -like "NT AUTHORITY\SELF") } | Format-List | Out-String
 	}
 	Catch
@@ -1525,7 +1542,7 @@ $revokeSendAsPermissionsForAMailboxToolStripMenuItem_Click = {
 	try
 	{
 		$TextboxResults.Text = "Removing Send As permission for $UserDeleteSendAsAccess on account $UserDeleteSendAsAccessOn..."
-		$TextboxResults.Text = Remove-RecipientPermission $UserDeleteSendAsAccessOn -AccessRights SendAs -Trustee $UserDeleteSendAsAccess -Confirm:$False | Format-List | Out-String
+		$TextboxResults.Text = Remove-RecipientPermission $UserDeleteSendAsAccessOn -AccessRights SendAs -Trustee $UserDeleteSendAsAccess | Format-List | Out-String
 	}
 	catch
 	{
@@ -1869,7 +1886,7 @@ $displayDistributionGroupsToolStripMenuItem_Click={
 	try
 	{
 		$TextboxResults.Text = "Getting all Distribution Groups..."
-		$TextboxResults.text = Get-DistributionGroup | Where-Object { $_.GroupType -notlike "Universal, SecurityEnabled"} | Format-List DisplayName, SamAccountName, GroupType, IsDirSynced, EmailAddresses | Out-String
+		$TextboxResults.text = Get-DistributionGroup | Where-Object { $_.GroupType -notlike "Universal, SecurityEnabled"} | Out-String
 	}
 	Catch
 	{
@@ -2565,7 +2582,7 @@ $blacklistDomainForAllToolStripMenuItem_Click = {
 	try
 	{
 		$TextboxResults.Text = "Blacklisting $BlacklistDomain for all users..."
-		Get-Mailbox | Set-MailboxJunkEmailConfiguration -BlockedSendersAndDomains $BlacklistDomain
+		Get-Mailbox | Set-MailboxJunkEmailConfiguration -BlockedSendersAndDomains @{ Add = $BlacklistDomain }
 		$TextboxResults.Text = Get-Mailbox | Get-MailboxJunkEmailConfiguration | Format-List Identity, BlockedSendersAndDomains, Enabled | Out-String
 		
 	}
@@ -2583,7 +2600,7 @@ $blacklistDomainForASingleUserToolStripMenuItem_Click = {
 	try
 	{
 		$TextboxResults.Text = "Blacklisting $BlockedDomain2 for $Blockeddomainuser..."
-		Set-MailboxJunkEmailConfiguration -Identity $Blockeddomainuser -BlockedSendersAndDomains $BlockedDomain2
+		Set-MailboxJunkEmailConfiguration -Identity $Blockeddomainuser -BlockedSendersAndDomains @{ Add = $BlockedDomain2 }
 		$TextboxResults.Text = Get-MailboxJunkEmailConfiguration -Identity $Blockeddomainuser | Format-List Identity, BlockedSendersAndDomains | Out-String
 	}
 	catch
@@ -2599,7 +2616,7 @@ $blacklistASpecificEmailAddressForAllToolStripMenuItem_Click = {
 	try
 	{
 		$TextboxResults.Text = "Blacklisting $BlockSpecificEmailForAll for all users..."
-		Get-Mailbox | Set-MailboxJunkEmailConfiguration -BlockedSendersAndDomains $BlockSpecificEmailForAll
+		Get-Mailbox | Set-MailboxJunkEmailConfiguration -BlockedSendersAndDomains @{ Add = $BlockSpecificEmailForAll }
 		$TextboxResults.Text = Get-Mailbox | Get-MailboxJunkEmailConfiguration | Format-List Identity, BlockedSendersAndDomains, Enabled | Out-String
 	}
 	catch
@@ -2612,11 +2629,11 @@ $blacklistASpecificEmailAddressForAllToolStripMenuItem_Click = {
 
 $blacklistASpecificEmailAddressForASingleUserToolStripMenuItem_Click = {
 	$ModifyblacklistforaUser = Read-Host "Enter the user you want to modify the blacklist for"
-	$DenySpecificEmailForOne = Read-Host "Enter the email address you want to whitelist for a single user"
+	$DenySpecificEmailForOne = Read-Host "Enter the email address you want to blacklist for a single user"
 	try
 	{
 		$TextboxResults.Text = "Blacklisting $DenySpecificEmailForOne for $ModifyblacklistforaUser..."
-		Set-MailboxJunkEmailConfiguration -Identity $ModifyblacklistforaUser -BlockedSendersAndDomains $DenySpecificEmailForOne
+		Set-MailboxJunkEmailConfiguration -Identity $ModifyblacklistforaUser -BlockedSendersAndDomains @{ Add = $DenySpecificEmailForOne }
 		$TextboxResults.Text = Get-MailboxJunkEmailConfiguration -Identity $ModifyblacklistforaUser | Format-List Identity, BlockedSendersAndDomains, Enabled | Out-String
 	}
 	catch
@@ -3700,7 +3717,7 @@ $getContactsNotHiddenFromGALToolStripMenuItem_Click = {
 	#About
 
 $aboutToolStripMenuItem_Click = {
-	$TextboxResults.Text = "                 o365 Administration Center v2.0.1 
+	$TextboxResults.Text = "                 o365 Administration Center v2.0.2 
 	
 	HOW TO USE
 To start, click the Connect to Office 365 button. This will connect you 
@@ -3745,7 +3762,11 @@ Windows PowerShell needs to be configured to run scripts, and by default,
 it isn't. To enable Windows PowerShell to run scripts, run the following 
 command in an elevated Windows PowerShell window (a Windows PowerShell
 window you open by selecting Run as administrator): 
-Set-ExecutionPolicy Unrestricted"
+Set-ExecutionPolicy Unrestricted
+
+PowerShell v3 or Higher"
+	
+
 
 }
 
