@@ -38,7 +38,7 @@ PowerShell v3 or higher
 ___
 
 ####O365 GUI
-![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Main_GUI.png)
+![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Main_GUI2.png)
 ___
 
 ####Login to O365
