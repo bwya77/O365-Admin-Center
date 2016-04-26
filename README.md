@@ -1,7 +1,7 @@
 # O365 Administration Center
 ![alt tag](http://www.gnu.org/graphics/gplv3-88x31.png)
 
-v2.0.2
+v2.0.3
 
 [.exe download] (https://github.com/bwya77/O365-Administration-Center/blob/master/O365%20Administration%20Center.exe?raw=true)
 
