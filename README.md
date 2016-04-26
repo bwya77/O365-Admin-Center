@@ -9,14 +9,14 @@ v2.0.2
 
 ___
 
-##Description
+##.Description
 The O365 Administration Center is an application written in PowerShell that lets administrators easily and quickly manage their Office 365 environment. It allows partner accounts to connect to all of their tenants and run the same commands. The results are shown in the textbox that also accepts custom commands as input. The commands can be typed in, and by pressing the enter key or the “Run Command” button the command is passed through to PowerShell and the results are displayed back on the same textbox. Results can also be exported to a file easily by using the “Export to File” button which uses the Out-File cmdlet.
 
 
 Included is the .exe if you just want to run it, or the .msi if you want to install it.
 ___
 
-##Prerequisites
+##.Prerequisites
 
 Windows Versions:
 
@@ -49,4 +49,11 @@ You are prompted for O365 credentials. It will then load all Exchange Online cmd
 
 ####Partner List
 ![alt tag](http://i.imgur.com/svxIibW.png)
+
+####Get List of Users
+![alt tag](http://i.imgur.com/8C7HWsP.png)
+
+####Custom Commands
+![alt tag](http://i.imgur.com/aPMekxA.png)
+![alt tag](http://i.imgur.com/4uhf65X.png)
 
