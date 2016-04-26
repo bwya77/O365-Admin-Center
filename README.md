@@ -9,13 +9,14 @@ v2.0.2
 
 ___
 
-####Description
-O365 Administration Center is an application written in PowerShell that lets administrators easily and quickly manage their Office 365 environment. It allows partner accounts to connect to all of their tenants and run the same commands and then disconnect back to their partner account where they can then connect to another tenant. The results are shown in the textbox that also accepts custom commands. The commands can be typed in, and by pressing the enter key or the "Run Command" button the command is passed through to PowerShell and the results are displayed back on the same textbox. Results can also be exported to a file easily by using the "Export to File" button which uses the Out-File cmdlet. You can end you PSSession properly by pressing the "Exit" button which will run the following command: Get-PSSession | Remove-PSSession to saftely remove your session.
+##Description
+The O365 Administration Center is an application written in PowerShell that lets administrators easily and quickly manage their Office 365 environment. It allows partner accounts to connect to all of their tenants and run the same commands. The results are shown in the textbox that also accepts custom commands as input. The commands can be typed in, and by pressing the enter key or the “Run Command” button the command is passed through to PowerShell and the results are displayed back on the same textbox. Results can also be exported to a file easily by using the “Export to File” button which uses the Out-File cmdlet.
+
 
 Included is the .exe if you just want to run it, or the .msi if you want to install it.
 ___
 
-####Prerequisites
+##Prerequisites
 
 Windows Versions:
 
@@ -37,51 +38,15 @@ Set-ExecutionPolicy Unrestricted"
 PowerShell v3 or higher
 ___
 
+##.Screenshots
+
 ####O365 GUI
-![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Main_GUI2.png)
-___
+![alt tag](http://i.imgur.com/X5ERaSG.png?1)
 
 ####Login to O365
 You are prompted for O365 credentials. It will then load all Exchange Online cmdlets.
-![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Log_In.png)
-___
+![alt tag](http://i.imgur.com/yRj2pj5.png)
 
-####Examples
-######Get License Info
-![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Get-Lic_info2.png)
-![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Licenses_InUse2.png)
-
-######Get Mailbox Size Report
-![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/MailBox_Size_Start.png)
-![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Mailbox_Size_Report.png)
-
-Results are sorted with the biggest mailboxes at the top and the smallest on at the bottom
-![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Mailbox_Size_Report_Results.png)
-
-___
-
-######Connect to Tenant
-
-The default domain for each tenant will be populated in the combobox. If you do not have a partner account or have no tenants the combobox will remain empty
-![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Tenant_List.png)
-![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Connecting_To_Partner.png)
-
-Once you are connected, the Application Title will change to let you know what client you are managing. The Combobox will be unavailable and the "Connect to Partner" button will also be unavailable at this time.
-![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Connected_To_Partner.png)
-___
-
-######Disconnect from Tenant
-
-To disconnect to partner and go back to managing you partner account press the "Disconnect from Partner"
-![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Disconnecting_Partner.png)
-___
-
-
-####Custom Commands
-You can enter your own command simply by typing it into the textbox. It will pass it through to PowerShell and display the results
-
-![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Custom_Command.png)
-![alt tag](https://github.com/bwya77/O365-Administration-Center/blob/master/Screenshots/Custom_Command_Results.png)
-
-
+####Partner List
+![alt tag](http://i.imgur.com/svxIibW.png)
 
