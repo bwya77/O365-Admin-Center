@@ -329,15 +329,15 @@ $getListOfUsersToolStripMenuItem_Click = {
 	If (Get-PSSession -name mainaccount -ErrorAction SilentlyContinue)
 		{
 		$TextboxResults.Text = "Getting list of users..."
-		$textboxDetails.Text = "Get-MSOLUser | Sort-Object DisplayName |  Format-Table DisplayName, UserPrincipalName -AutoSize"
-		$TextboxResults.text = Get-MSOLUser | Sort-Object DisplayName |  Format-Table DisplayName, UserPrincipalName -AutoSize | Out-String
+		$textboxDetails.Text = "Get-MSOLUser -All | Sort-Object DisplayName |  Format-Table DisplayName, UserPrincipalName -AutoSize"
+		$TextboxResults.text = Get-MSOLUser -All | Sort-Object DisplayName |  Format-Table DisplayName, UserPrincipalName -AutoSize | Out-String
 		}
 	ElseIf (Get-PSSession -name partneraccount -ErrorAction SilentlyContinue )
 	{
 		$TenantText = $PartnerComboBox.text
 		$TextboxResults.Text = "Getting list of users..."
-		$textboxDetails.Text = "Get-MSOLUser -TenantId $TenantText | Sort-Object DisplayName |  Format-Table DisplayName, UserPrincipalName -AutoSize "
-		$TextboxResults.text = Get-MSOLUser -TenantId $PartnerComboBox.SelectedItem.TenantID | Sort-Object DisplayName | Format-Table DisplayName, UserPrincipalName -AutoSize | Out-String
+		$textboxDetails.Text = "Get-MSOLUser -TenantId $TenantText -All | Sort-Object DisplayName |  Format-Table DisplayName, UserPrincipalName -AutoSize "
+		$TextboxResults.text = Get-MSOLUser -TenantId $PartnerComboBox.SelectedItem.TenantID -All | Sort-Object DisplayName | Format-Table DisplayName, UserPrincipalName -AutoSize | Out-String
 		}
 	Else
 	{
@@ -503,6 +503,75 @@ $enableAccountToolStripMenuItem_Click = {
 		}
 }
 
+	#GAL
+
+$hideAUserFromTheGALToolStripMenuItem_Click = {
+	$HidefromGALUser = Read-Host "Enter the UPN of the user you want to hide from the GAL"
+	Try
+	{
+		$TextboxResults.Text = "Hiding $HidefromGALUser from the GAL..."
+		$textboxDetails.Text = "set-Mailbox -Identity $HidefromGALUser -HiddenFromAddressListsEnabled `$True"
+		set-Mailbox -Identity $HidefromGALUser -HiddenFromAddressListsEnabled $True
+		$TextboxResults.Text = Get-Mailbox -Identity $HidefromGALUser | Format-List HiddenFromAddressListsEnabled | Out-String
+	}
+	Catch
+	{
+		$TextboxResults.Text = ""
+		$textboxDetails.Text = ""
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+}
+
+$getUsersThatAreHiddenFromTheGALToolStripMenuItem_Click = {
+	Try
+	{
+		$TextboxResults.Text = "Getting all mailboxes hidden from the GAL..."
+		$textboxDetails.Text = "Get-Mailbox | Where-Object { `$_.HiddenFromAddressListsEnabled -eq `$True } | Format-Table -AutoSize | Out-String"
+		$TextboxResults.Text = Get-Mailbox | Where-Object { $_.HiddenFromAddressListsEnabled -eq $True } | Format-Table -AutoSize | Out-String
+	}
+	Catch
+	{
+		$TextboxResults.Text = ""
+		$textboxDetails.Text = ""
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+}
+
+$getUsersThatAreNotHiddenFromTheGALToolStripMenuItem_Click = {
+	Try
+	{
+		$TextboxResults.Text = "Getting all mailboxes not hidden from the GAL..."
+		$textboxDetails.Text = "Get-Mailbox | Where-Object { `$_.HiddenFromAddressListsEnabled -eq `$False } | Format-Table -AutoSize | Out-String"
+		$TextboxResults.Text = Get-Mailbox | Where-Object { $_.HiddenFromAddressListsEnabled -eq $False } | Format-Table -AutoSize | Out-String
+	}
+	Catch
+	{
+		$TextboxResults.Text = ""
+		$textboxDetails.Text = ""
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+	
+}
+
+$unhideAUserFromTheGALToolStripMenuItem_Click = {
+	$unHidefromGALUser = Read-Host "Enter the UPN of the user you want to unhide from the GAL"
+	Try
+	{
+		$TextboxResults.Text = "Unhiding $unHidefromGALUser from the GAL..."
+		$textboxDetails.Text = "set-Mailbox -Identity $unHidefromGALUser -HiddenFromAddressListsEnabled `$False"
+		set-Mailbox -Identity $unHidefromGALUser -HiddenFromAddressListsEnabled $False
+		$TextboxResults.Text = Get-Mailbox -Identity $unHidefromGALUser | Format-List HiddenFromAddressListsEnabled | Out-String
+	}
+	Catch
+	{
+		$TextboxResults.Text = ""
+		$textboxDetails.Text = ""
+		[System.Windows.Forms.MessageBox]::Show("$_", "Error")
+	}
+	
+}
+
+
 	#Quota
 
 $getUserQuotaToolStripMenuItem_Click={
@@ -586,16 +655,16 @@ $getLicensedUsersToolStripMenuItem_Click={
 	If (Get-PSSession -name mainaccount -ErrorAction SilentlyContinue)
 	{
 		$TextboxResults.Text = "Getting all users with a license..."
-		$textboxDetails.Text = "Get-MsolUser | Where-Object { `$_.isLicensed -eq `$TRUE } | Sort-Object DisplayName | Format-Table DisplayName, Licenses -AutoSize"
-		$TextboxResults.text = Get-MsolUser | Where-Object { $_.isLicensed -eq $True } | Sort-Object DisplayName | Format-Table DisplayName, Licenses -AutoSize | Out-String
+		$textboxDetails.Text = "Get-MsolUser -All | Where-Object { `$_.isLicensed -eq `$TRUE } | Sort-Object DisplayName | Format-Table DisplayName, Licenses -AutoSize"
+		$TextboxResults.text = Get-MsolUser -All | Where-Object { $_.isLicensed -eq $True } | Sort-Object DisplayName | Format-Table DisplayName, Licenses -AutoSize | Out-String
 	}
 	#What to do if connected to partner account
 	ElseIf (Get-PSSession -name partneraccount -ErrorAction SilentlyContinue)
 	{
 		$TenantText = $PartnerComboBox.text
 		$TextboxResults.Text = "Getting all users with a license..."
-		$textboxDetails.Text = "Get-MsolUser -TenantID $TenantText | Where-Object { `$_.isLicensed -eq `$TRUE } | Sort-Object DisplayName | Format-Table DisplayName, Licenses -AutoSize"
-		$TextboxResults.text = Get-MsolUser -TenantId $PartnerComboBox.SelectedItem.TenantID | Where-Object { $_.isLicensed -eq $True } | Sort-Object DisplayName | Format-Table DisplayName, Licenses -AutoSize | Out-String
+		$textboxDetails.Text = "Get-MsolUser -All -TenantID $TenantText | Where-Object { `$_.isLicensed -eq `$TRUE } | Sort-Object DisplayName | Format-Table DisplayName, Licenses -AutoSize"
+		$TextboxResults.text = Get-MsolUser -All -TenantId $PartnerComboBox.SelectedItem.TenantID | Where-Object { $_.isLicensed -eq $True } | Sort-Object DisplayName | Format-Table DisplayName, Licenses -AutoSize | Out-String
 	}
 	Else
 	{
@@ -610,16 +679,16 @@ $displayAllUsersWithoutALicenseToolStripMenuItem_Click = {
 	If (Get-PSSession -name mainaccount -ErrorAction SilentlyContinue)
 	{
 		$TextboxResults.Text = "Getting all users without a license..."
-		$textboxDetails.Text = "Get-MsolUser | Where-Object { `$_.isLicensed -like `$False } | Sort-Object UserPrincipalName | Format-Table UserPrincipalName -AutoSize"
-		$TextboxResults.text = Get-MsolUser | Where-Object { $_.isLicensed -like "False" } | Sort-Object UserPrincipalName | Format-Table UserPrincipalName -AutoSize | Out-String
+		$textboxDetails.Text = "Get-MsolUser -All | Where-Object { `$_.isLicensed -like `$False } | Sort-Object UserPrincipalName | Format-Table UserPrincipalName -AutoSize"
+		$TextboxResults.text = Get-MsolUser -All | Where-Object { $_.isLicensed -like "False" } | Sort-Object UserPrincipalName | Format-Table UserPrincipalName -AutoSize | Out-String
 	}
 	#What to do if connected to partner account
 	ElseIf (Get-PSSession -name partneraccount -ErrorAction SilentlyContinue)
 	{
 		$TenantText = $PartnerComboBox.text
 		$TextboxResults.Text = "Getting all users without a license..."
-		$textboxDetails.Text = "Get-MsolUser -TenantId $TenantText | Where-Object { `$_.isLicensed -like `$False } | Sort-Object UserPrincipalName | Format-Table UserPrincipalName -AutoSize"
-		$TextboxResults.text = Get-MsolUser -TenantId $PartnerComboBox.SelectedItem.TenantID | Where-Object { $_.isLicensed -like $False } | Sort-Object UserPrincipalName | Format-Table UserPrincipalName -AutoSize | Out-String
+		$textboxDetails.Text = "Get-MsolUser -TenantId $TenantText -All | Where-Object { `$_.isLicensed -like `$False } | Sort-Object UserPrincipalName | Format-Table UserPrincipalName -AutoSize"
+		$TextboxResults.text = Get-MsolUser -TenantId $PartnerComboBox.SelectedItem.TenantID -All | Where-Object { $_.isLicensed -like $False } | Sort-Object UserPrincipalName | Format-Table UserPrincipalName -AutoSize | Out-String
 	}
 	Else
 	{
@@ -635,18 +704,18 @@ $removeAllUnlicensedUsersToolStripMenuItem_Click = {
 	If (Get-PSSession -name mainaccount -ErrorAction SilentlyContinue)
 	{
 		$TextboxResults.Text = "Removing all users without a license..."
-		$textboxDetails.Text = "Get-MsolUser | Where-Object { `$_.isLicensed -ne `$True } | Remove-MsolUser -Force"
-		Get-MsolUser | Where-Object { $_.isLicensed -ne $True } | Remove-MsolUser -Force
-		$TextboxResults.text = Get-MsolUser | Where-Object { $_.isLicensed -like $True } | Format-List UserPrincipalName | Out-String
+		$textboxDetails.Text = "Get-MsolUser -All | Where-Object { `$_.isLicensed -ne `$True } | Remove-MsolUser -Force"
+		Get-MsolUser -All | Where-Object { $_.isLicensed -ne $True } | Remove-MsolUser -Force
+		$TextboxResults.text = Get-MsolUser -All | Where-Object { $_.isLicensed -like $True } | Format-List UserPrincipalName | Out-String
 	}
 	#What to do if connected to partner account
 	ElseIf (Get-PSSession -name partneraccount -ErrorAction SilentlyContinue)
 	{
 		$TenantText = $PartnerComboBox.text
 		$TextboxResults.Text = "Removing all users without a license..."
-		$textboxDetails.Text = "Get-MsolUser -TenantId $TenantText | Where-Object { `$_.isLicensed -ne `$True } | Remove-MsolUser -Force"
-		Get-MsolUser -all -TenantId $PartnerComboBox.SelectedItem.TenantID | Where-Object { $_.isLicensed -ne $True } | Remove-MsolUser -Force -TenantId $PartnerComboBox.SelectedItem.TenantID
-		$TextboxResults.text = Get-MsolUser -TenantId $PartnerComboBox.SelectedItem.TenantID | Where-Object { $_.isLicensed -like $True } | Format-List UserPrincipalName | Out-String
+		$textboxDetails.Text = "Get-MsolUser -TenantId $TenantText -All | Where-Object { `$_.isLicensed -ne `$True } | Remove-MsolUser -Force"
+		Get-MsolUser -all -TenantId $PartnerComboBox.SelectedItem.TenantID -All | Where-Object { $_.isLicensed -ne $True } | Remove-MsolUser -Force -TenantId $PartnerComboBox.SelectedItem.TenantID
+		$TextboxResults.text = Get-MsolUser -TenantId $PartnerComboBox.SelectedItem.TenantID -All | Where-Object { $_.isLicensed -like $True } | Format-List UserPrincipalName | Out-String
 	}
 	Else
 	{
@@ -702,7 +771,7 @@ $addALicenseToAUserToolStripMenuItem_Click = {
 		Set-MsolUserLicense -UserPrincipalName $LicenseUserAdd -AddLicenses $LicenseType"
 		Set-MsolUser -UserPrincipalName $LicenseUserAdd –UsageLocation $LicenseUserAddLocation
 		Set-MsolUserLicense -UserPrincipalName $LicenseUserAdd -AddLicenses $LicenseType
-		$TextboxResults.Text = Get-MsolUser -UserPrincipalName $LicenseUserAdd | Format-List DisplayName, Licenses | Out-String
+		$TextboxResults.Text = Get-MsolUser -All -UserPrincipalName $LicenseUserAdd | Format-List DisplayName, Licenses | Out-String
 	}
 	#What to do if connected to partner account
 	ElseIf (Get-PSSession -name partneraccount -ErrorAction SilentlyContinue)
@@ -717,7 +786,7 @@ $addALicenseToAUserToolStripMenuItem_Click = {
 		Set-MsolUserLicense -TenantId $PartnerComboBox.SelectedItem.TenantID -UserPrincipalName $LicenseUserAdd -AddLicenses $LicenseType"
 		Set-MsolUser -TenantId $PartnerComboBox.SelectedItem.TenantID -UserPrincipalName $LicenseUserAdd –UsageLocation $LicenseUserAddLocation
 		Set-MsolUserLicense -TenantId $PartnerComboBox.SelectedItem.TenantID -UserPrincipalName $LicenseUserAdd -AddLicenses $LicenseType
-		$TextboxResults.Text = Get-MsolUser -TenantId $PartnerComboBox.SelectedItem.TenantID -UserPrincipalName $LicenseUserAdd | Format-List DisplayName, Licenses | Out-String
+		$TextboxResults.Text = Get-MsolUser -All -TenantId $PartnerComboBox.SelectedItem.TenantID -UserPrincipalName $LicenseUserAdd | Format-List DisplayName, Licenses | Out-String
 	}
 	Else
 	{
@@ -961,16 +1030,16 @@ $displayAllDeletedUsersToolStripMenuItem_Click = {
 	If (Get-PSSession -name mainaccount -ErrorAction SilentlyContinue)
 	{
 		$TextboxResults.Text = "Getting all deleted users..."
-		$textboxDetails.Text = "Get-MsolUser -ReturnDeletedUsers |  Sort-Object UserprincipalName | Format-Table UserPrincipalName, ObjectID -Autosize "
-		$TextboxResults.Text = Get-MsolUser -ReturnDeletedUsers | Sort-Object UserprincipalName | Format-Table UserPrincipalName, ObjectID -Autosize | Out-String
+		$textboxDetails.Text = "Get-MsolUser -All -ReturnDeletedUsers |  Sort-Object UserprincipalName | Format-Table UserPrincipalName, ObjectID -Autosize "
+		$TextboxResults.Text = Get-MsolUser -All -ReturnDeletedUsers | Sort-Object UserprincipalName | Format-Table UserPrincipalName, ObjectID -Autosize | Out-String
 	}
 	#What to do if connected to partner account
 	ElseIf (Get-PSSession -name partneraccount -ErrorAction SilentlyContinue)
 	{
 		$TenantText = $PartnerComboBox.text
 		$TextboxResults.Text = "Getting all deleted users..."
-		$textboxDetails.Text = "Get-MsolUser -TenantId $TenantText -ReturnDeletedUsers |  Sort-Object UserprincipalName | Format-Table UserPrincipalName, ObjectID -Autosize "
-		$TextboxResults.Text = Get-MsolUser -TenantId $PartnerComboBox.SelectedItem.TenantID -ReturnDeletedUsers | Sort-Object UserPrincipalName | Format-Table UserPrincipalName, ObjectID -AutoSize | Out-String
+		$textboxDetails.Text = "Get-MsolUser -All -TenantId $TenantText -ReturnDeletedUsers |  Sort-Object UserprincipalName | Format-Table UserPrincipalName, ObjectID -Autosize "
+		$TextboxResults.Text = Get-MsolUser -All -TenantId $PartnerComboBox.SelectedItem.TenantID -ReturnDeletedUsers | Sort-Object UserPrincipalName | Format-Table UserPrincipalName, ObjectID -AutoSize | Out-String
 	}
 	Else
 	{
@@ -1066,8 +1135,8 @@ $restoreAllDeletedUsersToolStripMenuItem_Click = {
 	If (Get-PSSession -name mainaccount -ErrorAction SilentlyContinue)
 	{
 		$TextboxResults.Text = "Restoring all deleted users..."
-		$textboxDetails.Text = "Get-MsolUser -ReturnDeletedUsers | Restore-MsolUser"
-		Get-MsolUser -ReturnDeletedUsers | Restore-MsolUser
+		$textboxDetails.Text = "Get-MsolUser -All -ReturnDeletedUsers | Restore-MsolUser"
+		Get-MsolUser -ReturnDeletedUsers -All | Restore-MsolUser
 		$TextboxResults.Text = "Users that were deleted have now been restored"
 	}
 	#What to do if connected to partner account
@@ -1075,8 +1144,8 @@ $restoreAllDeletedUsersToolStripMenuItem_Click = {
 	{
 		$TenantText = $PartnerComboBox.text
 		$TextboxResults.Text = "Restoring all deleted users..."
-		$textboxDetails.Text = "Get-MsolUser -ReturnDeletedUsers -TenantID $TenantText | Restore-MsolUser"
-		Get-MsolUser -ReturnDeletedUsers -TenantId $PartnerComboBox.SelectedItem.TenantID | Restore-MsolUser -TenantId $PartnerComboBox.SelectedItem.TenantID
+		$textboxDetails.Text = "Get-MsolUser -ReturnDeletedUsers -TenantID $TenantText -All | Restore-MsolUser"
+		Get-MsolUser -ReturnDeletedUsers -TenantId $PartnerComboBox.SelectedItem.TenantID -All  | Restore-MsolUser -TenantId $PartnerComboBox.SelectedItem.TenantID
 		$TextboxResults.Text = "Users that were deleted have now been restored"
 	}
 	Else
@@ -1174,16 +1243,16 @@ $getAllUsersStrongPasswordPolicyInfoToolStripMenuItem_Click = {
 	If (Get-PSSession -name mainaccount -ErrorAction SilentlyContinue)
 	{
 		$TextboxResults.Text = "Getting strong password policy for all users..."
-		$textboxDetails.Text = "Get-MsolUser | Sort-Object DisplayName | Format-Table DisplayName, strongpasswordrequired -AutoSize"
-		$TextboxResults.text = Get-MsolUser | Sort-Object DisplayName | Format-Table  DisplayName, strongpasswordrequired -AutoSize | Out-String
+		$textboxDetails.Text = "Get-MsolUser -All | Sort-Object DisplayName | Format-Table DisplayName, strongpasswordrequired -AutoSize"
+		$TextboxResults.text = Get-MsolUser -All | Sort-Object DisplayName | Format-Table  DisplayName, strongpasswordrequired -AutoSize | Out-String
 	}
 	#What to do if connected to partner account
 	ElseIf (Get-PSSession -name partneraccount -ErrorAction SilentlyContinue)
 	{
 		$TenantText = $PartnerComboBox.text
 		$TextboxResults.Text = "Getting strong password policy for all users..."
-		$textboxDetails.Text = "Get-MsolUser -TenantId $TenantText | Sort-Object DisplayName | Format-Table  DisplayName, strongpasswordrequired -AutoSize"
-		$TextboxResults.text = Get-MsolUser -TenantId $PartnerComboBox.SelectedItem.TenantID | Sort-Object DisplayName | Format-Table DisplayName, strongpasswordrequired -AutoSize | Out-String
+		$textboxDetails.Text = "Get-MsolUser -TenantId $TenantText -All | Sort-Object DisplayName | Format-Table  DisplayName, strongpasswordrequired -AutoSize"
+		$TextboxResults.text = Get-MsolUser -TenantId $PartnerComboBox.SelectedItem.TenantID -All | Sort-Object DisplayName | Format-Table DisplayName, strongpasswordrequired -AutoSize | Out-String
 	}
 	Else
 	{
@@ -1226,18 +1295,18 @@ $enableStrongPasswordsForAllToolStripMenuItem_Click = {
 	If (Get-PSSession -name mainaccount -ErrorAction SilentlyContinue)
 	{
 		$TextboxResults.Text = "Enabling strong password policy for all users..."
-		$textboxDetails.Text = "Get-MsolUser | Set-MsolUser -StrongPasswordRequired `$True"
-		Get-MsolUser | Set-MsolUser -StrongPasswordRequired $True
-		$TextboxResults.text = Get-MsolUser | Sort-Object DisplayName | Format-Table  DisplayName, strongpasswordrequired -AutoSize | Out-String
+		$textboxDetails.Text = "Get-MsolUser -All | Set-MsolUser -StrongPasswordRequired `$True"
+		Get-MsolUser -All | Set-MsolUser -StrongPasswordRequired $True
+		$TextboxResults.text = Get-MsolUser -All | Sort-Object DisplayName | Format-Table  DisplayName, strongpasswordrequired -AutoSize | Out-String
 	}
 	#What to do if connected to partner account
 	ElseIf (Get-PSSession -name partneraccount -ErrorAction SilentlyContinue)
 	{
 		$TenantText = $PartnerComboBox.text
 		$TextboxResults.Text = "Enabling strong password policy for all users..."
-		$textboxDetails.Text = "Get-MsolUser | Set-MsolUser -StrongPasswordRequired -TenantId $TenantText `$True"
-		Get-MsolUser | Set-MsolUser -StrongPasswordRequired $True -TenantId $PartnerComboBox.SelectedItem.TenantID
-		$TextboxResults.text = Get-MsolUser -TenantId $PartnerComboBox.SelectedItem.TenantID | Sort-Object DisplayName | Format-Table  DisplayName, strongpasswordrequired -AutoSize | Out-String
+		$textboxDetails.Text = "Get-MsolUser -All | Set-MsolUser -StrongPasswordRequired -TenantId $TenantText `$True"
+		Get-MsolUser -All | Set-MsolUser -StrongPasswordRequired $True -TenantId $PartnerComboBox.SelectedItem.TenantID
+		$TextboxResults.text = Get-MsolUser -All -TenantId $PartnerComboBox.SelectedItem.TenantID | Sort-Object DisplayName | Format-Table  DisplayName, strongpasswordrequired -AutoSize | Out-String
 	}
 	Else
 	{
@@ -1252,18 +1321,18 @@ $disableStrongPasswordsForAllToolStripMenuItem_Click = {
 	If (Get-PSSession -name mainaccount -ErrorAction SilentlyContinue)
 	{
 		$TextboxResults.Text = "Disabling strong password policy for all users..."
-		$textboxDetails.Text = "Get-MsolUser | Set-MsolUser -StrongPasswordRequired `$False"
-		Get-MsolUser | Set-MsolUser -StrongPasswordRequired $False
-		$TextboxResults.text = Get-MsolUser | Sort-Object DisplayName | Format-Table  DisplayName, strongpasswordrequired -AutoSize | Out-String
+		$textboxDetails.Text = "Get-MsolUser -All | Set-MsolUser -StrongPasswordRequired `$False"
+		Get-MsolUser -All | Set-MsolUser -StrongPasswordRequired $False
+		$TextboxResults.text = Get-MsolUser -All | Sort-Object DisplayName | Format-Table  DisplayName, strongpasswordrequired -AutoSize | Out-String
 	}
 	#What to do if connected to partner account
 	ElseIf (Get-PSSession -name partneraccount -ErrorAction SilentlyContinue)
 	{
 		$TenantText = $PartnerComboBox.text
 		$TextboxResults.Text = "Disabling strong password policy for all users..."
-		$textboxDetails.Text = "Get-MsolUser | Set-MsolUser -StrongPasswordRequired `$False -TenantId $TenantText"
-		Get-MsolUser | Set-MsolUser -StrongPasswordRequired $False -TenantId $PartnerComboBox.SelectedItem.TenantID
-		$TextboxResults.text = Get-MsolUser -TenantId $PartnerComboBox.SelectedItem.TenantID | Sort-Object DisplayName | Format-Table  DisplayName, strongpasswordrequired -AutoSize | Out-String
+		$textboxDetails.Text = "Get-MsolUser -All | Set-MsolUser -StrongPasswordRequired `$False -TenantId $TenantText"
+		Get-MsolUser -All | Set-MsolUser -StrongPasswordRequired $False -TenantId $PartnerComboBox.SelectedItem.TenantID
+		$TextboxResults.text = Get-MsolUser -All -TenantId $PartnerComboBox.SelectedItem.TenantID | Sort-Object DisplayName | Format-Table  DisplayName, strongpasswordrequired -AutoSize | Out-String
 	}
 	Else
 	{
@@ -1274,7 +1343,7 @@ $disableStrongPasswordsForAllToolStripMenuItem_Click = {
 }
 
 $resetPasswordForAUserToolStripMenuItem1_Click = {
-	$ResetPasswordUser = Read-Host "Who user would you like to reset the password for?"
+	$ResetPasswordUser = Read-Host "Enter the UPN of the user you want to reset the password for"
 	$NewPassword = Read-Host "What would you like the new password to be?"
 	#What to do if connected to main o365 account
 	If (Get-PSSession -name mainaccount -ErrorAction SilentlyContinue)
@@ -1306,18 +1375,18 @@ $setPasswordToNeverExpireForAllToolStripMenuItem1_Click = {
 	If (Get-PSSession -name mainaccount -ErrorAction SilentlyContinue)
 	{
 		$TextboxResults.Text = "Setting password to never expire for all..."
-		$textboxDetails.Text = "Get-MsolUser | Set-MsolUser –PasswordNeverExpires `$True"
-		Get-MsolUser | Set-MsolUser –PasswordNeverExpires $True
-		$TextboxResults.text = Get-MSOLUser | Sort-Object UserPrincipalName | Format-Table UserPrincipalName, PasswordNeverExpires -AutoSize | Out-String
+		$textboxDetails.Text = "Get-MsolUser -All | Set-MsolUser –PasswordNeverExpires `$True"
+		Get-MsolUser -All | Set-MsolUser –PasswordNeverExpires $True
+		$TextboxResults.text = Get-MSOLUser -All | Sort-Object UserPrincipalName | Format-Table UserPrincipalName, PasswordNeverExpires -AutoSize | Out-String
 	}
 	#What to do if connected to partner account
 	ElseIf (Get-PSSession -name partneraccount -ErrorAction SilentlyContinue)
 	{
 		$TenantText = $PartnerComboBox.text
 		$TextboxResults.Text = "Setting password to never expire for all..."
-		$textboxDetails.Text = "Get-MsolUser | Set-MsolUser –PasswordNeverExpires `$True -TenantId $TenantText"
-		Get-MsolUser | Set-MsolUser –PasswordNeverExpires $True -TenantId $PartnerComboBox.SelectedItem.TenantID
-		$TextboxResults.text = Get-MSOLUser -TenantId $PartnerComboBox.SelectedItem.TenantID | Sort-Object UserPrincipalName | Format-Table UserPrincipalName, PasswordNeverExpires -AutoSize | Out-String
+		$textboxDetails.Text = "Get-MsolUser -All | Set-MsolUser –PasswordNeverExpires `$True -TenantId $TenantText"
+		Get-MsolUser -All | Set-MsolUser –PasswordNeverExpires $True -TenantId $PartnerComboBox.SelectedItem.TenantID
+		$TextboxResults.text = Get-MSOLUser -All -TenantId $PartnerComboBox.SelectedItem.TenantID | Sort-Object UserPrincipalName | Format-Table UserPrincipalName, PasswordNeverExpires -AutoSize | Out-String
 	}
 	Else
 	{
@@ -1332,18 +1401,18 @@ $setPasswordToExpireForAllToolStripMenuItem1_Click = {
 	If (Get-PSSession -name mainaccount -ErrorAction SilentlyContinue)
 	{
 		$TextboxResults.Text = "Setting password to expire for all..."
-		$textboxDetails.Text = "Get-MsolUser | Set-MsolUser –PasswordNeverExpires `$False"
-		Get-MsolUser | Set-MsolUser –PasswordNeverExpires $False
-		$TextboxResults.text = Get-MSOLUser | Sort-Object UserPrincipalName | Format-Table UserPrincipalName, PasswordNeverExpires -AutoSize | Out-String
+		$textboxDetails.Text = "Get-MsolUser -All | Set-MsolUser –PasswordNeverExpires `$False"
+		Get-MsolUser -All | Set-MsolUser –PasswordNeverExpires $False
+		$TextboxResults.text = Get-MSOLUser -All | Sort-Object UserPrincipalName | Format-Table UserPrincipalName, PasswordNeverExpires -AutoSize | Out-String
 	}
 	#What to do if connected to partner account
 	ElseIf (Get-PSSession -name partneraccount -ErrorAction SilentlyContinue)
 	{
 		$TenantText = $PartnerComboBox.text
 		$TextboxResults.Text = "Setting password to expire for all..."
-		$textboxDetails.Text = "Get-MsolUser | Set-MsolUser –PasswordNeverExpires `$False -TenantId $TenantText"
-		Get-MsolUser | Set-MsolUser –PasswordNeverExpires $False -TenantId $PartnerComboBox.SelectedItem.TenantID
-		$TextboxResults.text = Get-MSOLUser -TenantId $PartnerComboBox.SelectedItem.TenantID | Sort-Object UserPrincipalName | Format-Table UserPrincipalName, PasswordNeverExpires -AutoSize | Out-String
+		$textboxDetails.Text = "Get-MsolUser -All | Set-MsolUser –PasswordNeverExpires `$False -TenantId $TenantText"
+		Get-MsolUser -All | Set-MsolUser –PasswordNeverExpires $False -TenantId $PartnerComboBox.SelectedItem.TenantID
+		$TextboxResults.text = Get-MSOLUser -All -TenantId $PartnerComboBox.SelectedItem.TenantID | Sort-Object UserPrincipalName | Format-Table UserPrincipalName, PasswordNeverExpires -AutoSize | Out-String
 	}
 	Else
 	{
@@ -1359,9 +1428,9 @@ $resetPasswordForAllToolStripMenuItem_Click = {
 	If (Get-PSSession -name mainaccount -ErrorAction SilentlyContinue)
 	{
 		$TextboxResults.Text = "Resetting all users passwords to $SetPasswordforAll..."
-		$textboxDetails.Text = "Get-MsolUser | ForEach-Object{ 
+		$textboxDetails.Text = "Get-MsolUser -All | ForEach-Object{ 
 Set-MsolUserPassword -userPrincipalName `$_.UserPrincipalName –NewPassword $SetPasswordforAll -ForceChangePassword `$False }"
-		Get-MsolUser | ForEach-Object{ Set-MsolUserPassword -userPrincipalName $_.UserPrincipalName –NewPassword $SetPasswordforAll -ForceChangePassword $False }
+		Get-MsolUser -All | ForEach-Object{ Set-MsolUserPassword -UserPrincipalName $_.UserPrincipalName –NewPassword $SetPasswordforAll -ForceChangePassword $False }
 		$TextboxResults.Text = "Password for all users has been set to $SetPasswordforAll"
 		
 	}
@@ -1370,9 +1439,9 @@ Set-MsolUserPassword -userPrincipalName `$_.UserPrincipalName –NewPassword $Se
 	{
 		$TenantText = $PartnerComboBox.text
 		$TextboxResults.Text = "Resetting all users passwords to $SetPasswordforAll..."
-		$textboxDetails.Text = "Get-MsolUser | ForEach-Object{ 
+		$textboxDetails.Text = "Get-MsolUser -All -TenantId $TenantText | ForEach-Object{ 
 Set-MsolUserPassword -TenantId $TenantText -userPrincipalName `$_.UserPrincipalName –NewPassword $SetPasswordforAll -ForceChangePassword `$False }"
-		Get-MsolUser | ForEach-Object{ Set-MsolUserPassword -TenantId $PartnerComboBox.SelectedItem.TenantID -userPrincipalName $_.UserPrincipalName –NewPassword $SetPasswordforAll -ForceChangePassword $False }
+		Get-MsolUser -TenantId $PartnerComboBox.SelectedItem.TenantID -All | ForEach-Object { Set-MsolUserPassword -TenantId $PartnerComboBox.SelectedItem.TenantID -UserPrincipalName $_.UserPrincipalName –NewPassword $SetPasswordforAll -ForceChangePassword $False }
 		$TextboxResults.Text = "Password for all users has been set to $SetPasswordforAll"
 	}
 	Else
@@ -1389,8 +1458,8 @@ $setATemporaryPasswordForAllToolStripMenuItem_Click = {
 	If (Get-PSSession -name mainaccount -ErrorAction SilentlyContinue)
 	{
 		$TextboxResults.Text = "Setting $SetTempPasswordforAll as the temporary password for all users..."
-		$textboxDetails.Text = "Get-MsolUser | Set-MsolUserPassword –NewPassword $SetTempPasswordforAll -ForceChangePassword `$True"
-		Get-MsolUser | Set-MsolUserPassword –NewPassword $SetTempPasswordforAll -ForceChangePassword $True
+		$textboxDetails.Text = "Get-MsolUser -All | Set-MsolUserPassword –NewPassword $SetTempPasswordforAll -ForceChangePassword `$True"
+		Get-MsolUser -All | Set-MsolUserPassword –NewPassword $SetTempPasswordforAll -ForceChangePassword $True
 		$TextboxResults.Text = "Temporary password has been set to $SetTempPasswordforAll Please note that users will be prompted to change it upon logon"
 	}
 	#What to do if connected to partner account
@@ -1398,8 +1467,8 @@ $setATemporaryPasswordForAllToolStripMenuItem_Click = {
 	{
 		$TenantText = $PartnerComboBox.text
 		$TextboxResults.Text = "Setting $SetTempPasswordforAll as the temporary password for all users..."
-		$textboxDetails.Text = "Get-MsolUser | Set-MsolUserPassword -TenantId $TenantText –NewPassword $SetTempPasswordforAll -ForceChangePassword `$True"
-		Get-MsolUser | Set-MsolUserPassword -TenantId $PartnerComboBox.SelectedItem.TenantID –NewPassword $SetTempPasswordforAll -ForceChangePassword $True
+		$textboxDetails.Text = "Get-MsolUser -TenantId $PartnerComboBox.SelectedItem.TenantID -All | Set-MsolUserPassword -TenantId $TenantText –NewPassword $SetTempPasswordforAll -ForceChangePassword `$True"
+		Get-MsolUser -TenantId $PartnerComboBox.SelectedItem.TenantID -All | Set-MsolUserPassword -TenantId $PartnerComboBox.SelectedItem.TenantID –NewPassword $SetTempPasswordforAll -ForceChangePassword $True
 		$TextboxResults.Text = "Temporary password has been set to $SetTempPasswordforAll Please note that users will be prompted to change it upon logon"
 	}
 	Else
@@ -1411,7 +1480,7 @@ $setATemporaryPasswordForAllToolStripMenuItem_Click = {
 }
 
 $TemporaryPasswordForAUserToolStripMenuItem_Click = {
-	$ResetPasswordUser2 = Read-Host "Who user would you like to reset the password for?"
+	$ResetPasswordUser2 = Read-Host "Enter the UPN of the user you want to reset the password for"
 	$NewPassword2 = Read-Host "What would you like the new password to be?"
 	#What to do if connected to main o365 account
 	If (Get-PSSession -name mainaccount -ErrorAction SilentlyContinue)
@@ -1468,16 +1537,16 @@ $getPasswordLastResetDateForAllToolStripMenuItem_Click = {
 	If (Get-PSSession -name mainaccount -ErrorAction SilentlyContinue)
 	{
 		$TextboxResults.Text = "Getting last password reset date for all users..."
-		$textboxDetails.Text = "Get-MsolUser | Sort-Object UserPrincipalName | Format-Table UserPrincipalName, lastpasswordchangetimestamp -AutoSize "
-		$TextboxResults.Text = Get-MsolUser | Sort-Object UserPrincipalName | Format-Table UserPrincipalName, lastpasswordchangetimestamp -AutoSize | Out-String
+		$textboxDetails.Text = "Get-MsolUser -All | Sort-Object UserPrincipalName | Format-Table UserPrincipalName, lastpasswordchangetimestamp -AutoSize "
+		$TextboxResults.Text = Get-MsolUser -All | Sort-Object UserPrincipalName | Format-Table UserPrincipalName, lastpasswordchangetimestamp -AutoSize | Out-String
 	}
 	#What to do if connected to partner account
 	ElseIf (Get-PSSession -name partneraccount -ErrorAction SilentlyContinue)
 	{
 		$TenantText = $PartnerComboBox.text
 		$TextboxResults.Text = "Getting last password reset date for all users..."
-		$textboxDetails.Text = "Get-MsolUser -TenantId $TenantText | Sort-Object UserPrincipalName | Format-Table UserPrincipalName, lastpasswordchangetimestamp -AutoSize "
-		$TextboxResults.Text = Get-MsolUser -TenantId $PartnerComboBox.SelectedItem.TenantID | Sort-Object UserPrincipalName | Format-Table UserPrincipalName, lastpasswordchangetimestamp -AutoSize | Out-String
+		$textboxDetails.Text = "Get-MsolUser -All -TenantId $TenantText | Sort-Object UserPrincipalName | Format-Table UserPrincipalName, lastpasswordchangetimestamp -AutoSize "
+		$TextboxResults.Text = Get-MsolUser -All -TenantId $PartnerComboBox.SelectedItem.TenantID | Sort-Object UserPrincipalName | Format-Table UserPrincipalName, lastpasswordchangetimestamp -AutoSize | Out-String
 	}
 	Else
 	{
@@ -1488,7 +1557,7 @@ $getPasswordLastResetDateForAllToolStripMenuItem_Click = {
 }
 
 $setPasswordToExpireForAUserToolStripMenuItem_Click = {
-	$PasswordtoExpireforUser = Read-Host "Enter the UPN of the user you want the password to never expire for"
+	$PasswordtoExpireforUser = Read-Host "Enter the UPN of the user you want the password to expire for"
 	#What to do if connected to main o365 account
 	If (Get-PSSession -name mainaccount -ErrorAction SilentlyContinue)
 	{
@@ -1515,7 +1584,7 @@ $setPasswordToExpireForAUserToolStripMenuItem_Click = {
 }
 
 $setPasswordToNeverExpireForAUserToolStripMenuItem_Click = {
-	$PasswordtoNeverExpireforUser = Read-Host "Enter the UPN of the user you want the password to expire for"
+	$PasswordtoNeverExpireforUser = Read-Host "Enter the UPN of the user you want the password to never expire for"
 	#What to do if connected to main o365 account
 	If (Get-PSSession -name mainaccount -ErrorAction SilentlyContinue)
 	{
@@ -1546,16 +1615,16 @@ $getUsersWhosPasswordNeverExpiresToolStripMenuItem_Click = {
 	If (Get-PSSession -name mainaccount -ErrorAction SilentlyContinue)
 	{
 		$TextboxResults.Text = "Getting users where the password is set to never expire..."
-		$textboxDetails.Text = "Get-MsolUser | Where-Object { `$_.PasswordNeverExpires -eq `$True } | Sort-Object UserPrincipalName | Format-Table UserPrincipalName, PasswordNeverExpires"
-		$TextboxResults.text = Get-MsolUser | Where-Object { $_.PasswordNeverExpires -eq $True } | Sort-Object UserPrincipalName | Format-Table UserPrincipalName, PasswordNeverExpires | Out-String
+		$textboxDetails.Text = "Get-MsolUser -All | Where-Object { `$_.PasswordNeverExpires -eq `$True } | Sort-Object UserPrincipalName | Format-Table UserPrincipalName, PasswordNeverExpires"
+		$TextboxResults.text = Get-MsolUser -All | Where-Object { $_.PasswordNeverExpires -eq $True } | Sort-Object UserPrincipalName | Format-Table UserPrincipalName, PasswordNeverExpires | Out-String
 	}
 	#What to do if connected to partner account
 	ElseIf (Get-PSSession -name partneraccount -ErrorAction SilentlyContinue)
 	{
 		$TenantText = $PartnerComboBox.text
 		$TextboxResults.Text = "Getting users where the password is set to never expire..."
-		$textboxDetails.Text = "Get-MsolUser -TenantId $TenantText | Where-Object { `$_.PasswordNeverExpires -eq `$True } | Sort-Object UserPrincipalName | Format-Table UserPrincipalName, PasswordNeverExpires"
-		$TextboxResults.text = Get-MsolUser -TenantId $PartnerComboBox.SelectedItem.TenantID | Where-Object { $_.PasswordNeverExpires -eq $True } | Sort-Object UserPrincipalName | Format-Table UserPrincipalName, PasswordNeverExpires | Out-String
+		$textboxDetails.Text = "Get-MsolUser -All -TenantId $TenantText | Where-Object { `$_.PasswordNeverExpires -eq `$True } | Sort-Object UserPrincipalName | Format-Table UserPrincipalName, PasswordNeverExpires"
+		$TextboxResults.text = Get-MsolUser -All -TenantId $PartnerComboBox.SelectedItem.TenantID | Where-Object { $_.PasswordNeverExpires -eq $True } | Sort-Object UserPrincipalName | Format-Table UserPrincipalName, PasswordNeverExpires | Out-String
 	}
 	Else
 	{
@@ -1570,16 +1639,16 @@ $getUsersWhosPasswordWillExpireToolStripMenuItem_Click = {
 	If (Get-PSSession -name mainaccount -ErrorAction SilentlyContinue)
 	{
 		$TextboxResults.Text = "Getting users where the password is set to expire..."
-		$textboxDetails.Text = "Get-MsolUser | Where-Object { `$_.PasswordNeverExpires -eq `$False } | Sort-Object UserPrincipalName | Format-Table UserPrincipalName, PasswordNeverExpires"
-		$TextboxResults.text = Get-MsolUser | Where-Object { $_.PasswordNeverExpires -eq $False } | Sort-Object UserPrincipalName | Format-Table UserPrincipalName, PasswordNeverExpires | Out-String
+		$textboxDetails.Text = "Get-MsolUser -All | Where-Object { `$_.PasswordNeverExpires -eq `$False } | Sort-Object UserPrincipalName | Format-Table UserPrincipalName, PasswordNeverExpires"
+		$TextboxResults.text = Get-MsolUser -All | Where-Object { $_.PasswordNeverExpires -eq $False } | Sort-Object UserPrincipalName | Format-Table UserPrincipalName, PasswordNeverExpires | Out-String
 	}
 	#What to do if connected to partner account
 	ElseIf (Get-PSSession -name partneraccount -ErrorAction SilentlyContinue)
 	{
 		$TenantText = $PartnerComboBox.text
 		$TextboxResults.Text = "Getting users where the password is set to expire..."
-		$textboxDetails.Text = "Get-MsolUser -TenantId $TenantText | Where-Object { `$_.PasswordNeverExpires -eq `$False } | Sort-Object UserPrincipalName | Format-Table UserPrincipalName, PasswordNeverExpires"
-		$TextboxResults.text = Get-MsolUser -TenantId $PartnerComboBox.SelectedItem.TenantID | Where-Object { $_.PasswordNeverExpires -eq $False } | Sort-Object UserPrincipalName | Format-Table UserPrincipalName, PasswordNeverExpires | Out-String
+		$textboxDetails.Text = "Get-MsolUser -All -TenantId $TenantText | Where-Object { `$_.PasswordNeverExpires -eq `$False } | Sort-Object UserPrincipalName | Format-Table UserPrincipalName, PasswordNeverExpires"
+		$TextboxResults.text = Get-MsolUser -All -TenantId $PartnerComboBox.SelectedItem.TenantID | Where-Object { $_.PasswordNeverExpires -eq $False } | Sort-Object UserPrincipalName | Format-Table UserPrincipalName, PasswordNeverExpires | Out-String
 	}
 	Else
 	{
@@ -1622,16 +1691,16 @@ $getUsersNextPasswordResetDateToolStripMenuItem_Click = {
 	If (Get-PSSession -name mainaccount -ErrorAction SilentlyContinue)
 	{
 		$TextboxResults.Text = "Getting $NextUserResetDateUser next password reset date..."
-		$textboxDetails.Text = "(get-msoluser -userprincipalname $NextUserResetDateUser).lastpasswordchangetimestamp.adddays($VarDate) | Format-List DateTime"
-		$TextboxResults.Text = (get-msoluser -userprincipalname $NextUserResetDateUser).lastpasswordchangetimestamp.adddays($VarDate) | Format-List DateTime | Out-String
+		$textboxDetails.Text = "(Get-MSOLUser -All -userprincipalname $NextUserResetDateUser).lastpasswordchangetimestamp.adddays($VarDate) | Format-List DateTime"
+		$TextboxResults.Text = (Get-MSOLUser -All -userprincipalname $NextUserResetDateUser).lastpasswordchangetimestamp.adddays($VarDate) | Format-List DateTime | Out-String
 	}
 	#What to do if connected to partner account
 	ElseIf (Get-PSSession -name partneraccount -ErrorAction SilentlyContinue)
 	{
 		$TenantText = $PartnerComboBox.text
 		$TextboxResults.Text = "Getting $NextUserResetDateUser next password reset date..."
-		$textboxDetails.Text = "(get-msoluser -TenantId $TenantText -userprincipalname $NextUserResetDateUser).lastpasswordchangetimestamp.adddays($VarDate) | Format-List DateTime"
-		$TextboxResults.Text = (get-msoluser -TenantId $PartnerComboBox.SelectedItem.TenantID -userprincipalname $NextUserResetDateUser).lastpasswordchangetimestamp.adddays($VarDate) | Format-List DateTime | Out-String
+		$textboxDetails.Text = "(Get-MSOLUser -All -TenantId $TenantText -userprincipalname $NextUserResetDateUser).lastpasswordchangetimestamp.adddays($VarDate) | Format-List DateTime"
+		$TextboxResults.Text = (Get-MsolUser -All -TenantId $PartnerComboBox.SelectedItem.TenantID -userprincipalname $NextUserResetDateUser).lastpasswordchangetimestamp.adddays($VarDate) | Format-List DateTime | Out-String
 	}
 	Else
 	{
@@ -2012,7 +2081,7 @@ $forwardToInternalRecipientAndSaveLocalCopyToolStripMenuItem_Click = {
 $getAllUsersForwardingToExternalRecipientToolStripMenuItem_Click = {
 	Try
 	{
-		$TextboxResults.Text = "Getting all users forwarding to internal users..."
+		$TextboxResults.Text = "Getting all users forwarding to external users..."
 		$textboxDetails.Text = "Get-Mailbox | Where-Object { `$_.ForwardingSmtpAddress -ne `$Null -and `$_.RecipientType -eq 'UserMailbox' } | Sort-Object Name | Format-Table Name, DeliverToMailboxAndForward, ForwardingSmtpAddress -AutoSize"
 		$TextboxResults.Text = Get-Mailbox | Where-Object { $_.ForwardingSmtpAddress -ne $Null -and $_.RecipientType -eq "UserMailbox" } | Sort-Object Name |  Format-Table Name, DeliverToMailboxAndForward, ForwardingSmtpAddress -AutoSize | Out-String
 	}
@@ -4334,8 +4403,8 @@ $getAllContactsToolStripMenuItem_Click = {
 	Try
 	{
 		$TextboxResults.Text = "Getting all contacts..."
-		$textboxDetails.Text = "Get-MailContact | Sort-Object DisplayName | Format-Table DisplayName, EmailAddresses, PrimarySmtpAddress, ExternalEmailAddress, RecipientType -AutoSize"
-		$TextboxResults.Text = Get-MailContact | Sort-Object DisplayName | Format-Table DisplayName, EmailAddresses, PrimarySmtpAddress, ExternalEmailAddress, RecipientType -AutoSize | Out-String
+		$textboxDetails.Text = "Get-MailContact | Sort-Object DisplayName | Format-Table DisplayName, EmailAddresses -AutoSize"
+		$TextboxResults.Text = Get-MailContact | Sort-Object DisplayName | Format-Table DisplayName, EmailAddresses -AutoSize | Out-String
 	}
 	Catch
 	{
@@ -4471,7 +4540,7 @@ $getContactsNotHiddenFromGALToolStripMenuItem_Click = {
 	#About
 
 $aboutToolStripMenuItem_Click = {
-	$TextboxResults.Text = "                 o365 Administration Center v2.0.3
+	$TextboxResults.Text = "                 o365 Administration Center v2.0.4
 	
 HOW TO USE
 
@@ -4556,4 +4625,3 @@ $getMailMalwareReportToolStripMenuItem_Click = {
 $securityGroupsToolStripMenuItem_Click={
 	
 }
-
