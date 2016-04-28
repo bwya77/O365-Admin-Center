@@ -1304,8 +1304,8 @@ $enableStrongPasswordsForAllToolStripMenuItem_Click = {
 	{
 		$TenantText = $PartnerComboBox.text
 		$TextboxResults.Text = "Enabling strong password policy for all users..."
-		$textboxDetails.Text = "Get-MsolUser -All | Set-MsolUser -StrongPasswordRequired -TenantId $TenantText `$True"
-		Get-MsolUser -All | Set-MsolUser -StrongPasswordRequired $True -TenantId $PartnerComboBox.SelectedItem.TenantID
+		$textboxDetails.Text = "Get-MsolUser -All -TenantId $TenantText | Set-MsolUser -StrongPasswordRequired -TenantId $TenantText `$True"
+		Get-MsolUser -All -TenantId $PartnerComboBox.SelectedItem.TenantID | Set-MsolUser -StrongPasswordRequired $True -TenantId $PartnerComboBox.SelectedItem.TenantID
 		$TextboxResults.text = Get-MsolUser -All -TenantId $PartnerComboBox.SelectedItem.TenantID | Sort-Object DisplayName | Format-Table  DisplayName, strongpasswordrequired -AutoSize | Out-String
 	}
 	Else
@@ -1330,8 +1330,8 @@ $disableStrongPasswordsForAllToolStripMenuItem_Click = {
 	{
 		$TenantText = $PartnerComboBox.text
 		$TextboxResults.Text = "Disabling strong password policy for all users..."
-		$textboxDetails.Text = "Get-MsolUser -All | Set-MsolUser -StrongPasswordRequired `$False -TenantId $TenantText"
-		Get-MsolUser -All | Set-MsolUser -StrongPasswordRequired $False -TenantId $PartnerComboBox.SelectedItem.TenantID
+		$textboxDetails.Text = "Get-MsolUser -All -TenantId $TenantText | Set-MsolUser -StrongPasswordRequired `$False -TenantId $TenantText"
+		Get-MsolUser -All -TenantId $PartnerComboBox.SelectedItem.TenantID | Set-MsolUser -StrongPasswordRequired $False -TenantId $PartnerComboBox.SelectedItem.TenantID
 		$TextboxResults.text = Get-MsolUser -All -TenantId $PartnerComboBox.SelectedItem.TenantID | Sort-Object DisplayName | Format-Table  DisplayName, strongpasswordrequired -AutoSize | Out-String
 	}
 	Else
@@ -1384,8 +1384,8 @@ $setPasswordToNeverExpireForAllToolStripMenuItem1_Click = {
 	{
 		$TenantText = $PartnerComboBox.text
 		$TextboxResults.Text = "Setting password to never expire for all..."
-		$textboxDetails.Text = "Get-MsolUser -All | Set-MsolUser –PasswordNeverExpires `$True -TenantId $TenantText"
-		Get-MsolUser -All | Set-MsolUser –PasswordNeverExpires $True -TenantId $PartnerComboBox.SelectedItem.TenantID
+		$textboxDetails.Text = "Get-MsolUser -All -TenantId $TenantText | Set-MsolUser –PasswordNeverExpires `$True -TenantId $TenantText"
+		Get-MsolUser -All -TenantId $PartnerComboBox.SelectedItem.TenantID | Set-MsolUser –PasswordNeverExpires $True -TenantId $PartnerComboBox.SelectedItem.TenantID
 		$TextboxResults.text = Get-MSOLUser -All -TenantId $PartnerComboBox.SelectedItem.TenantID | Sort-Object UserPrincipalName | Format-Table UserPrincipalName, PasswordNeverExpires -AutoSize | Out-String
 	}
 	Else
@@ -1410,8 +1410,8 @@ $setPasswordToExpireForAllToolStripMenuItem1_Click = {
 	{
 		$TenantText = $PartnerComboBox.text
 		$TextboxResults.Text = "Setting password to expire for all..."
-		$textboxDetails.Text = "Get-MsolUser -All | Set-MsolUser –PasswordNeverExpires `$False -TenantId $TenantText"
-		Get-MsolUser -All | Set-MsolUser –PasswordNeverExpires $False -TenantId $PartnerComboBox.SelectedItem.TenantID
+		$textboxDetails.Text = "Get-MsolUser -All -Tenant $TenantText | Set-MsolUser –PasswordNeverExpires `$False -TenantId $TenantText"
+		Get-MsolUser -All -TenantId $PartnerComboBox.SelectedItem.TenantID | Set-MsolUser –PasswordNeverExpires $False -TenantId $PartnerComboBox.SelectedItem.TenantID
 		$TextboxResults.text = Get-MSOLUser -All -TenantId $PartnerComboBox.SelectedItem.TenantID | Sort-Object UserPrincipalName | Format-Table UserPrincipalName, PasswordNeverExpires -AutoSize | Out-String
 	}
 	Else
