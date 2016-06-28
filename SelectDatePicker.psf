@@ -1,0 +1,11 @@
+
+$formDatePicker_Load={
+	$labelStartDate.text = $StartDateText
+	$formDatePicker.Text = $StartDateFormText
+}
+
+
+$buttonformStartDate_Click={
+
+}
+
