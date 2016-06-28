@@ -22,20 +22,14 @@ ___
 
 ##.Screenshots
 
-####O365 GUI
-![alt tag](http://i.imgur.com/X5ERaSG.png?1)
+####Compliance Center
+![alt tag](http://o365admin.center/wp-content/uploads/2016/06/Compliance_Center.png)
 
-####Login to O365
-You are prompted for O365 credentials. It will then load all Exchange Online cmdlets.
-![alt tag](http://i.imgur.com/yRj2pj5.png)
+####Exchange Online
+![alt tag](http://o365admin.center/wp-content/uploads/2016/06/Exchange_Online.png)
 
-####Partner List
-![alt tag](http://i.imgur.com/svxIibW.png)
+####SharePoint
+![alt tag](http://o365admin.center/wp-content/uploads/2016/06/SharePoint.png)
 
-####Get List of Users
-![alt tag](http://i.imgur.com/8C7HWsP.png)
-
-####Custom Commands
-![alt tag](http://i.imgur.com/aPMekxA.png)
-![alt tag](http://i.imgur.com/4uhf65X.png)
-
+####Skype For Business
+![alt tag](http://o365admin.center/wp-content/uploads/2016/06/Skype_For_Business.png)
