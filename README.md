@@ -8,13 +8,10 @@ ___
 ##.Links:
 
 - [Website] (http://o365admin.center/)
-
 - [Download] (http://o365admin.center/)
-
 - [Changelog] (http://o365admin.center/changelog/)
-
 - [Forums] (http://o365admin.center/forums/)
-- [prerequisites] (http://o365admin.center/prerequisites/)
+- [Prerequisites] (http://o365admin.center/prerequisites/)
 
 ___
 
