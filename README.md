@@ -16,7 +16,7 @@ ___
 ___
 
 ##.Description
-The O365 Administration Center is an application written in PowerShell that lets administrators easily and quickly manage their Office 365 environment. It allows partner accounts to connect to all of their tenants and run the same commands. The results are shown in the textbox that also accepts custom commands as input. The commands can be typed in, and by pressing the enter key or the “Run Command” button the command is passed through to PowerShell and the results are displayed back on the same textbox. You can manage Exchange Online, Skype For Business, SharePoint and Compliance Center.
+The O365 Admin Center is an application written mainly in PowerShell that lets administrators easily and quickly manage their Office 365 environment. It allows partner accounts to connect to all of their tenants and run the same commands. The results are shown in the textbox that also accepts custom commands as input. The commands can be typed in, and by pressing the enter key or the “Run Command” button the command is passed through to PowerShell and the results are displayed back on the same textbox. You can manage Exchange Online, Skype For Business, SharePoint and Compliance Center.
 
 ___
 
