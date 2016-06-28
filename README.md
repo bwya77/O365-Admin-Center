@@ -14,7 +14,6 @@ ___
 - [Changelog] (http://o365admin.center/changelog/)
 
 - [Forums] (http://o365admin.center/forums/)
-
 - [prerequisites] (http://o365admin.center/prerequisites/)
 
 ___
