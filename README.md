@@ -1,17 +1,16 @@
 # O365 Admin Center
 ![alt tag](http://www.gnu.org/graphics/gplv3-88x31.png)
 
-v3.0.0
+v4.0.0
 
 ___
 
 ##.Links:
 
 - [Website] (http://o365admin.center/)
-- [Download] (http://o365admin.center/)
 - [Changelog] (http://o365admin.center/changelog/)
-- [Forums] (http://o365admin.center/forums/)
-- [Prerequisites] (http://o365admin.center/prerequisites/)
+- [Forums] (http://o365admin.center/community/)
+- [Prerequisites] (http://o365admin.center/FAQ/)
 
 ___
 
