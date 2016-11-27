@@ -9,8 +9,8 @@ ___
 
 - [Website] (http://o365admin.center/)
 - [Changelog] (http://o365admin.center/changelog/)
-- [Forums] (http://o365admin.center/community/)
-- [Prerequisites] (http://o365admin.center/FAQ/)
+- [Community] (http://o365admin.center/community/)
+- [FAQ] (http://o365admin.center/FAQ/)
 
 ___
 
