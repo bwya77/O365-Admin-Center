@@ -1,5 +1,5 @@
 # O365 Admin Center
-![alt tag](http://www.gnu.org/graphics/gplv3-88x31.png)
+
 
 v4.0.0
 
