@@ -21,14 +21,5 @@ ___
 
 ##.Screenshots
 
-####Compliance Center
-![alt tag](http://o365admin.center/wp-content/uploads/2016/06/Compliance_Center.png)
-
-####Exchange Online
-![alt tag](http://o365admin.center/wp-content/uploads/2016/06/Exchange_Online.png)
-
-####SharePoint
-![alt tag](http://o365admin.center/wp-content/uploads/2016/06/SharePoint.png)
-
-####Skype For Business
-![alt tag](http://o365admin.center/wp-content/uploads/2016/06/Skype_For_Business.png)
+####O365 Admin Center
+![alt tag](https://www.o365admin.center/wp-content/uploads/2016/05/output_PtRs59.gif)
