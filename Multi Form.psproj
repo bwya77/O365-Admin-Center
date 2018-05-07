@@ -1,0 +1,64 @@
+﻿<Project>
+  <Version>2.0</Version>
+  <FileID>1c683219-0ccb-4483-8805-eb644b476e75</FileID>
+  <ProjectType>0</ProjectType>
+  <Folders />
+  <Files>
+    <File Build="0">Startup.pss</File>
+    <File Build="0" Shared="True" ReferenceFunction="Invoke-Globals_ps1">Globals.ps1</File>
+    <File Build="0" ReferenceFunction="Show-SelectUsersForm_psf">SelectUsersForm.psf</File>
+    <File Build="0" ReferenceFunction="Show-Main_psf">Main.psf</File>
+    <File Build="0" ReferenceFunction="Show-SelectUserRecycleBin_psf">SelectUserRecycleBin.psf</File>
+    <File Build="0" ReferenceFunction="Show-SelectEmailAddresses_psf">SelectEmailAddresses.psf</File>
+    <File Build="0" ReferenceFunction="Show-SelectRoomMailbox_psf">SelectRoomMailbox.psf</File>
+    <File Build="0" ReferenceFunction="Show-SelectMailboxes_psf">SelectMailboxes.psf</File>
+    <File Build="0" ReferenceFunction="Show-SelectMailContact_psf">SelectMailContact.psf</File>
+    <File Build="0" ReferenceFunction="Show-SelectUserCalendarPermissions_psf">SelectUserCalendarPermissions.psf</File>
+    <File Build="0" ReferenceFunction="Show-SelectDistroGroup_psf">SelectDistroGroup.psf</File>
+    <File Build="0" ReferenceFunction="Show-SelectDistroGroupMembers_psf">SelectDistroGroupMembers.psf</File>
+    <File Build="0" ReferenceFunction="Show-SelectDatePicker_psf">SelectDatePicker.psf</File>
+    <File Build="0" ReferenceFunction="Show-SelectMailEnabledSecurityGroups_psf">SelectMailEnabledSecurityGroups.psf</File>
+    <File Build="0" ReferenceFunction="Show-SelectLocationCode_psf">SelectLocationCode.psf</File>
+    <File Build="0" ReferenceFunction="Show-SelectLicenses_psf">SelectLicenses.psf</File>
+    <File Build="0" ReferenceFunction="Show-SelectUnlicensedUsers_psf">SelectUnlicensedUsers.psf</File>
+    <File Build="0" ReferenceFunction="Show-SelectUserFullPermissions_psf">SelectUserFullPermissions.psf</File>
+    <File Build="0" ReferenceFunction="Show-SelectUserLicenses_psf">SelectUserLicenses.psf</File>
+    <File Build="0" ReferenceFunction="Show-SelectLicensedUsers_psf">SelectLicensedUsers.psf</File>
+    <File Build="0" ReferenceFunction="Show-SelectAllEmailPrimaryAddresses_psf">SelectAllEmailPrimaryAddresses.psf</File>
+    <File Build="0" ReferenceFunction="Show-SelectExistingMailboxPermissions_psf">SelectExistingMailboxPermissions.psf</File>
+    <File Build="0" ReferenceFunction="Show-SelectExternalUsersWithForwarding_psf">SelectExternalUsersWithForwarding.psf</File>
+    <File Build="0" ReferenceFunction="Show-SelectUsersAnyForwarding_psf">SelectUsersAnyForwarding.psf</File>
+    <File Build="0" ReferenceFunction="Show-SelectUsersInternalForwarding_psf">SelectUsersInternalForwarding.psf</File>
+    <File Build="0" ReferenceFunction="Show-SelectUnifiedGroups_psf">SelectUnifiedGroups.psf</File>
+    <File Build="0" ReferenceFunction="Show-SelectUnifiedGroupMembers_psf">SelectUnifiedGroupMembers.psf</File>
+    <File Build="0" ReferenceFunction="Show-SelectSharingPolicy_psf">SelectSharingPolicy.psf</File>
+    <File Build="0" ReferenceFunction="Show-SelectSharedMailbox_psf">SelectSharedMailbox.psf</File>
+    <File Build="0" ReferenceFunction="Show-SelectRetentionPolicy_psf">SelectRetentionPolicy.psf</File>
+    <File Build="0" ReferenceFunction="Show-SelectUnifiedGroupAccessType_psf">SelectUnifiedGroupAccessType.psf</File>
+    <File Build="0" ReferenceFunction="Show-SelectDLP_psf">SelectDLP.psf</File>
+    <File Build="0" ReferenceFunction="Show-SelectDataComplianceRule_psf">SelectDataComplianceRule.psf</File>
+    <File Build="0" ReferenceFunction="Show-SelectComplianceCase_psf">SelectComplianceCase.psf</File>
+    <File Build="0" ReferenceFunction="Show-SelectSPOSites_psf">SelectSPOSites.psf</File>
+    <File Build="0" ReferenceFunction="Show-SelectDeletedSPOSites_psf">SelectDeletedSPOSites.psf</File>
+    <File Build="0" ReferenceFunction="Show-AccessPermissions_psf">AccessPermissions.psf</File>
+    <File Build="0" ReferenceFunction="Show-PreReq_MSOnline_psf">PreReq_MSOnline.psf</File>
+    <File Build="0" ReferenceFunction="Show-UpdateCheck_psf">UpdateCheck.psf</File>
+    <File Build="0" ReferenceFunction="Show-SelectCachedUserPrincipalName_psf">SelectCachedUserPrincipalName.psf</File>
+    <File Build="0" ReferenceFunction="Show-PreReq_Azure_psf">PreReq_Azure.psf</File>
+    <File Build="0" ReferenceFunction="Show-PreReq_SkypeForBusiness_psf">PreReq_SkypeForBusiness.psf</File>
+    <File Build="0" ReferenceFunction="Show-PreRep_SharePoint_psf">PreRep_SharePoint.psf</File>
+    <File Build="0" ReferenceFunction="Show-PreReq_ArchType_psf">PreReq_ArchType.psf</File>
+    <File Build="0" ReferenceFunction="Show-Info_OK_psf">Info_OK.psf</File>
+    <File Build="0" ReferenceFunction="Show-SelectCachedPublicFolders_psf">SelectCachedPublicFolders.psf</File>
+    <File Build="0" ReferenceFunction="Show-SelectCachedDisplayNames_psf">SelectCachedDisplayNames.psf</File>
+    <File Build="0" ReferenceFunction="Show-SelectCachedDistroGroups_psf">SelectCachedDistroGroups.psf</File>
+    <File Build="0" ReferenceFunction="Show-SelectDynamicDistributionGroups_psf">SelectDynamicDistributionGroups.psf</File>
+    <File Build="0" ReferenceFunction="Show-SelectTransportRules_psf">SelectTransportRules.psf</File>
+    <File Build="0" ReferenceFunction="Show-SelectEnabledTransportRules_psf">SelectEnabledTransportRules.psf</File>
+    <File Build="0" ReferenceFunction="Show-SelectDisabledTransportRules_psf">SelectDisabledTransportRules.psf</File>
+    <File Build="0" ReferenceFunction="Show-SelectPFPermissions_psf">SelectPFPermissions.psf</File>
+    <File Build="0" ReferenceFunction="Show-SelecPreReqExecutionPolicy_psf">SelecPreReqExecutionPolicy.psf</File>
+    <File Build="0" ReferenceFunction="Show-CachedCreds_psf">CachedCreds.psf</File>
+    <File Build="0" ReferenceFunction="Show-PreReqTFA_MSONLINE_psf">PreReqTFA_MSONLINE.psf</File>
+  </Files>
+</Project>

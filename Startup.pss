@@ -1,0 +1,105 @@
+﻿<File version="2.1">
+  <Code><![CDATA[#Define a Param block to use custom parameters in the project
+#Param ($CustomParameter)
+
+function Main {
+<#
+    .SYNOPSIS 
+        The Main function starts the project application.
+    
+    .PARAMETER Commandline
+        $Commandline contains the complete argument string passed to the script packager executable.
+    
+    .NOTES
+        Use this function to initialize your script and to call GUI forms.
+		
+    .NOTES
+        To get the console output in the Packager (Forms Engine) use: 
+		$ConsoleOutput (Type: System.Collections.ArrayList)
+#>
+	Param ([String]$Commandline)
+	
+	#Create a TempFolder to work with
+	$TempDir = $env:temp
+	$O365AdminTempFolder = ("$TempDir" + "\O365AdminCenter")
+	
+	#Create temporary directory
+	[system.io.directory]::CreateDirectory("$O365AdminTempFolder")
+	
+	#Deletes the old cached files
+	$CachedFiles = ("$TempDir" + "\O365AdminCenter")
+	Remove-Item $CachedFiles\* -recurse
+	
+	###REG KEYS
+	#Check if RegKey is present, if not then create one
+	$RegKey = Get-Item 'HKCU:\Software\O365 Admin Center' -ErrorAction SilentlyContinue
+	if (! $RegKey)
+	{
+		#Create the root key
+		New-Item 'HKCU:\Software\O365 Admin Center' -Force
+		
+		#Sets Tenant Status
+		Get-Item 'HKCU:\Software\O365 Admin Center' -Force | New-ItemProperty -Name TenantStatus -Value 0 -Force | Out-Null
+		
+		#Sets the update check key
+		Get-Item 'HKCU:\Software\O365 Admin Center' -Force | New-ItemProperty -Name UpdateCheck -Value 0 -Force | Out-Null
+	}
+	Else
+	{
+		
+	}
+	
+	$TFACheck = (Get-ItemProperty 'HKCU:\Software\O365 Admin Center' | Get-ItemProperty -Name TFA -ErrorAction SilentlyContinue).TFA
+	If (!$TFACheck)
+	{
+		Get-Item 'HKCU:\Software\O365 Admin Center' | New-ItemProperty -Name TFA -Value 0 -Force | Out-Null
+	}
+	
+	
+	###UPDATE CHECK
+	$Version = "4.1.2.0"
+	#Get reg-key to see if update should prompt
+	$UpdateCheck = (Get-ItemProperty 'HKCU:\Software\O365 Admin Center' -Name UpdateCheck).UpdateCheck
+	
+	If ($UpdateCheck -eq 0)
+	{
+		#Check to see if there is a new version available 
+		$PublicVersion = Invoke-WebRequest -Uri https://www.o365admin.center/update.txt | Select-Object -ExpandProperty content
+		#If local version is less than the public version then prompt for update
+		If ($Version -lt $publicVersion)
+		{
+			Show-UpdateCheck_psf
+		}
+		#If Publicversion equals nothing then ignore, this is if the website is down or the user does not have internet
+		elseif ($PublicVersion = $Null)
+		{
+		}
+	}
+	
+	
+	
+	
+	if((Show-Main_psf) -eq 'OK')
+	{
+		
+	}
+	
+	$global:ExitCode = 0 #Set the exit code for the Packager
+}
+
+
+
+
+
+
+]]></Code>
+  <Assemblies>
+    <Assembly>mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</Assembly>
+    <Assembly>System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</Assembly>
+    <Assembly>System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</Assembly>
+    <Assembly>System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</Assembly>
+    <Assembly>System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</Assembly>
+    <Assembly>System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</Assembly>
+    <Assembly>System.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</Assembly>
+  </Assemblies>
+</File>
