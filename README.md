@@ -12,6 +12,11 @@ ___
 - [Community] (http://o365admin.center/community/)
 - [FAQ] (http://o365admin.center/FAQ/)
 
+## .Install instructions:
+You need to install these compononents in powershell first
+Set-ExecutionPolicy RemoteSigned
+Install-Module MSOnline
+Install-Module -Name AzureAD
 ___
 
 ## .MFA
